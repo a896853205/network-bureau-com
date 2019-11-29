@@ -371,6 +371,15 @@ module.exports = function(webpackEnv) {
                 name: 'static/media/[name].[hash:8].[ext]',
               },
             },
+            // 配置stylus文件
+            {
+              test: /\.styl$/,
+              use: [
+                require.resolve('style-loader'),
+                require.resolve('css-loader'),
+                require.resolve('stylus-loader')
+              ]
+            },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
