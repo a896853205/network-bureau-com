@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.styl';
+import logo from '@/logo.svg';
+import '@/App.styl';
 import { Button } from 'antd';
 
 function App() {
