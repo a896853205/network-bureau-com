@@ -136,8 +136,10 @@ async function _fetch(url, params = {}, requestType, fetchParams = {}) {
 
       return responseData.data;
     } else if (responseData.status === DominConfigs.RESPONSE_CODE.error) {
-      message.error(responseData.msg);
-
+      if (responseData.msg) {
+        message.error(responseData.msg);
+      }
+      
       return null;
     } else if (
       responseData.status === DominConfigs.RESPONSE_CODE.unauthorized
