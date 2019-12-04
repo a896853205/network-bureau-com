@@ -1,28 +1,63 @@
 import React from 'react';
-import logo from '@/logo.svg';
 import '@/App.styl';
-import { Button } from 'antd';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import * as APIS from '@/constants/api-constants';
+import proxyFrench from '@/util/request';
 
-function App() {
+export default Form.create({ name: 'normal_login' })(props => {
+  const { getFieldDecorator } = props.form;
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        proxyFrench(APIS.GET_ENTERPRISE_TOKEN, values, 'PUT');
+      }
+    });
+  };
+
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-        <Button>Button</Button>
-      </header>
+    <div id='components-form-demo-normal-login'>
+      <Form onSubmit={handleSubmit} className='login-form'>
+        <Form.Item>
+          {getFieldDecorator('username', {
+            rules: [{ required: true, message: 'Please input your username!' }]
+          })(
+            <Input
+              prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder='Username'
+            />
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Please input your Password!' }]
+          })(
+            <Input
+              prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type='password'
+              placeholder='Password'
+            />
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator('remember', {
+            valuePropName: 'checked',
+            initialValue: true
+          })(<Checkbox>Remember me</Checkbox>)}
+          <a className='login-form-forgot' href='/'>
+            Forgot password
+          </a>
+          <Button
+            type='primary'
+            htmlType='submit'
+            className='login-form-button'
+          >
+            Log in
+          </Button>
+          Or <a href='/'>register now!</a>
+        </Form.Item>
+      </Form>
     </div>
   );
-}
-
-export default App;
+});
