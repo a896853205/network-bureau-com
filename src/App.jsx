@@ -11,15 +11,15 @@ import RegisterController from '@/page/Register-controller.jsx';
 import HomeController from '@/page/home/Home-controller.jsx';
 
 export default props => {
-  let index = useRouteMatch(ROUTES.INDEX.path),
-    login = useRouteMatch(ROUTES.LOGIN.path),
-    register = useRouteMatch(ROUTES.REGISTER.path),
+  let index = useRouteMatch({ path: ROUTES.INDEX.path, exact: true }),
+    login = useRouteMatch({ path: ROUTES.LOGIN.path, exact: true }),
+    register = useRouteMatch({ path: ROUTES.REGISTER.path, exact: true }),
     home = useRouteMatch(ROUTES.HOME.path);
 
-  if ((index && index.isExact) || (login && login.isExact)) {
+  if (index || login) {
     // 登录页
     return <LoginController />;
-  } else if (register && register.isExact) {
+  } else if (register) {
     // 注册页
     return <RegisterController />;
   } else if (home) {
