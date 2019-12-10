@@ -1,5 +1,12 @@
 import React from 'react';
 
+// 路由
+import { useRouteMatch } from 'react-router-dom';
+import * as ROUTES from '@/constants/route-constants';
+
+// controller
+import HomeIndexController from '@/page/home/Home-index-controller.jsx';
+
 // 样式
 import '@/style/home/home.styl';
 import { Layout, Menu, Icon } from 'antd';
@@ -7,6 +14,18 @@ const { Header, Content, Footer, Sider } = Layout,
   { SubMenu } = Menu;
 
 export default props => {
+  const homeIndex = useRouteMatch({
+    path: ROUTES.HOME_INDEX.path,
+    exact: true
+  });
+
+  let content = null;
+
+  if (homeIndex) {
+    // 主首页
+    content = <HomeIndexController />;
+  }
+
   return (
     <Layout>
       <Sider className='home-sider'>
@@ -60,7 +79,7 @@ export default props => {
       <Layout className='home-content'>
         <Header className='home-header' />
         <Content className='content-box'>
-          <div className='content-inner-box'>内容</div>
+          <div className='content-inner-box'>{content}</div>
         </Content>
         <Footer className='home-footer'>
           Ant Design ©2018 Created by Ant UED
