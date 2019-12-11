@@ -11,6 +11,9 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import enterpriseAction from '@/redux/action/enterprise';
 
+// 加密
+import md5 from 'md5';
+
 export default Form.create({ name: 'login' })(props => {
   const { getFieldDecorator } = props.form;
   const { loginLoading } = useSelector(state => state.enterpriseStore);
@@ -20,6 +23,8 @@ export default Form.create({ name: 'login' })(props => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
+        // 处理加密密码
+        values.password = md5(values.password);
         // 使用redux-saga
         dispatch(enterpriseAction.asyncSetEnterprise(values));
       }

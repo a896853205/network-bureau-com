@@ -14,13 +14,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import navToAction from '@/redux/action/nav-to';
 
 export default props => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { navTo } = useSelector(state => state.NavToStore);
+  const history = useHistory(),
+    dispatch = useDispatch(),
+    { navTo } = useSelector(state => state.NavToStore);
 
   useEffect(() => {
     if (navTo) {
       history.push(navTo);
+      // 跳转页面后清除
       dispatch(navToAction.setNavTo(undefined));
     }
   }, [navTo, history, dispatch]);
