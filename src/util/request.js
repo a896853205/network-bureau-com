@@ -7,7 +7,7 @@ import { message } from 'antd';
 export default (
   url,
   params = {},
-  requestType = 'post',
+  requestType = 'POST',
   ignoreParam = false
 ) => {
   // headers
@@ -139,7 +139,7 @@ async function _fetch(url, params = {}, requestType, fetchParams = {}) {
       if (responseData.msg) {
         message.error(responseData.msg);
       }
-      
+
       return null;
     } else if (
       responseData.status === DominConfigs.RESPONSE_CODE.unauthorized
