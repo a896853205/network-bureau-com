@@ -51,8 +51,8 @@ export default Form.create({ name: 'register' })(props => {
             },
             {
               validator: async (rule, value) => {
-                if (CheckSocialCreditCode('value')) return true;
-                else return false;
+                if (CheckSocialCreditCode(value)) return true;
+                else throw new Error('Something wrong!');
               },
 
               message: '统一社会信用代码不符合规则'
