@@ -4,3 +4,5 @@ export const ENVIRONMENT = {
   TEST: 1, // 测试环境
   PRO: 2 // 生产环境
 };
+
+export const LOCAL_STORAGE = 'network-bureau';
