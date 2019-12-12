@@ -1,0 +1,56 @@
+.home-index-box {
+  .context {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    margin-top: 30px;
+    box-shadow: 0 0 5px #000;
+    border-radius: 5px;
+
+    .image-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .outter-box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.7);
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      display: flex;
+      align-items: center; /* 实现垂直居中 */
+      padding: 0 30px;
+
+      .icon {
+        font-size: 80px;
+      }
+
+      .inner-box {
+        padding-left: 20px;
+
+        .caption {
+          font-size: 20px;
+          margin-bottom: 10px;
+          color: #fff;
+        }
+
+        .sub-passage {
+          font-size: 14px;
+          margin-bottom: 10px;
+          text-indent: 28px;
+        }
+      }
+    }
+  }
+}
