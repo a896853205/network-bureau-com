@@ -1,14 +1,15 @@
 import React from 'react';
 
 import '@/style/home/registration/welcome.styl';
-import { Input, Icon ,Button} from 'antd';
+import { Input, Icon, Button } from 'antd';
 
 export default props => {
   return (
     <div className='welcome-box'>
       <div className='left-box'>
         <div className='top-box'>
-          <h1 className='caption'><Icon type='audit' />
+          <h1 className='caption'>
+            <Icon type='audit' />
             <span>登记办理新测试</span>
           </h1>
           <p className='passage'>
@@ -19,16 +20,18 @@ export default props => {
           </p>
         </div>
         <div className='bottom-box'>
-          <div className='input'>
-            <Input placeholder="请输入新测试项目名称" />
-          </div>
-          <Button type="primary" className='button'>
+          <Input size='large' placeholder='请输入测试产品名称' className='input' />
+          <Button size='large' type='primary' className='button'>
             确认
           </Button>
         </div>
       </div>
       <div className='right-box'>
-        <img className='image' src="https://i.pinimg.com/564x/8c/b7/16/8cb7165c0ef95552988f3b4de4a7c402.jpg" alt="Paris" />
+        <img
+          className='image'
+          src='https://i.pinimg.com/564x/8c/b7/16/8cb7165c0ef95552988f3b4de4a7c402.jpg'
+          alt='Paris'
+        />
       </div>
     </div>
   );
