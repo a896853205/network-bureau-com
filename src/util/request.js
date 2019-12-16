@@ -2,6 +2,7 @@ import * as DominConfigs from '../constants/domin-constants';
 // import * as APIs from '../constants/api-constants';
 import moment from 'moment';
 import { message } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 // 请求包装
 export default (
@@ -128,33 +129,59 @@ async function _fetch(url, params = {}, requestType, fetchParams = {}) {
     console.log('-----------------');
 
     // 请求成功 status: 200
-    if (
-      responseData.status &&
-      responseData.status === DominConfigs.RESPONSE_CODE.success
-    ) {
-      if (responseData.msg) {
-        message.success(responseData.msg);
-      }
-
-      return responseData.data;
-    } else if (responseData.status === DominConfigs.RESPONSE_CODE.error) {
-      if (responseData.msg) {
-        message.error(responseData.msg);
-      }
-
-      return null;
-    } else if (
-      responseData.status === DominConfigs.RESPONSE_CODE.unauthorized
-    ) {
-      message.warning(responseData.msg);
-
-      // token过期
-      // 没法使用history
-      window.href = '/';
-
-      return null;
-    }
+    return responseHandle(responseData);
   } catch (error) {
     message.error('网络有点问题呦,请稍后再试');
   }
 }
+
+/**
+ * 返回值处理
+ * @param {*} responseData
+ */
+const responseHandle = responseData => {
+  if (responseData.status) {
+    return _responseHandle[responseData.status](responseData);
+  } else {
+    return null;
+  }
+};
+
+const _responseHandle = {
+  [DominConfigs.RESPONSE_CODE.success]: responseData => {
+    if (responseData.msg) {
+      message.success(responseData.msg);
+    }
+
+    return responseData.data;
+  },
+  [DominConfigs.RESPONSE_CODE.created]: responseData => {
+    if (responseData.msg) {
+      message.success(responseData.msg);
+    }
+
+    return responseData.data;
+  },
+  [DominConfigs.RESPONSE_CODE.noContent]: responseData => {
+    if (responseData.msg) {
+      message.success(responseData.msg);
+    }
+
+    return responseData.data;
+  },
+  [DominConfigs.RESPONSE_CODE.error]: responseData => {
+    if (responseData.msg) {
+      message.error(responseData.msg);
+    }
+
+    return null;
+  },
+  [DominConfigs.RESPONSE_CODE.unauthorized]: responseData => {
+    message.warning(responseData.msg);
+    const history = useHistory();
+    // token 过期
+    history.push('/');
+
+    return null;
+  }
+};
