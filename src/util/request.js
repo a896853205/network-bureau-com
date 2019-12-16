@@ -57,6 +57,8 @@ export default (
     }
   } else if (requestType === 'PUT') {
     fetchParams.body = JSON.stringify(params);
+  } else if (requestType === 'DELETE') {
+    fetchParams.body = JSON.stringify(params);
   }
 
   // 进行请求
