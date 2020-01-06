@@ -81,6 +81,7 @@ export default Form.create({ name: 'register' })(props => {
       <Form.Item>
         {getFieldDecorator('phone', {
           rules: [
+            
             {
               required: true,
               message: '请输入电话！'

@@ -16,7 +16,7 @@ export default (
   const os = 'opt';
 
   let headers = new Headers({
-    Accept: '*/*',
+    Accept: '*/*',  
     'Content-Type': 'application/json',
     Connection: 'keep-alive',
     t,
