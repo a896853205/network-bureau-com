@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+// 样式
 import '@/style/home/registration/welcome.styl';
 import { Input, Icon, Button } from 'antd';
 
+// 请求
+import proxyFetch from '@/util/request';
+import * as APIS from '@/constants/api-constants';
+
 export default props => {
+  const [registrationName, setRegistrationName] = useState(''),
+    [loading, setLoading] = useState(false),
+    [isInsert, setIsInsert] = useState(false);
+
+  useEffect(() => {
+    if (isInsert) {
+      (async () => {
+        setLoading(true);
+
+        const res = await proxyFetch(APIS.CREATE_NEW_ENTERPRISE, {
+          name: registrationName
+        });
+
+        setLoading(false);
+
+        if (res) {
+          // 跳转页面
+        }
+      })();
+    }
+  }, [isInsert, registrationName]);
+
   return (
     <div className='welcome-box'>
       <div className='left-box'>
@@ -20,8 +47,23 @@ export default props => {
           </p>
         </div>
         <div className='bottom-box'>
-          <Input size='large' placeholder='请输入测试产品名称' className='input' />
-          <Button size='large' type='primary' className='button'>
+          <Input
+            size='large'
+            placeholder='请输入测试产品名称'
+            className='input'
+            onChange={e => {
+              setRegistrationName(e.target.value);
+            }}
+          />
+          <Button
+            size='large'
+            type='primary'
+            className='button'
+            onClick={() => {
+              setIsInsert(true);
+            }}
+            loading={loading}
+          >
             确认
           </Button>
         </div>
