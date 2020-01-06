@@ -18,7 +18,7 @@ export default props => {
       (async () => {
         setLoading(true);
 
-        const res = await proxyFetch(APIS.CREATE_NEW_ENTERPRISE, {
+        const res = await proxyFetch(APIS.CREATE_ENTERPRISE_REGISTION, {
           name: registrationName
         });
 
