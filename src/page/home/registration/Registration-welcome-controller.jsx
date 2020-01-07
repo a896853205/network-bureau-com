@@ -1,35 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 // 样式
 import '@/style/home/registration/welcome.styl';
-import { Input, Icon, Button } from 'antd';
+import { Input, Icon, Button, message } from 'antd';
 
-// 请求
-import proxyFetch from '@/util/request';
-import * as APIS from '@/constants/api-constants';
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
 
 export default props => {
-  const [registrationName, setRegistrationName] = useState(''),
-    [loading, setLoading] = useState(false),
-    [isInsert, setIsInsert] = useState(false);
+  const { loginLoading } = useSelector(state => state.enterpriseStore),
+    [registrationName, setRegistrationName] = useState(''),
+    dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isInsert) {
-      (async () => {
-        setLoading(true);
+  const handleSubmitCreateRegistration = e => {
+    e.preventDefault();
 
-        const res = await proxyFetch(APIS.CREATE_ENTERPRISE_REGISTION, {
-          name: registrationName
-        });
-
-        setLoading(false);
-
-        if (res) {
-          // 跳转页面
-        }
-      })();
+    if (registrationName) {
+      dispatch(
+        enterpriseAction.asyncCreateEnterpriseRegistion(registrationName)
+      );
+    } else {
+      message.error('请输入登记测试名称');
     }
-  }, [isInsert, registrationName]);
+  };
 
   return (
     <div className='welcome-box'>
@@ -59,10 +53,8 @@ export default props => {
             size='large'
             type='primary'
             className='button'
-            onClick={() => {
-              setIsInsert(true);
-            }}
-            loading={loading}
+            onClick={handleSubmitCreateRegistration}
+            loading={loginLoading}
           >
             确认
           </Button>
