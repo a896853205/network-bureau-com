@@ -6,7 +6,7 @@ import proxyFetch from '@/util/request';
 
 // 样式
 import { Table } from 'antd';
-import '@/style/home/registion/query.styl';
+import '@/style/home/registration/query.styl';
 
 const { Column } = Table;
 
