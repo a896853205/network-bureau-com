@@ -15,9 +15,9 @@ import enterpriseAction from '@/redux/action/enterprise';
 import md5 from 'md5';
 
 export default Form.create({ name: 'login' })(props => {
-  const { getFieldDecorator } = props.form;
-  const { loginLoading } = useSelector(state => state.enterpriseStore);
-  const dispatch = useDispatch();
+  const { getFieldDecorator } = props.form,
+    { loginLoading } = useSelector(state => state.enterpriseStore),
+    dispatch = useDispatch();
 
   const handleSubmitLogin = e => {
     e.preventDefault();
