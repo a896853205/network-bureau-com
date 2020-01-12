@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+// 样式
 import '@/style/home/registration/welcome.styl';
-import { Input, Icon, Button } from 'antd';
+import { Input, Icon, Button, message } from 'antd';
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
 
 export default props => {
+  const { loginLoading } = useSelector(state => state.enterpriseStore),
+    [registrationName, setRegistrationName] = useState(''),
+    dispatch = useDispatch();
+
+  const handleSubmitCreateRegistration = e => {
+    e.preventDefault();
+
+    if (registrationName) {
+      dispatch(
+        enterpriseAction.asyncCreateEnterpriseRegistion(registrationName)
+      );
+    } else {
+      message.error('请输入登记测试名称');
+    }
+  };
+
   return (
     <div className='welcome-box'>
       <div className='left-box'>
@@ -20,8 +41,21 @@ export default props => {
           </p>
         </div>
         <div className='bottom-box'>
-          <Input size='large' placeholder='请输入测试产品名称' className='input' />
-          <Button size='large' type='primary' className='button'>
+          <Input
+            size='large'
+            placeholder='请输入测试产品名称'
+            className='input'
+            onChange={e => {
+              setRegistrationName(e.target.value);
+            }}
+          />
+          <Button
+            size='large'
+            type='primary'
+            className='button'
+            onClick={handleSubmitCreateRegistration}
+            loading={loginLoading}
+          >
             确认
           </Button>
         </div>

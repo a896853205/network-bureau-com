@@ -22,3 +22,12 @@ export const HOME_REGISTRATION_LIST = {
   path: '/home/registration/list',
   name: '登记测试列表页'
 };
+// 三级路由
+export const REGISTRATION_PROFILE = {
+  path: '/home/registration/process/profile',
+  name: '登记测试概况页'
+};
+export const REGISTRATION_DETAIL = {
+  path: '/home/registration/process/detail',
+  name: '详细内容页'
+};

@@ -17,10 +17,17 @@ export default handleActions(
         ...state,
         loginLoading: result
       };
+    },
+    setCreateEnterpriseRegistionLoading(state, { payload: result }) {
+      return {
+        ...state,
+        createEnterpriseRegistionLoading: result
+      };
     }
   },
   {
     loginLoading: false,
+    createEnterpriseRegistionLoading: false,
     uuid: '',
     phone: '',
     name: ''

@@ -4,6 +4,9 @@ import moment from 'moment';
 import { message } from 'antd';
 import { useHistory } from 'react-router-dom';
 
+// localStorage
+import { LOCAL_STORAGE } from '@/constants/app-constants';
+
 // 请求包装
 export default (
   url,
@@ -16,12 +19,12 @@ export default (
   const os = 'opt';
 
   let headers = new Headers({
-    Accept: '*/*',
+    Accept: '*/*',  
     'Content-Type': 'application/json',
     Connection: 'keep-alive',
     t,
     os,
-    authorization: `Bearer ${localStorage.getItem('token')}`
+    authorization: `Bearer ${localStorage.getItem(`${LOCAL_STORAGE}-token`)}`
   });
 
   const fetchParams = {
