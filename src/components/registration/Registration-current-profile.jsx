@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Icon } from 'antd';
+import proxyFetch from '@/util/request';
+import { SELECT_REGISTRATION_STATUS_BY_ENTERPRISE_UUID } from '@/constants/api-constants';
 
 export default props => {
+  useEffect(() => {
+    (async () => {
+      let values = {
+        uuid: 1
+      };
+
+      let res = await proxyFetch(
+        SELECT_REGISTRATION_STATUS_BY_ENTERPRISE_UUID,
+        values,
+        'GET'
+      );
+
+      console.log(res);
+    })();
+  });
+
   return (
     <div className='process-item-box current-profile-box'>
       <p className='title-box'>
