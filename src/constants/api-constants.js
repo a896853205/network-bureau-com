@@ -12,4 +12,5 @@ export const CREATE_NEW_ENTERPRISE = `${DominConfigs.DOMAIN}${DominConfigs.PART.
  * 登记测试模块
  */
 export const CREATE_ENTERPRISE_REGISTRATION = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/createEnterpriseRegistration`; // 创建登记测试
-export const QUERY_REGISTRATION_BY_ENTERPRISE_UUID = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/queryREGISTRATIONByEnterpriseUuid`; //查询登记测试
+export const QUERY_REGISTRATION_BY_ENTERPRISE_UUID = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/queryRegistrationByEnterpriseUuid`; //查询登记测试
+export const QUERY_SYS_REGISTRATION_STEP = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/querySysRegistrationStep`; //无条件查询系统测试步骤

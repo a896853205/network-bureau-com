@@ -1,33 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+// 请求
+import { QUERY_SYS_REGISTRATION_STEP } from '@/constants/api-constants';
+import proxyFetch from '@/util/request';
 
 // 样式
 import { Timeline } from 'antd';
 
 export default props => {
+  const [sysRegistrationStepList, setSysRegistrationStepList] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const sysRegistrationStepList = await proxyFetch(
+        QUERY_SYS_REGISTRATION_STEP,
+        {},
+        'GET'
+      );
+
+    
+      console.log(sysRegistrationStepList);
+
+      setSysRegistrationStepList(sysRegistrationStepList);
+    })();
+  }, []);
+
+
+  let list = sysRegistrationStepList
+    ? sysRegistrationStepList.map((item, i) => (
+        <Timeline.item key={i}>{item.name}</Timeline.item>
+      ))
+    : null;
+
   return (
     <div className='process-item-box'>
       <p className='title-box'>测试进度</p>
       <div className='process-profile-bottom-box'>
-        <Timeline>
-          <Timeline.Item color='green' className='process-profile-step'>
-            提交上传7种材料
-          </Timeline.Item>
-          <Timeline.Item color='green' className='process-profile-step'>
-            电子签合同
-          </Timeline.Item>
-          <Timeline.Item color='green' className='process-profile-step'>
-            支付汇款
-          </Timeline.Item>
-          <Timeline.Item color='yellow' className='process-profile-step'>
-            现场测试
-          </Timeline.Item>
-          <Timeline.Item color='gray' className='process-profile-step'>
-            接收原始记录和测试报告
-          </Timeline.Item>
-          <Timeline.Item color='gray' className='process-profile-step'>
-            给予打分
-          </Timeline.Item>
-        </Timeline>
+        <Timeline>{list}</Timeline>}
       </div>
     </div>
   );
