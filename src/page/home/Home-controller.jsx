@@ -26,8 +26,7 @@ export default props => {
       exact: true
     }),
     registrationProcess = useRouteMatch({
-      path: ROUTES.HOME_REGISTRATION_PROCESS.path,
-      exact: true
+      path: ROUTES.HOME_REGISTRATION_PROCESS.path
     }),
     registrationList = useRouteMatch({
       path: ROUTES.HOME_REGISTRATION_LIST.path,

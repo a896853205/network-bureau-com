@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // 请求
-import { QUERY_REGISTION_BY_ENTERPRISE_UUID } from '@/constants/api-constants';
+import { QUERY_REGISTRATION_BY_ENTERPRISE_UUID } from '@/constants/api-constants';
 import proxyFetch from '@/util/request';
 
 // 样式
@@ -22,7 +22,7 @@ export default props => {
       setLoading(true);
 
       const { enterpriseRegistionList, total, pageSize } = await proxyFetch(
-        QUERY_REGISTION_BY_ENTERPRISE_UUID,
+        QUERY_REGISTRATION_BY_ENTERPRISE_UUID,
         {
           page
         },

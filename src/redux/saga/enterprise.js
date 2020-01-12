@@ -15,7 +15,7 @@ import { LOCAL_STORAGE } from '@/constants/app-constants';
 // 路由
 import {
   HOME_INDEX,
-  HOME_REGISTRATION_PROCESS
+  REGISTRATION_PROFILE
 } from '@/constants/route-constants';
 
 const effects = {
@@ -44,7 +44,7 @@ const effects = {
     // loading开始
     yield put(enterpriseAction.setCreateEnterpriseRegistionLoading(true));
     // 请求创建登记测试
-    const res = yield call(proxyFetch, APIS.CREATE_ENTERPRISE_REGISTION, {
+    const res = yield call(proxyFetch, APIS.CREATE_ENTERPRISE_REGISTRATION, {
       name: payload
     });
     // loading结束
@@ -53,7 +53,7 @@ const effects = {
     if (res) {
       // 成功之后将enterpriseUuid存到localStorage中并且跳页
       localStorage.setItem(`${LOCAL_STORAGE}-enterpriseUuid`, res);
-      yield put(navToAction.setNavTo(HOME_REGISTRATION_PROCESS.path));
+      yield put(navToAction.setNavTo(REGISTRATION_PROFILE.path));
     }
     // 不成功不跳转
   }

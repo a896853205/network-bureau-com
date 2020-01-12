@@ -13,7 +13,7 @@ export const DOMAIN = _DOMAIN[SAP_CONTROL];
 // 模块
 export const PART = {
   OPT_ENTERPRISE_USER: '/enterpriseUser',
-  OPT_ENTERPRISE_REGISTION: '/enterpriseRegistion'
+  OPT_ENTERPRISE_REGISTRATION: '/enterpriseRegistration'
 };
 
 // 返回码
