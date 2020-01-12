@@ -13,3 +13,8 @@ export const CREATE_NEW_ENTERPRISE = `${DominConfigs.DOMAIN}${DominConfigs.PART.
  */
 export const CREATE_ENTERPRISE_REGISTRATION = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/createEnterpriseRegistration`; // 创建登记测试
 export const QUERY_REGISTRATION_BY_ENTERPRISE_UUID = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/queryREGISTRATIONByEnterpriseUuid`; //查询登记测试
+
+/*
+查询企业用户登记测试七个状态通过enterpriseUuid
+*/
+export const SELECT_REGISTRATION_STATUS_BY_ENTERPRISE_UUID = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectRegistrationStatusByEnterpriseUuid`;
