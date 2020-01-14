@@ -10,12 +10,11 @@ import { GET_MANANGER_INFO } from '@/constants/api-constants';
 export default props => {
   const { steps, registration } = useSelector(state => state.enterpriseStore);
 
-  const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('');
 
+  const [name, setName] = useState('');
+
+  const [headPortraitUrl, setHeadPortraitUrl] = useState('');
   useEffect(() => {
     console.log('steps', steps, 'registration', registration);
     // 根据registration中的currentStep属性
@@ -31,12 +30,11 @@ export default props => {
 
         let res = await proxyFetch(GET_MANANGER_INFO, managerUuid, 'GET');
 
-        setUsername(res.username);
-
+        console.log(res.headPortraitUrl);
+        setHeadPortraitUrl(res.headPortraitUrl);
         setPhone(res.phone);
-        setPassword(res.password);
+
         setName(res.name);
-        setRole(res.role);
       }
     })();
   }, [steps, registration]);
@@ -45,7 +43,9 @@ export default props => {
     <div className="process-item-box">
       <p className="title-box">咨询者信息</p>
       <ul className="manager-info-bottom-box">
-        <li className="manager-info-head-box"></li>
+        <li className="manager-info-head-box">
+          <img src={headPortraitUrl} alt="" />
+        </li>
         <li className="manager-into-item-box">
           <p>
             <Icon type="user" className="manager-info-icon" />
