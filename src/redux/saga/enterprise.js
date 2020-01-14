@@ -75,14 +75,14 @@ const effects = {
         proxyFetch(
           APIS.QUERY_ENTERPRISE_REGISTRATION_STEP,
           {
-            enterpriseRegistrationUuid: payload
+            registrationUuid: payload
           },
           'GET'
         ),
         proxyFetch(
-          APIS.SELECT_REGISTRATION_BY_REGISTRATION_UUID,
+          APIS.SELECT_REGISTRATION,
           {
-            uuid: payload
+            registrationUuid: payload
           },
           'GET'
         )

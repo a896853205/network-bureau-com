@@ -5,7 +5,7 @@ import { Icon } from 'antd';
 
 // 路由
 import proxyFetch from '@/util/request';
-import { SELECT_REGISTRATION_STATUS_BY_ENTERPRISE_UUID } from '@/constants/api-constants';
+import { SELECT_REGISTRATION_STATUS } from '@/constants/api-constants';
 
 // redux
 import { useSelector } from 'react-redux';
@@ -18,8 +18,8 @@ export default props => {
   useEffect(() => {
     (async () => {
       let res = await proxyFetch(
-        SELECT_REGISTRATION_STATUS_BY_ENTERPRISE_UUID,
-        { uuid: enterpriseRegistrationUuid },
+        SELECT_REGISTRATION_STATUS,
+        { registrationUuid: enterpriseRegistrationUuid },
         'GET'
       );
 
