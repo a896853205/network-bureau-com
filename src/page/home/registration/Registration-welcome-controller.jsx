@@ -35,7 +35,7 @@ export default props => {
             <Icon type='audit' />
             <span>登记办理新测试</span>
           </h1>
-          <p>
+          <div>
             服务流程：
             <ol>
               <li>
@@ -56,7 +56,7 @@ export default props => {
                 尽量提前或预留检测时间，避免招投标或项目验收对检测报告的需求特别急迫。
               </li>
             </ol>
-          </p>
+          </div>
         </div>
         <div className='bottom-box'>
           <Input
