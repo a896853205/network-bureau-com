@@ -16,60 +16,66 @@ export default props => {
 
   const [headPortraitUrl, setHeadPortraitUrl] = useState('');
   useEffect(() => {
-    console.log('steps', steps, 'registration', registration);
     // 根据registration中的currentStep属性
     // 找steps数组中的step属性对应,然后其对应的对象的managerUuid属性查找管理员信息
     // 写对应的后台路由并调用和显示
-    (async () => {
-      if (registration) {
-        let managerUuid = await steps.find(item => {
-          if (item.step === registration.currentStep) {
-            return item.managerUuid;
-          }
+    if (registration) {
+      (async () => {
+        let { managerUuid } = steps.find(item => {
+          return item.step === registration.currentStep;
         });
 
-        let res = await proxyFetch(GET_MANANGER_INFO, managerUuid, 'GET');
+        let { headPreviewUrl, phone, name } = await proxyFetch(
+          GET_MANANGER_INFO,
+          { managerUuid },
+          'GET'
+        );
 
-        console.log(res.headPortraitUrl);
-        setHeadPortraitUrl(res.headPortraitUrl);
-        setPhone(res.phone);
-
-        setName(res.name);
-      }
-    })();
+        setHeadPortraitUrl(headPreviewUrl);
+        setPhone(phone);
+        setName(name);
+      })();
+    }
   }, [steps, registration]);
 
   return (
-    <div className="process-item-box">
-      <p className="title-box">咨询者信息</p>
-      <ul className="manager-info-bottom-box">
-        <li className="manager-info-head-box">
-          <img src={headPortraitUrl} alt="" />
+    <div className='process-item-box'>
+      <p className='title-box'>咨询者信息</p>
+      <ul className='manager-info-bottom-box'>
+        <li className='manager-info-head-box'>
+          <img
+            src={headPortraitUrl}
+            alt=''
+            style={{
+              width: '100px',
+              height: '100px'
+            }}
+          />
         </li>
-        <li className="manager-into-item-box">
+        <li className='manager-into-item-box'>
           <p>
-            <Icon type="user" className="manager-info-icon" />
+            <Icon type='user' className='manager-info-icon' />
             用户名
           </p>
           <p>{name}</p>
         </li>
-        <li className="manager-into-item-box">
+        <li className='manager-into-item-box'>
           <p>
-            <Icon type="phone" className="manager-info-icon" />
+            <Icon type='phone' className='manager-info-icon' />
             电话
           </p>
           <p>{phone}</p>
         </li>
-        <li className="manager-into-item-box">
+        <li className='manager-into-item-box'>
           <p>
-            <Icon type="tag" className="manager-info-icon" />
+            <Icon type='tag' className='manager-info-icon' />
             办理业务次数
           </p>
           <p>111</p>
         </li>
-        <li className="manager-into-item-box">
+        <li className='manager-into-item-box'>
           <p>
-            <Icon type="star" className="manager-info-icon" />
+            <Icon type='star' className='manager-info-icon' />
             星级
           </p>
           <Rate disabled defaultValue={4} />

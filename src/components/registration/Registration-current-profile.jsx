@@ -16,16 +16,18 @@ export default props => {
   );
 
   useEffect(() => {
-    (async () => {
-      let res = await proxyFetch(
-        SELECT_REGISTRATION_STATUS,
-        { registrationUuid: enterpriseRegistrationUuid },
-        'GET'
-      );
+    if (enterpriseRegistrationUuid) {
+      (async () => {
+        let res = await proxyFetch(
+          SELECT_REGISTRATION_STATUS,
+          { registrationUuid: enterpriseRegistrationUuid },
+          'GET'
+        );
 
-      console.log('当前步骤内容:', res);
-    })();
-  });
+        console.log('当前步骤内容:', res);
+      })();
+    }
+  }, [enterpriseRegistrationUuid]);
 
   return (
     <div className='process-item-box current-profile-box'>
