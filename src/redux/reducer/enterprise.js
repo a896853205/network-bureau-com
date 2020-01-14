@@ -18,18 +18,41 @@ export default handleActions(
         loginLoading: result
       };
     },
-    setCreateEnterpriseRegistionLoading(state, { payload: result }) {
+    setCreateEnterpriseRegistrationLoading(state, { payload: result }) {
       return {
         ...state,
-        createEnterpriseRegistionLoading: result
+        createEnterpriseRegistrationLoading: result
+      };
+    },
+    setEnterpriseRegistrationUuid(state, { payload: result }) {
+      return {
+        ...state,
+        enterpriseRegistrationUuid: result
+      };
+    },
+    setSteps(state, { payload: result }) {
+      return {
+        ...state,
+        steps: result
+      };
+    },
+    setRegistration(state, { payload: result }) {
+      return {
+        ...state,
+        registration: result
       };
     }
   },
   {
+    // 企业基本信息
     loginLoading: false,
-    createEnterpriseRegistionLoading: false,
     uuid: '',
     phone: '',
-    name: ''
+    name: '',
+    // 登记测试
+    createEnterpriseRegistrationLoading: false,
+    enterpriseRegistrationUuid: '',
+    steps: [], // 步骤详细信息
+    registration: null
   }
 );

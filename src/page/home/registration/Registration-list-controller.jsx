@@ -12,7 +12,7 @@ const { Column } = Table;
 
 export default props => {
   const [loading, setLoading] = useState(true),
-    [enterpriseRegistionList, setEnterpriseRegistionList] = useState([]),
+    [enterpriseRegistrationList, setEnterpriseRegistrationList] = useState([]),
     [total, setTotal] = useState(0),
     [pageSize, setPageSize] = useState(1),
     [page, setPage] = useState(1);
@@ -29,9 +29,7 @@ export default props => {
         'GET'
       );
 
-      console.log(enterpriseRegistrationList);
-
-      setEnterpriseRegistionList(enterpriseRegistrationList);
+      setEnterpriseRegistrationList(enterpriseRegistrationList);
       setTotal(total);
       setPageSize(pageSize);
       setLoading(false);
@@ -41,7 +39,7 @@ export default props => {
   return (
     <div className='query-registion-box'>
       <Table
-        dataSource={enterpriseRegistionList}
+        dataSource={enterpriseRegistrationList}
         className='table'
         rowKey={record => record.uuid}
         loading={loading}

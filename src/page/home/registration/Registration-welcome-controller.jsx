@@ -9,7 +9,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import enterpriseAction from '@/redux/action/enterprise';
 
 export default props => {
-  const { loginLoading } = useSelector(state => state.enterpriseStore),
+  const { createEnterpriseRegistrationLoading } = useSelector(
+      state => state.enterpriseStore
+    ),
     [registrationName, setRegistrationName] = useState(''),
     dispatch = useDispatch();
 
@@ -18,7 +20,7 @@ export default props => {
 
     if (registrationName) {
       dispatch(
-        enterpriseAction.asyncCreateEnterpriseRegistion(registrationName)
+        enterpriseAction.asyncCreateEnterpriseRegistration(registrationName)
       );
     } else {
       message.error('请输入登记测试名称');
@@ -70,7 +72,7 @@ export default props => {
             type='primary'
             className='button'
             onClick={handleSubmitCreateRegistration}
-            loading={loginLoading}
+            loading={createEnterpriseRegistrationLoading}
           >
             确认
           </Button>

@@ -13,10 +13,7 @@ import * as APIS from '@/constants/api-constants';
 import { LOCAL_STORAGE } from '@/constants/app-constants';
 
 // 路由
-import {
-  HOME_INDEX,
-  REGISTRATION_PROFILE
-} from '@/constants/route-constants';
+import { HOME_INDEX, REGISTRATION_PROFILE } from '@/constants/route-constants';
 
 const effects = {
   asyncSetEnterprise: function*({ payload }) {
@@ -40,22 +37,63 @@ const effects = {
     // 不成功不跳
   },
 
-  asyncCreateEnterpriseRegistion: function*({ payload }) {
+  asyncCreateEnterpriseRegistration: function*({ payload }) {
     // loading开始
-    yield put(enterpriseAction.setCreateEnterpriseRegistionLoading(true));
-    // 请求创建登记测试
-    const res = yield call(proxyFetch, APIS.CREATE_ENTERPRISE_REGISTRATION, {
-      name: payload
-    });
-    // loading结束
-    yield put(enterpriseAction.setCreateEnterpriseRegistionLoading(false));
+    yield put(enterpriseAction.setCreateEnterpriseRegistrationLoading(true));
 
-    if (res) {
-      // 成功之后将enterpriseUuid存到localStorage中并且跳页
-      localStorage.setItem(`${LOCAL_STORAGE}-enterpriseUuid`, res);
+    // 请求创建登记测试
+    const registrationUuid = yield call(
+      proxyFetch,
+      APIS.CREATE_ENTERPRISE_REGISTRATION,
+      {
+        name: payload
+      }
+    );
+
+    if (registrationUuid) {
+      // 成功之后将registrationUuid存到localStorage中并且跳页
+      localStorage.setItem(
+        `${LOCAL_STORAGE}-registrationUuid`,
+        registrationUuid
+      );
+      yield put(
+        enterpriseAction.setEnterpriseRegistrationUuid(registrationUuid)
+      );
       yield put(navToAction.setNavTo(REGISTRATION_PROFILE.path));
     }
     // 不成功不跳转
+    // loading结束
+    yield put(enterpriseAction.setCreateEnterpriseRegistrationLoading(false));
+  },
+
+  asyncSetRestration: function*({ payload }) {
+    // loading
+    // 查询具体步骤信息
+    // 判断有没有payload undefined就不对跳到首页,有就请求
+    const [steps, registration] = yield call(async () => {
+      return await Promise.all([
+        proxyFetch(
+          APIS.QUERY_ENTERPRISE_REGISTRATION_STEP,
+          {
+            enterpriseRegistrationUuid: payload
+          },
+          'GET'
+        ),
+        proxyFetch(
+          APIS.SELECT_REGISTRATION_BY_REGISTRATION_UUID,
+          {
+            uuid: payload
+          },
+          'GET'
+        )
+      ]);
+    });
+
+    // 将所有步骤和基本信息存入redux
+    yield put(enterpriseAction.setSteps(steps));
+    yield put(enterpriseAction.setRegistration(registration));
+
+    // loading
   }
 };
 
@@ -65,7 +103,11 @@ export default function*() {
     effects.asyncSetEnterprise
   );
   yield takeLatest(
-    enterpriseAction.asyncCreateEnterpriseRegistion,
-    effects.asyncCreateEnterpriseRegistion
+    enterpriseAction.asyncCreateEnterpriseRegistration,
+    effects.asyncCreateEnterpriseRegistration
+  );
+  yield takeLatest(
+    enterpriseAction.asyncSetRestration,
+    effects.asyncSetRestration
   );
 }

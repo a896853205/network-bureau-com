@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Icon, Rate } from 'antd';
 
+// redux
+import { useSelector } from 'react-redux';
+
 export default props => {
+  const { steps, registration } = useSelector(state => state.enterpriseStore);
+
+  useEffect(() => {
+    console.log('steps', steps, 'registration', registration);
+    // 根据registration中的currentStep属性
+    // 找steps数组中的step属性对应,然后其对应的对象的managerUuid属性查找管理员信息
+    // 写对应的后台路由并调用和显示
+  }, [steps, registration]);
+
   return (
     <div className='process-item-box'>
       <p className='title-box'>咨询者信息</p>

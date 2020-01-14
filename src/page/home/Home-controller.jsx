@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 // 路由
-import { useRouteMatch, Link } from 'react-router-dom';
+import { useRouteMatch, Link, useHistory } from 'react-router-dom';
 import * as ROUTES from '@/constants/route-constants';
 
 // controller
@@ -10,6 +11,9 @@ import RegistrationWelcomeController from '@/page/home/registration/Registration
 import RegistrationProcessController from '@/page/home/registration/Registration-process-controller.jsx';
 import RegistrationListController from '@/page/home/registration/Registration-list-controller.jsx';
 
+// localStorage
+import { LOCAL_STORAGE } from '@/constants/app-constants';
+
 // 样式
 import '@/style/home/home.styl';
 import { Layout, Menu, Icon } from 'antd';
@@ -17,6 +21,26 @@ const { Header, Content, Footer, Sider } = Layout,
   { SubMenu } = Menu;
 
 export default props => {
+  const token = window.localStorage.getItem(`${LOCAL_STORAGE}-token`),
+    { uuid } = useSelector(state => state.enterpriseStore),
+    history = useHistory(),
+    dispatch = useDispatch();
+
+  // 如果没有token就跳到首页
+  useEffect(() => {
+    if (!token) {
+      history.push(ROUTES.INDEX.path);
+    }
+  }, [token, history]);
+
+  // 刷新页面会导致uuid消失,需要用token再请求一遍
+  useEffect(() => {
+    if (!uuid && token) {
+      // 由token获取enterprise信息
+      // dispatch(enterpriseAction.());
+    }
+  }, [uuid, token, dispatch]);
+
   const homeIndex = useRouteMatch({
       path: ROUTES.HOME_INDEX.path,
       exact: true

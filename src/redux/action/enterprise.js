@@ -6,6 +6,14 @@ export default {
   setEnterprise: createAction('setEnterprise'),
   setLoginLoading: createAction('setLoginLoading'),
   // 企业创建登记测试action
-  asyncCreateEnterpriseRegistion: createAction('asyncCreateEnterpriseRegistion'),
-  setCreateEnterpriseRegistionLoading: createAction('setCreateEnterpriseRegistionLoading')
+  asyncCreateEnterpriseRegistration: createAction(
+    'asyncCreateEnterpriseRegistration'
+  ),
+  setCreateEnterpriseRegistrationLoading: createAction(
+    'setCreateEnterpriseRegistrationLoading'
+  ),
+  setEnterpriseRegistrationUuid: createAction('setEnterpriseRegistrationUuid'),
+  setSteps: createAction('setSteps'),
+  setRegistration: createAction('setRegistration'),
+  asyncSetRestration: createAction('asyncSetRestration')
 };

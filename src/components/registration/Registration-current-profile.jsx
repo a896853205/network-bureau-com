@@ -1,23 +1,29 @@
 import React, { useEffect } from 'react';
 
+// 样式
 import { Icon } from 'antd';
+
+// 路由
 import proxyFetch from '@/util/request';
 import { SELECT_REGISTRATION_STATUS_BY_ENTERPRISE_UUID } from '@/constants/api-constants';
 
+// redux
+import { useSelector } from 'react-redux';
+
 export default props => {
+  const { enterpriseRegistrationUuid } = useSelector(
+    state => state.enterpriseStore
+  );
+
   useEffect(() => {
     (async () => {
-      let values = {
-        uuid: 1
-      };
-
       let res = await proxyFetch(
         SELECT_REGISTRATION_STATUS_BY_ENTERPRISE_UUID,
-        values,
+        { uuid: enterpriseRegistrationUuid },
         'GET'
       );
 
-      console.log(res);
+      console.log('当前步骤内容:', res);
     })();
   });
 

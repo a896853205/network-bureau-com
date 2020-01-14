@@ -1,16 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '@/style/home/registration/process.styl';
 
 // 组件
 import RegistrationPersonProfile from '@/components/registration/Registration-person-profile.jsx';
 
 // 路由
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import * as ROUTES from '@/constants/route-constants';
 import RegistrationProfile from '@/page/home/registration/process/Registration-profile-controller.jsx';
 import RegistrationDetail from '@/page/home/registration/process/Registration-detail-controller.jsx';
 
+// localStorage
+import { LOCAL_STORAGE } from '@/constants/app-constants';
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
+
 export default props => {
+  const localStorageRegistrationUuid = window.localStorage.getItem(
+      `${LOCAL_STORAGE}-registrationUuid`
+    ),
+    { enterpriseRegistrationUuid } = useSelector(
+      state => state.enterpriseStore
+    ),
+    dispatch = useDispatch(),
+    history = useHistory();
+
+  // 如果没有localStorageRegistrationUuid就跳到新增页
+  useEffect(() => {
+    if (!localStorageRegistrationUuid) {
+      history.push(ROUTES.HOME_REGISTRATION_WELCOME.path);
+    }
+  }, [localStorageRegistrationUuid, history]);
+
+  useEffect(() => {
+    dispatch(
+      enterpriseAction.asyncSetRestration(
+        enterpriseRegistrationUuid || localStorageRegistrationUuid
+      )
+    );
+  }, [dispatch, enterpriseRegistrationUuid, localStorageRegistrationUuid]);
+
   const profile = useRouteMatch({
       path: ROUTES.REGISTRATION_PROFILE.path,
       excat: true
@@ -21,8 +52,6 @@ export default props => {
     });
 
   let content = null;
-
-  console.log(profile);
 
   if (profile) {
     // 概况组件
