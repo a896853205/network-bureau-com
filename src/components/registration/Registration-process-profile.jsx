@@ -5,11 +5,16 @@ import { QUERY_SYS_REGISTRATION_STEP } from '@/constants/api-constants';
 import proxyFetch from '@/util/request';
 
 // 样式
-import { Timeline, Skeleton } from 'antd';
+import { Timeline, Skeleton, Tag } from 'antd';
+
+// redux
+import { useSelector } from 'react-redux';
 
 export default props => {
-  const [sysRegistrationStepList, setSysRegistrationStepList] = useState([]),
-    [loading, setLoading] = useState(true);
+  const { steps } = useSelector(state => state.enterpriseStore),
+    [sysRegistrationStepList, setSysRegistrationStepList] = useState([]),
+    [loading, setLoading] = useState(true),
+    [stepStatus, setStepStatus] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -25,6 +30,36 @@ export default props => {
     })();
   }, []);
 
+  useEffect(() => {
+    setStepStatus(
+      steps.map(step => {
+        let color = '';
+
+        switch (step.status) {
+          case 1:
+            color = 'gray';
+            break;
+          case 2:
+            color = 'blue';
+            break;
+          case 3:
+            color = 'green';
+            break;
+          case 4:
+            color = 'red';
+            break;
+          default:
+            color = 'blue';
+        }
+
+        return {
+          ...step,
+          color
+        };
+      })
+    );
+  }, [steps]);
+
   return (
     <div className='process-item-box'>
       <p className='title-box'>测试进度</p>
@@ -33,7 +68,15 @@ export default props => {
           <Timeline>
             {sysRegistrationStepList
               ? sysRegistrationStepList.map((item, i) => (
-                  <Timeline.Item key={i}>{item.name}</Timeline.Item>
+                  <Timeline.Item
+                    key={i}
+                    color={stepStatus[i] ? stepStatus[i].color : 'gray'}
+                  >
+                    <span style={{ marginRight: '5px' }}>{item.name}</span>
+                    <Tag color={stepStatus[i] ? stepStatus[i].color : 'gray'}>
+                      {stepStatus[i] ? stepStatus[i].statusText : ''}
+                    </Tag>
+                  </Timeline.Item>
                 ))
               : null}
           </Timeline>

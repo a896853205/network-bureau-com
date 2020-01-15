@@ -8,13 +8,11 @@ import { useSelector } from 'react-redux';
 import { GET_MANANGER_INFO } from '@/constants/api-constants';
 
 export default props => {
-  const { steps, registration } = useSelector(state => state.enterpriseStore);
-
-  const [phone, setPhone] = useState('');
-
-  const [name, setName] = useState('');
-
-  const [headPortraitUrl, setHeadPortraitUrl] = useState('');
+  const { steps, registration } = useSelector(state => state.enterpriseStore),
+    [phone, setPhone] = useState(''),
+    [name, setName] = useState(''),
+    [headPortraitUrl, setHeadPortraitUrl] = useState('');
+    
   useEffect(() => {
     // 根据registration中的currentStep属性
     // 找steps数组中的step属性对应,然后其对应的对象的managerUuid属性查找管理员信息
