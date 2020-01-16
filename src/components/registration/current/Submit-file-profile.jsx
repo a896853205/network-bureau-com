@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // 样式
 import { Icon } from 'antd';
@@ -12,8 +12,36 @@ import { useSelector } from 'react-redux';
 
 export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
-    state => state.enterpriseStore
-  );
+      state => state.enterpriseStore
+    ),
+    [
+      enterpriseRegistrationContractStatus,
+      setEnterpriseRegistrationContractStatus
+    ] = useState([]),
+    [
+      enterpriseRegistrationApplyStatus,
+      setEnterpriseRegistrationApplyStatus
+    ] = useState([]),
+    [
+      enterpriseRegistrationCopyrightStatus,
+      setEnterpriseRegistrationCopyrightStatus
+    ] = useState([]),
+    [
+      enterpriseRegistrationDocumentStatus,
+      setEnterpriseRegistrationDocumentStatus
+    ] = useState({}),
+    [
+      enterpriseRegistrationProductDescriptionStatus,
+      setEnterpriseRegistrationProductDescriptionStatus
+    ] = useState([]),
+    [
+      enterpriseRegistrationProductStatus,
+      setEnterpriseRegistrationProductStatus
+    ] = useState([]),
+    [
+      enterpriseRegistrationSpecimenStatus,
+      setEnterpriseRegistrationSpecimenStatus
+    ] = useState([]);
 
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
@@ -23,8 +51,46 @@ export default props => {
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
-
         console.log('当前步骤内容:', res);
+        const enterpriseRegistrationApplyStatus =
+          res.enterpriseRegistrationApplyStatus.status;
+        setEnterpriseRegistrationApplyStatus(enterpriseRegistrationApplyStatus);
+
+        const enterpriseRegistrationContractStatus =
+          res.enterpriseRegistrationContractStatus.status;
+        setEnterpriseRegistrationContractStatus(
+          enterpriseRegistrationContractStatus
+        );
+
+        const enterpriseRegistrationCopyrightStatus =
+          res.enterpriseRegistrationCopyrightStatus.status;
+        setEnterpriseRegistrationCopyrightStatus(
+          enterpriseRegistrationCopyrightStatus
+        );
+
+        const enterpriseRegistrationDocumentStatus =
+          res.enterpriseRegistrationDocumentStatus.status;
+        setEnterpriseRegistrationDocumentStatus(
+          enterpriseRegistrationDocumentStatus
+        );
+
+        const enterpriseRegistrationProductDescriptionStatus =
+          res.enterpriseRegistrationProductDescriptionStatus.status;
+        setEnterpriseRegistrationProductDescriptionStatus(
+          enterpriseRegistrationProductDescriptionStatus
+        );
+
+        const enterpriseRegistrationProductStatus =
+          res.enterpriseRegistrationProductStatus.status;
+        setEnterpriseRegistrationProductStatus(
+          enterpriseRegistrationProductStatus
+        );
+
+        const enterpriseRegistrationSpecimenStatus =
+          res.enterpriseRegistrationSpecimenStatus.status;
+        setEnterpriseRegistrationSpecimenStatus(
+          enterpriseRegistrationSpecimenStatus
+        );
       })();
     }
   }, [enterpriseRegistrationUuid]);
@@ -38,47 +104,117 @@ export default props => {
         <li>
           <p className='current-profile-inner-left-box'>评测合同</p>
 
-          <span className='current-right-box current-upload-button'>
-            <Icon type='upload' /> 上传文件
-          </span>
+          {enterpriseRegistrationContractStatus ? (
+            <div className='current-right-box'>
+              <Icon
+                type='check-circle'
+                theme='twoTone'
+                twoToneColor='#52c41a'
+              />
+            </div>
+          ) : (
+            <span className='current-right-box current-upload-button'>
+              <Icon type='edit' /> 填写内容
+            </span>
+          )}
         </li>
         <li>
           <p className='current-profile-inner-left-box'>软件著作权证书</p>
 
-          <div className='current-right-box'>
-            <Icon type='check-circle' theme='twoTone' twoToneColor='#52c41a' />
-          </div>
+          {enterpriseRegistrationCopyrightStatus ? (
+            <div className='current-right-box'>
+              <Icon
+                type='check-circle'
+                theme='twoTone'
+                twoToneColor='#52c41a'
+              />
+            </div>
+          ) : (
+            <span className='current-right-box current-upload-button'>
+              <Icon type='upload' /> 上传文件
+            </span>
+          )}
         </li>
         <li>
           <p className='current-profile-inner-left-box'>样品登记表</p>
 
-          <span className='current-right-box current-upload-button'>
-            <Icon type='edit' /> 填写内容
-          </span>
+          {enterpriseRegistrationSpecimenStatus ? (
+            <div className='current-right-box'>
+              <Icon
+                type='check-circle'
+                theme='twoTone'
+                twoToneColor='#52c41a'
+              />
+            </div>
+          ) : (
+            <span className='current-right-box current-upload-button'>
+              <Icon type='edit' /> 填写内容
+            </span>
+          )}
         </li>
         <li>
           <p className='current-profile-inner-left-box'>产品说明</p>
-          <div className='current-right-box'>
-            <Icon type='check-circle' theme='twoTone' twoToneColor='#52c41a' />
-          </div>
+          {enterpriseRegistrationProductDescriptionStatus ? (
+            <div className='current-right-box'>
+              <Icon
+                type='check-circle'
+                theme='twoTone'
+                twoToneColor='#52c41a'
+              />
+            </div>
+          ) : (
+            <span className='current-right-box current-upload-button'>
+              <Icon type='upload' /> 上传文件
+            </span>
+          )}
         </li>
         <li>
           <p className='current-profile-inner-left-box'>用户文档集</p>
-          <div className='current-right-box'>
-            <Icon type='check-circle' theme='twoTone' twoToneColor='#52c41a' />
-          </div>
+          {enterpriseRegistrationDocumentStatus ? (
+            <div className='current-right-box'>
+              <Icon
+                type='check-circle'
+                theme='twoTone'
+                twoToneColor='#52c41a'
+              />
+            </div>
+          ) : (
+            <span className='current-right-box current-upload-button'>
+              <Icon type='upload' /> 上传文件
+            </span>
+          )}
         </li>
         <li>
           <p className='current-profile-inner-left-box'>产品介质</p>
-          <div className='current-right-box'>
-            <Icon type='check-circle' theme='twoTone' twoToneColor='#52c41a' />
-          </div>
+          {enterpriseRegistrationProductStatus ? (
+            <div className='current-right-box'>
+              <Icon
+                type='check-circle'
+                theme='twoTone'
+                twoToneColor='#52c41a'
+              />
+            </div>
+          ) : (
+            <span className='current-right-box current-upload-button'>
+              <Icon type='upload' /> 上传文件
+            </span>
+          )}
         </li>
         <li>
           <p className='current-profile-inner-left-box'>现场测试申请表</p>
-          <div className='current-right-box'>
-            <Icon type='check-circle' theme='twoTone' twoToneColor='#52c41a' />
-          </div>
+          {enterpriseRegistrationApplyStatus ? (
+            <div className='current-right-box'>
+              <Icon
+                type='check-circle'
+                theme='twoTone'
+                twoToneColor='#52c41a'
+              />
+            </div>
+          ) : (
+            <span className='current-right-box current-upload-button'>
+              <Icon type='edit' /> 填写内容
+            </span>
+          )}
         </li>
       </ol>
     </div>
