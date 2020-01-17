@@ -11,7 +11,8 @@ export default props => {
   const { steps, registration } = useSelector(state => state.enterpriseStore),
     [phone, setPhone] = useState(''),
     [name, setName] = useState(''),
-    [headPortraitUrl, setHeadPortraitUrl] = useState('');
+    [headPortraitUrl, setHeadPortraitUrl] = useState(''),
+    [star, setStar] = useState(5);
     
   useEffect(() => {
     // 根据registration中的currentStep属性
@@ -23,7 +24,7 @@ export default props => {
           return item.step === registration.currentStep;
         });
 
-        let { headPreviewUrl, phone, name } = await proxyFetch(
+        let { headPreviewUrl, phone, name, star } = await proxyFetch(
           GET_MANANGER_INFO,
           { managerUuid },
           'GET'
@@ -32,6 +33,7 @@ export default props => {
         setHeadPortraitUrl(headPreviewUrl);
         setPhone(phone);
         setName(name);
+        setStar(star);
       })();
     }
   }, [steps, registration]);
@@ -64,19 +66,19 @@ export default props => {
           </p>
           <p>{phone}</p>
         </li>
-        <li className='manager-into-item-box'>
+        {/* <li className='manager-into-item-box'>
           <p>
             <Icon type='tag' className='manager-info-icon' />
             办理业务次数
           </p>
           <p>111</p>
-        </li>
+        </li> */}
         <li className='manager-into-item-box'>
           <p>
             <Icon type='star' className='manager-info-icon' />
             星级
           </p>
-          <Rate disabled defaultValue={4} />
+          <Rate disabled defaultValue={star} />
         </li>
       </ul>
     </div>
