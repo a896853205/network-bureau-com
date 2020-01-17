@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // 样式
-import { Icon } from 'antd';
+import { Icon, Tag } from 'antd';
 
 // 路由
 import proxyFetch from '@/util/request';
@@ -14,6 +14,20 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { REGISTRATION_DETAIL } from '@/constants/route-constants';
 
+const getTagColor = status => {
+  switch (status) {
+    case 0:
+      return 'gray';
+    case 1:
+      return 'blue';
+    case 2:
+      return 'blue';
+    case 3:
+      return 'green';
+    default:
+      return 'gray';
+  }
+};
 export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
       state => state.enterpriseStore
@@ -57,26 +71,25 @@ export default props => {
         );
 
         setEnterpriseRegistrationApplyStatus(
-          res.enterpriseRegistrationApplyStatus.status
+          res.enterpriseRegistrationApplyStatus
         );
         setEnterpriseRegistrationContractStatus(
-          res.enterpriseRegistrationContractStatus.status
+          res.enterpriseRegistrationContractStatus
         );
         setEnterpriseRegistrationCopyrightStatus(
-          res.enterpriseRegistrationCopyrightStatus.status
+          res.enterpriseRegistrationCopyrightStatus
         );
-
         setEnterpriseRegistrationDocumentStatus(
-          res.enterpriseRegistrationDocumentStatus.status
+          res.enterpriseRegistrationDocumentStatus
         );
         setEnterpriseRegistrationProductDescriptionStatus(
-          res.enterpriseRegistrationProductDescriptionStatus.status
+          res.enterpriseRegistrationProductDescriptionStatus
         );
         setEnterpriseRegistrationProductStatus(
-          res.enterpriseRegistrationProductStatus.status
+          res.enterpriseRegistrationProductStatus
         );
         setEnterpriseRegistrationSpecimenStatus(
-          res.enterpriseRegistrationSpecimenStatus.status
+          res.enterpriseRegistrationSpecimenStatus
         );
       })();
     }
@@ -88,133 +101,199 @@ export default props => {
         <span>当前步骤</span>-<span>提交上传7种材料</span>
       </p>
       <ol className='process-profile-ol'>
-        <li>
-          <p className='current-profile-inner-left-box'>评测合同</p>
-          {enterpriseRegistrationContractStatus ? (
-            <div className='current-right-box'>
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor='#52c41a'
-              />
-            </div>
-          ) : (
-            <Link to={`${REGISTRATION_DETAIL.path}/contract`}>
-              <span className='current-right-box current-upload-button'>
-                <Icon type='edit' /> 填写内容
-              </span>
-            </Link>
-          )}
-        </li>
-        <li>
-          <p className='current-profile-inner-left-box'>软件著作权证书</p>
-
-          {enterpriseRegistrationCopyrightStatus ? (
-            <div className='current-right-box'>
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor='#52c41a'
-              />
-            </div>
-          ) : (
-            <Link to={`${REGISTRATION_DETAIL.path}/copyright`}>
-              <span className='current-right-box current-upload-button'>
-                <Icon type='upload' /> 上传文件
-              </span>
-            </Link>
-          )}
-        </li>
-        <li>
-          <p className='current-profile-inner-left-box'>样品登记表</p>
-          {enterpriseRegistrationSpecimenStatus ? (
-            <div className='current-right-box'>
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor='#52c41a'
-              />
-            </div>
-          ) : (
-            <Link to={`${REGISTRATION_DETAIL.path}/specimen`}>
-              <span className='current-right-box current-upload-button'>
-                <Icon type='edit' /> 填写内容
-              </span>
-            </Link>
-          )}
-        </li>
-        <li>
-          <p className='current-profile-inner-left-box'>产品说明</p>
-          {enterpriseRegistrationProductDescriptionStatus ? (
-            <div className='current-right-box'>
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor='#52c41a'
-              />
-            </div>
-          ) : (
-            <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
-              <span className='current-right-box current-upload-button'>
-                <Icon type='upload' /> 上传文件
-              </span>
-            </Link>
-          )}
-        </li>
-        <li>
-          <p className='current-profile-inner-left-box'>用户文档集</p>
-          {enterpriseRegistrationDocumentStatus ? (
-            <div className='current-right-box'>
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor='#52c41a'
-              />
-            </div>
-          ) : (
-            <Link to={`${REGISTRATION_DETAIL.path}/document`}>
-              <span className='current-right-box current-upload-button'>
-                <Icon type='upload' /> 上传文件
-              </span>
-            </Link>
-          )}
-        </li>
-        <li>
-          <p className='current-profile-inner-left-box'>产品介质</p>
-          {enterpriseRegistrationProductStatus ? (
-            <div className='current-right-box'>
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor='#52c41a'
-              />
-            </div>
-          ) : (
-            <Link to={`${REGISTRATION_DETAIL.path}/product`}>
-              <span className='current-right-box current-upload-button'>
-                <Icon type='upload' /> 上传文件
-              </span>
-            </Link>
-          )}
-        </li>
-        <li>
-          <p className='current-profile-inner-left-box'>现场测试申请表</p>
-          {enterpriseRegistrationApplyStatus ? (
-            <div className='current-right-box'>
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor='#52c41a'
-              />
-            </div>
-          ) : (
-            <Link to={`${REGISTRATION_DETAIL.path}/apply`}>
-              <span className='current-right-box current-upload-button'>
-                <Icon type='edit' /> 填写内容
-              </span>
-            </Link>
-          )}
-        </li>
+        {enterpriseRegistrationContractStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>评测合同</span>
+              <Tag
+                color={getTagColor(enterpriseRegistrationContractStatus.status)}
+              >
+                {enterpriseRegistrationContractStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationContractStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/contract`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='edit' /> 填写内容
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
+        {enterpriseRegistrationCopyrightStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>软件著作权证书</span>
+              <Tag
+                color={getTagColor(
+                  enterpriseRegistrationCopyrightStatus.status
+                )}
+              >
+                {enterpriseRegistrationCopyrightStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationCopyrightStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/copyright`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='upload' /> 上传文件
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
+        {enterpriseRegistrationSpecimenStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>样品登记表</span>
+              <Tag
+                color={getTagColor(enterpriseRegistrationSpecimenStatus.status)}
+              >
+                {enterpriseRegistrationSpecimenStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationSpecimenStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/specimen`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='edit' /> 填写内容
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
+        {enterpriseRegistrationProductDescriptionStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>产品说明</span>
+              <Tag
+                color={getTagColor(
+                  enterpriseRegistrationProductDescriptionStatus.status
+                )}
+              >
+                {enterpriseRegistrationProductDescriptionStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationProductDescriptionStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='upload' /> 上传文件
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
+        {enterpriseRegistrationDocumentStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>用户文档集</span>
+              <Tag
+                color={getTagColor(enterpriseRegistrationDocumentStatus.status)}
+              >
+                {enterpriseRegistrationDocumentStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationDocumentStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/document`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='upload' /> 上传文件
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
+        {enterpriseRegistrationProductStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>产品介质</span>
+              <Tag
+                color={getTagColor(enterpriseRegistrationProductStatus.status)}
+              >
+                {enterpriseRegistrationProductStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationProductStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/product`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='upload' /> 上传文件
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
+        {enterpriseRegistrationApplyStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>现场测试申请表</span>
+              <Tag
+                color={getTagColor(enterpriseRegistrationApplyStatus.status)}
+              >
+                {enterpriseRegistrationApplyStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationApplyStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/apply`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='edit' /> 填写内容
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
       </ol>
     </div>
   );
