@@ -68,8 +68,9 @@ const effects = {
 
   asyncSetRestration: function*({ payload }) {
     // loading
+    yield put(enterpriseAction.setRegistrationLoading(true));
+
     // 查询具体步骤信息
-    // 判断有没有payload undefined就不对跳到首页,有就请求
     const [steps, registration] = yield call(async () => {
       return await Promise.all([
         proxyFetch(
@@ -94,6 +95,7 @@ const effects = {
     yield put(enterpriseAction.setRegistration(registration));
 
     // loading
+    yield put(enterpriseAction.setRegistrationLoading(false));
   }
 };
 

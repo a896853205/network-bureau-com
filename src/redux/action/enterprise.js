@@ -15,5 +15,6 @@ export default {
   setEnterpriseRegistrationUuid: createAction('setEnterpriseRegistrationUuid'),
   setSteps: createAction('setSteps'),
   setRegistration: createAction('setRegistration'),
-  asyncSetRestration: createAction('asyncSetRestration')
+  asyncSetRestration: createAction('asyncSetRestration'),
+  setRegistrationLoading: createAction('setRegistrationLoading')
 };

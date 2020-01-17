@@ -41,6 +41,12 @@ export default handleActions(
         ...state,
         registration: result
       };
+    },
+    setRegistrationLoading(state, { payload: result }) {
+      return {
+        ...state,
+        registrationLoading: result
+      };
     }
   },
   {
@@ -53,6 +59,7 @@ export default handleActions(
     createEnterpriseRegistrationLoading: false,
     enterpriseRegistrationUuid: '',
     steps: [], // 步骤详细信息
-    registration: null
+    registration: null,
+    registrationLoading: true // 查询登记测试的loading
   }
 );

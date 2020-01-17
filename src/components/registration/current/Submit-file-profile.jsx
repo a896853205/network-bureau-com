@@ -10,6 +10,10 @@ import { SELECT_REGISTRATION_STATUS } from '@/constants/api-constants';
 // redux
 import { useSelector } from 'react-redux';
 
+// 路由
+import { Link } from 'react-router-dom';
+import { REGISTRATION_DETAIL } from '@/constants/route-constants';
+
 export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
       state => state.enterpriseStore
@@ -17,31 +21,31 @@ export default props => {
     [
       enterpriseRegistrationContractStatus,
       setEnterpriseRegistrationContractStatus
-    ] = useState([]),
+    ] = useState(null),
     [
       enterpriseRegistrationApplyStatus,
       setEnterpriseRegistrationApplyStatus
-    ] = useState([]),
+    ] = useState(null),
     [
       enterpriseRegistrationCopyrightStatus,
       setEnterpriseRegistrationCopyrightStatus
-    ] = useState([]),
+    ] = useState(null),
     [
       enterpriseRegistrationDocumentStatus,
       setEnterpriseRegistrationDocumentStatus
-    ] = useState({}),
+    ] = useState(null),
     [
       enterpriseRegistrationProductDescriptionStatus,
       setEnterpriseRegistrationProductDescriptionStatus
-    ] = useState([]),
+    ] = useState(null),
     [
       enterpriseRegistrationProductStatus,
       setEnterpriseRegistrationProductStatus
-    ] = useState([]),
+    ] = useState(null),
     [
       enterpriseRegistrationSpecimenStatus,
       setEnterpriseRegistrationSpecimenStatus
-    ] = useState([]);
+    ] = useState(null);
 
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
@@ -51,45 +55,28 @@ export default props => {
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
-        console.log('当前步骤内容:', res);
-        const enterpriseRegistrationApplyStatus =
-          res.enterpriseRegistrationApplyStatus.status;
-        setEnterpriseRegistrationApplyStatus(enterpriseRegistrationApplyStatus);
 
-        const enterpriseRegistrationContractStatus =
-          res.enterpriseRegistrationContractStatus.status;
+        setEnterpriseRegistrationApplyStatus(
+          res.enterpriseRegistrationApplyStatus.status
+        );
         setEnterpriseRegistrationContractStatus(
-          enterpriseRegistrationContractStatus
+          res.enterpriseRegistrationContractStatus.status
         );
-
-        const enterpriseRegistrationCopyrightStatus =
-          res.enterpriseRegistrationCopyrightStatus.status;
         setEnterpriseRegistrationCopyrightStatus(
-          enterpriseRegistrationCopyrightStatus
+          res.enterpriseRegistrationCopyrightStatus.status
         );
 
-        const enterpriseRegistrationDocumentStatus =
-          res.enterpriseRegistrationDocumentStatus.status;
         setEnterpriseRegistrationDocumentStatus(
-          enterpriseRegistrationDocumentStatus
+          res.enterpriseRegistrationDocumentStatus.status
         );
-
-        const enterpriseRegistrationProductDescriptionStatus =
-          res.enterpriseRegistrationProductDescriptionStatus.status;
         setEnterpriseRegistrationProductDescriptionStatus(
-          enterpriseRegistrationProductDescriptionStatus
+          res.enterpriseRegistrationProductDescriptionStatus.status
         );
-
-        const enterpriseRegistrationProductStatus =
-          res.enterpriseRegistrationProductStatus.status;
         setEnterpriseRegistrationProductStatus(
-          enterpriseRegistrationProductStatus
+          res.enterpriseRegistrationProductStatus.status
         );
-
-        const enterpriseRegistrationSpecimenStatus =
-          res.enterpriseRegistrationSpecimenStatus.status;
         setEnterpriseRegistrationSpecimenStatus(
-          enterpriseRegistrationSpecimenStatus
+          res.enterpriseRegistrationSpecimenStatus.status
         );
       })();
     }
@@ -103,7 +90,6 @@ export default props => {
       <ol className='process-profile-ol'>
         <li>
           <p className='current-profile-inner-left-box'>评测合同</p>
-
           {enterpriseRegistrationContractStatus ? (
             <div className='current-right-box'>
               <Icon
@@ -113,9 +99,11 @@ export default props => {
               />
             </div>
           ) : (
-            <span className='current-right-box current-upload-button'>
-              <Icon type='edit' /> 填写内容
-            </span>
+            <Link to={`${REGISTRATION_DETAIL.path}/contract`}>
+              <span className='current-right-box current-upload-button'>
+                <Icon type='edit' /> 填写内容
+              </span>
+            </Link>
           )}
         </li>
         <li>
@@ -130,14 +118,15 @@ export default props => {
               />
             </div>
           ) : (
-            <span className='current-right-box current-upload-button'>
-              <Icon type='upload' /> 上传文件
-            </span>
+            <Link to={`${REGISTRATION_DETAIL.path}/copyright`}>
+              <span className='current-right-box current-upload-button'>
+                <Icon type='upload' /> 上传文件
+              </span>
+            </Link>
           )}
         </li>
         <li>
           <p className='current-profile-inner-left-box'>样品登记表</p>
-
           {enterpriseRegistrationSpecimenStatus ? (
             <div className='current-right-box'>
               <Icon
@@ -147,9 +136,11 @@ export default props => {
               />
             </div>
           ) : (
-            <span className='current-right-box current-upload-button'>
-              <Icon type='edit' /> 填写内容
-            </span>
+            <Link to={`${REGISTRATION_DETAIL.path}/specimen`}>
+              <span className='current-right-box current-upload-button'>
+                <Icon type='edit' /> 填写内容
+              </span>
+            </Link>
           )}
         </li>
         <li>
@@ -163,9 +154,11 @@ export default props => {
               />
             </div>
           ) : (
-            <span className='current-right-box current-upload-button'>
-              <Icon type='upload' /> 上传文件
-            </span>
+            <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
+              <span className='current-right-box current-upload-button'>
+                <Icon type='upload' /> 上传文件
+              </span>
+            </Link>
           )}
         </li>
         <li>
@@ -179,9 +172,11 @@ export default props => {
               />
             </div>
           ) : (
-            <span className='current-right-box current-upload-button'>
-              <Icon type='upload' /> 上传文件
-            </span>
+            <Link to={`${REGISTRATION_DETAIL.path}/document`}>
+              <span className='current-right-box current-upload-button'>
+                <Icon type='upload' /> 上传文件
+              </span>
+            </Link>
           )}
         </li>
         <li>
@@ -195,9 +190,11 @@ export default props => {
               />
             </div>
           ) : (
-            <span className='current-right-box current-upload-button'>
-              <Icon type='upload' /> 上传文件
-            </span>
+            <Link to={`${REGISTRATION_DETAIL.path}/product`}>
+              <span className='current-right-box current-upload-button'>
+                <Icon type='upload' /> 上传文件
+              </span>
+            </Link>
           )}
         </li>
         <li>
@@ -211,9 +208,11 @@ export default props => {
               />
             </div>
           ) : (
-            <span className='current-right-box current-upload-button'>
-              <Icon type='edit' /> 填写内容
-            </span>
+            <Link to={`${REGISTRATION_DETAIL.path}/apply`}>
+              <span className='current-right-box current-upload-button'>
+                <Icon type='edit' /> 填写内容
+              </span>
+            </Link>
           )}
         </li>
       </ol>

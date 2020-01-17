@@ -17,11 +17,13 @@ import { LOCAL_STORAGE } from '@/constants/app-constants';
 import { useSelector, useDispatch } from 'react-redux';
 import enterpriseAction from '@/redux/action/enterprise';
 
+import { Skeleton } from 'antd';
+
 export default props => {
   const localStorageRegistrationUuid = window.localStorage.getItem(
       `${LOCAL_STORAGE}-registrationUuid`
     ),
-    { enterpriseRegistrationUuid } = useSelector(
+    { enterpriseRegistrationUuid, registrationLoading } = useSelector(
       state => state.enterpriseStore
     ),
     dispatch = useDispatch(),
@@ -35,11 +37,19 @@ export default props => {
   }, [localStorageRegistrationUuid, history]);
 
   useEffect(() => {
-    dispatch(
-      enterpriseAction.asyncSetRestration(
-        enterpriseRegistrationUuid || localStorageRegistrationUuid
-      )
-    );
+    if (localStorageRegistrationUuid && !enterpriseRegistrationUuid) {
+      dispatch(
+        enterpriseAction.setEnterpriseRegistrationUuid(
+          localStorageRegistrationUuid
+        )
+      );
+    }
+  }, [localStorageRegistrationUuid, enterpriseRegistrationUuid, dispatch]);
+
+  useEffect(() => {
+    if (enterpriseRegistrationUuid) {
+      dispatch(enterpriseAction.asyncSetRestration(enterpriseRegistrationUuid));
+    }
   }, [dispatch, enterpriseRegistrationUuid, localStorageRegistrationUuid]);
 
   const profile = useRouteMatch({
@@ -47,8 +57,7 @@ export default props => {
       excat: true
     }),
     detail = useRouteMatch({
-      path: ROUTES.REGISTRATION_DETAIL.path,
-      exact: true
+      path: `${ROUTES.REGISTRATION_DETAIL.path}/:type`
     });
 
   let content = null;
@@ -58,14 +67,14 @@ export default props => {
     content = <RegistrationProfile />;
   } else if (detail) {
     // 详细填写组件
-    content = <RegistrationDetail />;
+    content = <RegistrationDetail type={detail.params.type} />;
   }
 
   return (
     <div className='registion-process-box'>
       {/* 这里用路由分为两个,一个是时间轴和概况大组件(分为步骤) */}
       {/* 另一个路由是详细填写阶段,填写完成之后都会将路由跳回到上面的路由 */}
-      {content}
+      <Skeleton loading={registrationLoading}>{content}</Skeleton>
       {/* 咨询者信息 */}
       {/* 将managerUuid传入这个组件中查询这个人的详细信息 */}
       <RegistrationPersonProfile />
