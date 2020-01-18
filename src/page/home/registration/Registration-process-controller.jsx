@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import '@/style/home/registration/process.styl';
+import '@/style/home/registration/item.styl';
 
 // 组件
 import RegistrationPersonProfile from '@/components/registration/Registration-person-profile.jsx';

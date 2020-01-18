@@ -96,7 +96,7 @@ export default props => {
   }, [enterpriseRegistrationUuid]);
 
   return (
-    <div className='process-item-box current-profile-box'>
+    <div className='item-box process-item-box current-profile-box'>
       <p className='title-box'>
         <span>当前步骤</span>-<span>提交上传7种材料</span>
       </p>

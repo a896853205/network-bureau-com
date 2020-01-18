@@ -61,7 +61,7 @@ export default props => {
   }, [steps]);
 
   return (
-    <div className='process-item-box'>
+    <div className='item-box process-item-box'>
       <p className='title-box'>测试进度</p>
       <div className='process-profile-bottom-box'>
         <Skeleton loading={loading}>

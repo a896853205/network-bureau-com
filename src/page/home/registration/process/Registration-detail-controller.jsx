@@ -39,5 +39,8 @@ export default ({ type }) => {
   }
   // 接收参数,显示出对应填写的板块
   // 在components需要写7个组件
-  return <>详细填写页{content}</>;
+  return <div className='item-box detail-item-box'>
+    <p className='title-box'>详情填写</p>
+    {content}
+    </div>;
 };

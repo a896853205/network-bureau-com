@@ -39,7 +39,7 @@ export default props => {
   }, [steps, registration]);
 
   return (
-    <div className='process-item-box'>
+    <div className='item-box process-item-box'>
       <p className='title-box'>咨询者信息</p>
       <ul className='manager-info-bottom-box'>
         <li className='manager-info-head-box'>
