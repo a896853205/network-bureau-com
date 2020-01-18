@@ -59,6 +59,10 @@ export default props => {
     [
       enterpriseRegistrationSpecimenStatus,
       setEnterpriseRegistrationSpecimenStatus
+    ] = useState(null),
+    [
+      enterpriseRegistrationBasicStatus,
+      setEnterpriseRegistrationBasicStatus
     ] = useState(null);
 
   useEffect(() => {
@@ -91,6 +95,9 @@ export default props => {
         setEnterpriseRegistrationSpecimenStatus(
           res.enterpriseRegistrationSpecimenStatus
         );
+        setEnterpriseRegistrationBasicStatus(
+          res.enterpriseRegistrationBasicStatus
+        );
       })();
     }
   }, [enterpriseRegistrationUuid]);
@@ -101,6 +108,33 @@ export default props => {
         <span>当前步骤</span>-<span>提交上传7种材料</span>
       </p>
       <ol className='process-profile-ol'>
+        {enterpriseRegistrationBasicStatus ? (
+          <li>
+            <p>
+              <span className='profile-title'>登记测试基本信息</span>
+              <Tag
+                color={getTagColor(enterpriseRegistrationBasicStatus.status)}
+              >
+                {enterpriseRegistrationBasicStatus.statusText}
+              </Tag>
+            </p>
+            {enterpriseRegistrationBasicStatus.status ? (
+              <div className='current-right-box'>
+                <Icon
+                  type='check-circle'
+                  theme='twoTone'
+                  twoToneColor='#52c41a'
+                />
+              </div>
+            ) : (
+              <Link to={`${REGISTRATION_DETAIL.path}/basic`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='edit' /> 填写内容
+                </span>
+              </Link>
+            )}
+          </li>
+        ) : null}
         {enterpriseRegistrationContractStatus ? (
           <li>
             <p>

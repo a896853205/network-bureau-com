@@ -1,4 +1,5 @@
 import React from 'react';
+import '@/style/home/registration/detail.styl';
 
 // 组件
 import Apply from '@/components/registration/detail/Apply.jsx';
@@ -8,7 +9,7 @@ import Document from '@/components/registration/detail/Document.jsx';
 import ProductDescription from '@/components/registration/detail/Product-description.jsx';
 import Product from '@/components/registration/detail/Product.jsx';
 import Specimen from '@/components/registration/detail/Specimen.jsx';
-
+import Basic from '@/components/registration/detail/Basic';
 export default ({ type }) => {
   let content = null;
 
@@ -33,6 +34,9 @@ export default ({ type }) => {
       break;
     case 'product':
       content = <Product />;
+      break;
+    case 'basic':
+      content = <Basic />;
       break;
     default:
       content = null;
