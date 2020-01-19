@@ -8,7 +8,7 @@ import { REGISTRATION_PROFILE } from '@/constants/route-constants';
 import '@/style/home/registration/basic.styl';
 import { Input, Form, Button, Icon, Alert, DatePicker } from 'antd';
 
-export default Form.create({ name: 'contract' })(props => {
+export default Form.create({ name: 'basic' })(props => {
   const { getFieldDecorator } = props.form;
 
   return (
@@ -52,11 +52,13 @@ export default Form.create({ name: 'contract' })(props => {
             {/* 电话(手机) */}
             <Form.Item label='电话(手机)'>
               {getFieldDecorator('phone', {
-                rules: [{ required: true, message: '请输入电话(手机)！' },
-                {
-                  pattern: /^(\d)(\d|-){4,20}$/,
-                  message: '请输入正确的电话(手机号)'
-                }]
+                rules: [
+                  { required: true, message: '请输入电话(手机)！' },
+                  {
+                    pattern: /^(\d)(\d|-){4,20}$/,
+                    message: '请输入正确的电话(手机号)'
+                  }
+                ]
               })(<Input placeholder='请输入电话(手机)' />)}
             </Form.Item>
 
