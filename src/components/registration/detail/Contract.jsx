@@ -22,7 +22,7 @@ export default Form.create({ name: 'contract' })(props => {
       </div>
       <div className='detail-contract-box'>
         <div className='contract-left-box'>
-          <Form labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+          <Form labelCol={{ span: 6}} wrapperCol={{ span: 18 }}>
             {/* 数量 */}
             <Form.Item label='数量'>
               {getFieldDecorator('amount', {
@@ -42,7 +42,7 @@ export default Form.create({ name: 'contract' })(props => {
               {getFieldDecorator('postalCode', {
                 rules: [
                   { required: true, message: '请输入邮政编码！' },
-                  { pattern: /^[1-9]\\d{5}$/, message: '请输入正确的邮政编码' }
+                  { pattern: /\d{6}$/, message: '请输入正确的邮政编码' }
                 ]
               })(<Input placeholder='请输入邮政编码' />)}
             </Form.Item>
