@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 // 样式
 import { Icon, Tag } from 'antd';
 
-// 路由
+// 请求
 import proxyFetch from '@/util/request';
 import { SELECT_REGISTRATION_STATUS } from '@/constants/api-constants';
 
@@ -118,21 +118,22 @@ export default props => {
                 {enterpriseRegistrationBasicStatus.statusText}
               </Tag>
             </p>
-            {enterpriseRegistrationBasicStatus.status ? (
-              <div className='current-right-box'>
+            <div>
+              {enterpriseRegistrationBasicStatus.status !== 2 ? (
+                <Link to={`${REGISTRATION_DETAIL.path}/basic`}>
+                  <span className='current-right-box current-upload-button'>
+                    <Icon type='edit' /> 填写内容
+                  </span>
+                </Link>
+              ) : null}
+              {enterpriseRegistrationBasicStatus.status !== 0 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
                   twoToneColor='#52c41a'
                 />
-              </div>
-            ) : (
-              <Link to={`${REGISTRATION_DETAIL.path}/basic`}>
-                <span className='current-right-box current-upload-button'>
-                  <Icon type='edit' /> 填写内容
-                </span>
-              </Link>
-            )}
+              ) : null}
+            </div>
           </li>
         ) : null}
         {enterpriseRegistrationContractStatus ? (
@@ -145,7 +146,14 @@ export default props => {
                 {enterpriseRegistrationContractStatus.statusText}
               </Tag>
             </p>
-            {enterpriseRegistrationContractStatus.status ? (
+            {enterpriseRegistrationContractStatus.status !== 2 ? (
+              <Link to={`${REGISTRATION_DETAIL.path}/contract`}>
+                <span className='current-right-box current-upload-button'>
+                  <Icon type='edit' /> 填写内容
+                </span>
+              </Link>
+            ) : null}
+            {enterpriseRegistrationContractStatus.status !== 0 ? (
               <div className='current-right-box'>
                 <Icon
                   type='check-circle'
@@ -153,13 +161,7 @@ export default props => {
                   twoToneColor='#52c41a'
                 />
               </div>
-            ) : (
-              <Link to={`${REGISTRATION_DETAIL.path}/contract`}>
-                <span className='current-right-box current-upload-button'>
-                  <Icon type='edit' /> 填写内容
-                </span>
-              </Link>
-            )}
+            ) : null}
           </li>
         ) : null}
         {enterpriseRegistrationCopyrightStatus ? (
