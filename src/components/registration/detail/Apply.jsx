@@ -9,7 +9,15 @@ import { Input, Form, Button, Icon, Alert } from 'antd';
 const { TextArea } = Input;
 
 export default Form.create({ name: 'apply' })(props => {
-  const { getFieldDecorator } = props.form;
+  const { getFieldDecorator } = props.form,
+    contentInitValue = `服务器硬件环境（CPU、硬盘、内存）
+服务器软件环境（运行系统、数据库及通讯协议等
+客户端硬件环境（CPU、硬盘、内存）
+客户端软件环境（运行系统、数据库及通讯协议等）
+上位机硬件环境（CPU、硬盘、内存）
+下位机核心电路（核心芯片）、外围电路（相应的支持电路）
+备注（连接的设备机械和电气及其他设备）
+具体原因`;
 
   return (
     <>
@@ -25,14 +33,14 @@ export default Form.create({ name: 'apply' })(props => {
             {/* 内容 */}
             <Form.Item label='内容'>
               {getFieldDecorator('content', {
-                initialValue:`服务器硬件环境（CPU、硬盘、内存）\n服务器软件环境（运行系统、数据库及通讯协议等）\n客户端硬件环境（CPU、硬盘、内存）\n客户端软件环境（运行系统、数据库及通讯协议等）\n上位机硬件环境（CPU、硬盘、内存）\n下位机核心电路（核心芯片）、外围电路（相应的支持电路）\n备注（连接的设备机械和电气及其他设备）\n具体原因`,
+                initialValue: contentInitValue,
                 rules: [
                   {
                     required: true,
                     message: '请输入内容！'
                   }
                 ]
-              })(<TextArea autoSize={{ minRows: 6, maxRows: 12 }} />)}
+              })(<TextArea autoSize={{ minRows: 6, maxRows: 50 }} />)}
               <Button type='primary' htmlType='submit'>
                 提交
               </Button>

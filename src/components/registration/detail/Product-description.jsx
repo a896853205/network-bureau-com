@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import { REGISTRATION_PROFILE } from '@/constants/route-constants';
 
 // 样式
-import '@/style/home/registration/product_description.styl';
+import '@/style/home/registration/product-description.styl';
 import { Form, Button, Icon, Alert, Upload } from 'antd';
 const { Dragger } = Upload;
 
-export default Form.create({ name: 'product_description' })(props => {
+export default Form.create({ name: 'productDescription' })(props => {
   const { getFieldDecorator } = props.form;
 
   return (
@@ -59,4 +59,3 @@ export default Form.create({ name: 'product_description' })(props => {
     </>
   );
 });
-
