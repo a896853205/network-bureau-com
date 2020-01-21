@@ -105,7 +105,7 @@ export default props => {
   return (
     <div className='item-box process-item-box current-profile-box'>
       <p className='title-box'>
-        <span>当前步骤</span>-<span>提交上传7种材料</span>
+        <span>当前步骤</span>-<span>提交上传8种材料</span>
       </p>
       <ol className='process-profile-ol'>
         {enterpriseRegistrationBasicStatus ? (
