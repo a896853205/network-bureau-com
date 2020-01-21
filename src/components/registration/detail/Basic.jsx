@@ -110,21 +110,21 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                         '请输入正确的版本号,格式为X.Y.Z,X,Y,Z均在0-99之间'
                     }
                   ]
-                })(<Input placeholder='请输入版本' />)}
+                })(<Input placeholder='请输入版本' maxLength={32}/>)}
               </Form.Item>
 
               {/* 传真 */}
               <Form.Item label='联系人'>
                 {getFieldDecorator('linkman', {
                   rules: [{ required: true, message: '请输入联系人！' }]
-                })(<Input placeholder='请输入联系人' />)}
+                })(<Input placeholder='请输入联系人' maxLength={32}/>)}
               </Form.Item>
 
               {/* 委托单位(人) */}
               <Form.Item label='委托单位(人)'>
                 {getFieldDecorator('client', {
                   rules: [{ required: true, message: '请输入委托单位(人)！' }]
-                })(<Input placeholder='请输入委托单位(人)' />)}
+                })(<Input placeholder='请输入委托单位(人)' maxLength={32}/>)}
               </Form.Item>
 
               {/* 电话(手机) */}
@@ -137,7 +137,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                       message: '请输入正确的电话(手机号)'
                     }
                   ]
-                })(<Input placeholder='请输入电话(手机)' />)}
+                })(<Input placeholder='请输入电话(手机)' maxLength={32}/>)}
               </Form.Item>
 
               {/* 注册地址 */}
@@ -145,7 +145,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                 {getFieldDecorator('address', {
                   rules: [{ required: true, message: '请输入注册地址！' }]
                 })(
-                  <Input placeholder='注册地址(应与营业执照上地址完全一致)' />
+                  <Input placeholder='注册地址(应与营业执照上地址完全一致)' maxLength={32}/>
                 )}
               </Form.Item>
 
@@ -160,7 +160,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
               <Form.Item label='开发单位全称'>
                 {getFieldDecorator('enterpriseName', {
                   rules: [{ required: true, message: '请输入开发单位全称！' }]
-                })(<Input placeholder='请输入开发单位全称' />)}
+                })(<Input placeholder='请输入开发单位全称' maxLength={32}/>)}
                 <Button
                   type='primary'
                   htmlType='submit'
