@@ -1,23 +1,60 @@
 import React, { useState, useEffect } from 'react';
 
 // 路由
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { REGISTRATION_PROFILE } from '@/constants/route-constants';
 
 // 请求
 import proxyFetch, { proxyFileFetch } from '@/util/request';
-import { UPLOAD_FILE, GET_FILE_URL } from '@/constants/api-constants';
+import {
+  UPLOAD_FILE,
+  GET_FILE_URL,
+  GET_REGISTRATION_COPYRIGHT,
+  SAVE_REGISTRATION_COPYRIGHT
+} from '@/constants/api-constants';
+
+// redux
+import { useSelector } from 'react-redux';
 
 // 样式
 import '@/style/home/registration/copyright.styl';
-import { Form, Button, Icon, Alert, Upload, message } from 'antd';
+import { Form, Button, Icon, Alert, Upload, Skeleton, message } from 'antd';
 
 export default Form.create({ name: 'copyright' })(({ form }) => {
-  const { getFieldDecorator, setFieldsValue, getFieldValue } = form;
-  const [copyprightLoading, setCopyprightLoading] = useState(false);
-  const [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState('');
-  const formCopyrightUrl = getFieldValue('copyrightUrl');
+  const { getFieldDecorator, setFieldsValue, getFieldValue } = form,
+    { enterpriseRegistrationUuid } = useSelector(
+      state => state.enterpriseStore
+    ),
+    history = useHistory(),
+    [copyprightLoading, setCopyprightLoading] = useState(false),
+    [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
+    [previewUrl, setPreviewUrl] = useState(''),
+    [getDataLoading, setGetDataLoading] = useState(true),
+    [saveDataLoading, setSaveDataLoading] = useState(false),
+    formCopyrightUrl = getFieldValue('copyrightUrl');
+
+  // 将已有的数据回显
+  useEffect(() => {
+    if (enterpriseRegistrationUuid) {
+      (async () => {
+        setGetDataLoading(true);
+        let registrationCopyright = await proxyFetch(
+          GET_REGISTRATION_COPYRIGHT,
+          { registrationUuid: enterpriseRegistrationUuid },
+          'GET'
+        );
+
+        // 数据回显
+        if (registrationCopyright) {
+          // 数据处理
+          setFieldsValue({ copyrightUrl: registrationCopyright.url });
+          setIsNeedUrlFresh(true);
+        }
+
+        setGetDataLoading(false);
+      })();
+    }
+  }, [enterpriseRegistrationUuid, setFieldsValue]);
 
   /**
    * 上传头像
@@ -82,6 +119,30 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
     return true;
   };
 
+  /**
+   * 提交事件
+   */
+  const handleSumbitSave = e => {
+    e.preventDefault();
+
+    // 表单判断
+    form.validateFields(async (err, value) => {
+      if (enterpriseRegistrationUuid) {
+        if (!err) {
+          value.registrationUuid = enterpriseRegistrationUuid;
+
+          setSaveDataLoading(true);
+          const res = await proxyFetch(SAVE_REGISTRATION_COPYRIGHT, value);
+          setSaveDataLoading(false);
+
+          if (res) {
+            history.push(`${REGISTRATION_PROFILE.path}`);
+          }
+        }
+      }
+    });
+  };
+
   return (
     <>
       <div className='subtitle-box'>
@@ -91,58 +152,66 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
         <p className='subtitle-title'>软件著作权证书</p>
       </div>
       <div className='detail-copyright-box'>
-        <div className='copyright-left-box'>
-          <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-            {/* 内容 */}
-            <Form.Item label='软件著作权证书'>
-              {getFieldDecorator('copyrightUrl', {
-                valuePropName: 'fileList',
-                rules: [
-                  {
-                    required: true,
-                    message: '请上传软件著作权证书！'
-                  }
-                ]
-              })(
-                <Upload
-                  showUploadList={false}
-                  // 进行将图片格式和大小判断
-                  beforeUpload={handleBeforeUpload}
-                  customRequest={handleUploadImage}
-                >
-                  {previewUrl && !copyprightLoading ? (
-                    <div>
-                      <a href={previewUrl} onClick={e => e.stopPropagation()}>
-                        <Button>查看上传</Button>
-                      </a>
-                      <Button>重新上传</Button>
-                    </div>
-                  ) : (
-                    <Button size='large'>
-                      <p>
-                        <Icon type={copyprightLoading ? 'loading' : 'inbox'} />
+        <Skeleton loading={getDataLoading}>
+          <div className='copyright-left-box'>
+            <Form
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              onSubmit={handleSumbitSave}
+            >
+              {/* 内容 */}
+              <Form.Item label='软件著作权证书'>
+                {getFieldDecorator('copyrightUrl', {
+                  valuePropName: 'fileList',
+                  rules: [
+                    {
+                      required: true,
+                      message: '请上传软件著作权证书！'
+                    }
+                  ]
+                })(
+                  <Upload
+                    showUploadList={false}
+                    // 进行将图片格式和大小判断
+                    beforeUpload={handleBeforeUpload}
+                    customRequest={handleUploadImage}
+                  >
+                    {previewUrl && !copyprightLoading ? (
+                      <div>
+                        <a href={previewUrl} onClick={e => e.stopPropagation()}>
+                          <Button>查看上传</Button>
+                        </a>
+                        <Button>重新上传</Button>
+                      </div>
+                    ) : (
+                      <Button size='large' loading={copyprightLoading}>
                         点击文件上传jpg,jpeg,png
-                      </p>
-                    </Button>
-                  )}
-                </Upload>
-              )}
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8 }}>
-              <Button type='primary' htmlType='submit'>
-                提交
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-        <div className='copyright-right-box'>
-          <Alert
-            message='上传软件著作权证书注意事项'
-            description='请企业用户扫描其软件著作权证书,确保上传完毕后点击下方提交按钮。'
-            type='info'
-            showIcon
-          />
-        </div>
+                        <Icon type='inbox' />
+                      </Button>
+                    )}
+                  </Upload>
+                )}
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8 }}>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  loading={saveDataLoading}
+                >
+                  提交
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+          <div className='copyright-right-box'>
+            <Alert
+              message='上传软件著作权证书注意事项'
+              description='请企业用户扫描其软件著作权证书,确保上传完毕后点击下方提交按钮。'
+              type='info'
+              showIcon
+            />
+          </div>
+        </Skeleton>
       </div>
     </>
   );

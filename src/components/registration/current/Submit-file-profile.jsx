@@ -176,21 +176,22 @@ export default props => {
                 {enterpriseRegistrationCopyrightStatus.statusText}
               </Tag>
             </p>
-            {enterpriseRegistrationCopyrightStatus.status ? (
-              <div className='current-right-box'>
+            <div>
+              {enterpriseRegistrationCopyrightStatus.status !== 2 ? (
+                <Link to={`${REGISTRATION_DETAIL.path}/copyright`}>
+                  <span className='current-right-box current-upload-button'>
+                    <Icon type='edit' /> 上传文件
+                  </span>
+                </Link>
+              ) : null}
+              {enterpriseRegistrationCopyrightStatus.status !== 0 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
                   twoToneColor='#52c41a'
                 />
-              </div>
-            ) : (
-              <Link to={`${REGISTRATION_DETAIL.path}/copyright`}>
-                <span className='current-right-box current-upload-button'>
-                  <Icon type='upload' /> 上传文件
-                </span>
-              </Link>
-            )}
+              ) : null}
+            </div>
           </li>
         ) : null}
         {enterpriseRegistrationSpecimenStatus ? (

@@ -3,6 +3,12 @@ import * as DominConfigs from './domin-constants';
 export const UPLOAD_TO_QiNiu = 'https://upload-z2.qiniup.com'; // 上传七牛
 
 /**
+ * 文件
+ */
+export const UPLOAD_FILE = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_FILE}/uploadFile`; // 上传文件
+export const GET_FILE_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_FILE}/getFileUrl`; // 获取文件url
+
+/**
  * 企业用户
  ***************************/
 export const GET_ENTERPRISE_TOKEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_USER}/getEnterpriseToken`; // 登录
@@ -20,15 +26,11 @@ export const SELECT_REGISTRATION = `${DominConfigs.DOMAIN}${DominConfigs.PART.OP
 export const GET_MANANGER_INFO = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getManagerInfo`; // 查询mananger信息
 export const GET_REGISTRATION_BASIC = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationBasic`; // 查询登记测试的基本信息
 export const SAVE_REGISTRATION_BASIC = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationBasic`; // 保存登记测试的基本信息
-export const GET_REGISTRATION_CONTRACT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationContract`; // 查询评测合同的基本信息
-export const SAVE_REGISTRATION_CONTRACT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationContract`; // 保存评测合同的基本信息
-export const GET_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationSpecimen`; // 查询样品登记表的基本信息
-export const SAVE_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationSpecimen`; // 保存样品登记表的基本信息
-export const GET_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationApply`; // 查询现场测试申请表的基本信息
-export const SAVE_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationApply`; // 保存现场测试申请表的基本信息
-
-/**
- * 文件
- */
-export const UPLOAD_FILE = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_FILE}/uploadFile`; // 上传文件
-export const GET_FILE_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_FILE}/getFileUrl`; // 获取文件url
+export const GET_REGISTRATION_CONTRACT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationContract`; // 查询评测合同信息
+export const SAVE_REGISTRATION_CONTRACT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationContract`; // 保存评测合同信息
+export const GET_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationSpecimen`; // 查询样品登记表信息
+export const SAVE_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationSpecimen`; // 保存样品登记表信息
+export const GET_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationApply`; // 查询现场测试申请表信息
+export const SAVE_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationApply`; // 保存现场测试申请表信息
+export const GET_REGISTRATION_COPYRIGHT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationCopyright`; // 查询软件著作权信息
+export const SAVE_REGISTRATION_COPYRIGHT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationCopyright`; // 保存软件著作权信息
