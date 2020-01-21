@@ -20,6 +20,12 @@ export const SELECT_REGISTRATION = `${DominConfigs.DOMAIN}${DominConfigs.PART.OP
 export const GET_MANANGER_INFO = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getManagerInfo`; // 查询mananger信息
 export const GET_REGISTRATION_BASIC = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationBasic`; // 查询登记测试的基本信息
 export const SAVE_REGISTRATION_BASIC = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationBasic`; // 保存登记测试的基本信息
+export const GET_REGISTRATION_CONTRACT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationContract`; // 查询评测合同的基本信息
+export const SAVE_REGISTRATION_CONTRACT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationContract`; // 保存评测合同的基本信息
+export const GET_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationSpecimen`; // 查询样品登记表的基本信息
+export const SAVE_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationSpecimen`; // 保存样品登记表的基本信息
+export const GET_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/getRegistrationApply`; // 查询现场测试申请表的基本信息
+export const SAVE_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationApply`; // 保存现场测试申请表的基本信息
 
 /**
  * 文件
