@@ -1,14 +1,13 @@
 import * as DominConfigs from '../constants/domin-constants';
-// import * as APIs from '../constants/api-constants';
 import moment from 'moment';
 import { message } from 'antd';
-import { useHistory } from 'react-router-dom';
+import wait from '@/util/wait-helper';
 
 // localStorage
 import { LOCAL_STORAGE } from '@/constants/app-constants';
 
 // 请求包装
-export default (
+export default async (
   url,
   params = {},
   requestType = 'POST',
@@ -19,7 +18,7 @@ export default (
   const os = 'opt';
 
   let headers = new Headers({
-    Accept: '*/*',  
+    Accept: '*/*',
     'Content-Type': 'application/json',
     Connection: 'keep-alive',
     t,
@@ -66,7 +65,13 @@ export default (
   }
 
   // 进行请求
-  return _fetch(url, params, requestType, fetchParams);
+  // 防闪烁
+  const [res] = await Promise.all([
+    _fetch(url, params, requestType, fetchParams),
+    wait(300)
+  ]);
+
+  return res;
 };
 
 /**
@@ -134,6 +139,7 @@ async function _fetch(url, params = {}, requestType, fetchParams = {}) {
     // 请求成功 status: 200
     return responseHandle(responseData);
   } catch (error) {
+    console.log(error);
     message.error('网络有点问题呦,请稍后再试');
   }
 }
@@ -181,10 +187,39 @@ const _responseHandle = {
   },
   [DominConfigs.RESPONSE_CODE.unauthorized]: responseData => {
     message.warning(responseData.msg);
-    const history = useHistory();
-    // token 过期
-    history.push('/');
+    // 清除过期的token
+    localStorage.removeItem(`${LOCAL_STORAGE}-token`);
 
     return null;
   }
+};
+
+/**
+ * 上传文件
+ */
+
+export const proxyFileFetch = async (url, data) => {
+  const formData = new FormData();
+
+  for (let key in data) {
+    formData.append(key, data[key]);
+  }
+
+  let headers = new Headers({
+    Accept: '*/*',
+    authorization: `Bearer ${localStorage.getItem(`${LOCAL_STORAGE}-token`)}`
+  });
+
+  const fetchParams = {
+    method: 'POST',
+    headers,
+    body: formData
+  };
+
+  const [res] = await Promise.all([
+    _fetch(url, {}, 'POST', fetchParams),
+    wait(300)
+  ]);
+
+  return res;
 };
