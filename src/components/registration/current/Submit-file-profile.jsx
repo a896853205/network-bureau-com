@@ -234,21 +234,22 @@ export default props => {
                 {enterpriseRegistrationProductDescriptionStatus.statusText}
               </Tag>
             </p>
-            {enterpriseRegistrationProductDescriptionStatus.status ? (
-              <div className='current-right-box'>
+            <div>
+              {enterpriseRegistrationProductDescriptionStatus.status !== 2 ? (
+                <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
+                  <span className='current-right-box current-upload-button'>
+                    <Icon type='upload' /> 上传文件
+                  </span>
+                </Link>
+              ) : null}
+              {enterpriseRegistrationProductDescriptionStatus.status !== 0 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
                   twoToneColor='#52c41a'
                 />
-              </div>
-            ) : (
-              <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
-                <span className='current-right-box current-upload-button'>
-                  <Icon type='upload' /> 上传文件
-                </span>
-              </Link>
-            )}
+              ) : null}
+            </div>
           </li>
         ) : null}
         {enterpriseRegistrationDocumentStatus ? (
@@ -261,21 +262,22 @@ export default props => {
                 {enterpriseRegistrationDocumentStatus.statusText}
               </Tag>
             </p>
-            {enterpriseRegistrationDocumentStatus.status ? (
-              <div className='current-right-box'>
+            <div>
+              {enterpriseRegistrationDocumentStatus.status !== 2 ? (
+                <Link to={`${REGISTRATION_DETAIL.path}/document`}>
+                  <span className='current-right-box current-upload-button'>
+                    <Icon type='upload' /> 上传文件
+                  </span>
+                </Link>
+              ) : null}
+              {enterpriseRegistrationDocumentStatus.status !== 0 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
                   twoToneColor='#52c41a'
                 />
-              </div>
-            ) : (
-              <Link to={`${REGISTRATION_DETAIL.path}/document`}>
-                <span className='current-right-box current-upload-button'>
-                  <Icon type='upload' /> 上传文件
-                </span>
-              </Link>
-            )}
+              ) : null}
+            </div>
           </li>
         ) : null}
         {enterpriseRegistrationProductStatus ? (
@@ -288,21 +290,22 @@ export default props => {
                 {enterpriseRegistrationProductStatus.statusText}
               </Tag>
             </p>
-            {enterpriseRegistrationProductStatus.status ? (
-              <div className='current-right-box'>
+            <div>
+              {enterpriseRegistrationProductStatus.status !== 2 ? (
+                <Link to={`${REGISTRATION_DETAIL.path}/product`}>
+                  <span className='current-right-box current-upload-button'>
+                    <Icon type='upload' /> 上传文件
+                  </span>
+                </Link>
+              ) : null}
+              {enterpriseRegistrationProductStatus.status !== 0 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
                   twoToneColor='#52c41a'
                 />
-              </div>
-            ) : (
-              <Link to={`${REGISTRATION_DETAIL.path}/product`}>
-                <span className='current-right-box current-upload-button'>
-                  <Icon type='upload' /> 上传文件
-                </span>
-              </Link>
-            )}
+              ) : null}
+            </div>
           </li>
         ) : null}
         {enterpriseRegistrationApplyStatus ? (

@@ -153,6 +153,10 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                     maxLength='32'
                   />
                 )}
+              </Form.Item>
+
+              {/* 提交按钮 */}
+              <Form.Item wrapperCol={{ offset: 6 }}>
                 <Button
                   type='primary'
                   htmlType='submit'
