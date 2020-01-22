@@ -31,7 +31,8 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
     [previewUrl, setPreviewUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
-    formCopyrightUrl = getFieldValue('copyrightUrl');
+    formCopyrightUrl =
+      getFieldValue('copyrightUrl') && getFieldValue('copyrightUrl')[0];
 
   // 将已有的数据回显
   useEffect(() => {
@@ -45,9 +46,9 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
         );
 
         // 数据回显
-        if (registrationCopyright) {
+        if (registrationCopyright && registrationCopyright.url) {
           // 数据处理
-          setFieldsValue({ copyrightUrl: registrationCopyright.url });
+          setFieldsValue({ copyrightUrl: [registrationCopyright.url] });
           setIsNeedUrlFresh(true);
         }
 
@@ -61,20 +62,24 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
    * @param {File} file 上传的文件
    */
   const handleUploadImage = async file => {
-    // loading
-    setCopyprightLoading(true);
-    // 参数需要加上oss的文件夹位置
-    const fileUrl = await proxyFileFetch(UPLOAD_FILE, {
-      file: file.file,
-      folderName: 'registration/copyright'
-    });
-    // loading
-    setCopyprightLoading(false);
+    if (handleBeforeUpload(file)) {
+      // loading
+      setCopyprightLoading(true);
 
-    if (fileUrl) {
-      // 设置form
-      setFieldsValue({ copyrightUrl: fileUrl });
-      setIsNeedUrlFresh(true);
+      // 参数需要加上oss的文件夹位置
+      const fileUrl = await proxyFileFetch(UPLOAD_FILE, {
+        file: file.file,
+        folderName: 'registration/copyright'
+      });
+
+      // loading
+      setCopyprightLoading(false);
+
+      if (fileUrl) {
+        // 设置form
+        setFieldsValue({ copyrightUrl: [fileUrl] });
+        setIsNeedUrlFresh(true);
+      }
     }
   };
 
@@ -82,11 +87,13 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
     if (formCopyrightUrl && isNeedUrlFresh) {
       (async () => {
         setCopyprightLoading(true);
+
         const previewUrl = await proxyFetch(
           GET_FILE_URL,
           { fileUrl: formCopyrightUrl },
           'GET'
         );
+        
         setCopyprightLoading(false);
         // 切换下载的url
         setPreviewUrl(previewUrl);
@@ -94,30 +101,6 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
       })();
     }
   }, [formCopyrightUrl, isNeedUrlFresh]);
-
-  const handleBeforeUpload = file => {
-    // 后缀名
-    const extensionName = file.name.split('.')[1].toLowerCase();
-
-    // 判断后缀名是否非法
-    if (
-      extensionName !== 'jpg' &&
-      extensionName !== 'jpeg' &&
-      extensionName !== 'png'
-    ) {
-      message.error('图片类型必须为jpg,jpeg,png');
-      return false;
-    }
-
-    // 判断大小是否符合
-    if (file.size > 1024 * 1024 * 10) {
-      // 10MB
-      message.error('图片文件大小必须小于10MB');
-      return false;
-    }
-
-    return true;
-  };
 
   /**
    * 提交事件
@@ -130,6 +113,7 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
       if (enterpriseRegistrationUuid) {
         if (!err) {
           value.registrationUuid = enterpriseRegistrationUuid;
+          value.copyrightUrl = value.copyrightUrl[0];
 
           setSaveDataLoading(true);
           const res = await proxyFetch(SAVE_REGISTRATION_COPYRIGHT, value);
@@ -163,6 +147,9 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
               <Form.Item label='软件著作权证书'>
                 {getFieldDecorator('copyrightUrl', {
                   valuePropName: 'fileList',
+                  getValueFromEvent: e => {
+                    return e && e.fileList;
+                  },
                   rules: [
                     {
                       required: true,
@@ -173,7 +160,6 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
                   <Upload
                     showUploadList={false}
                     // 进行将图片格式和大小判断
-                    beforeUpload={handleBeforeUpload}
                     customRequest={handleUploadImage}
                   >
                     {previewUrl && !copyprightLoading ? (
@@ -216,3 +202,27 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
     </>
   );
 });
+
+const handleBeforeUpload = ({ file }) => {
+  // 后缀名
+  const extensionName = file.name.split('.')[1].toLowerCase();
+
+  // 判断后缀名是否非法
+  if (
+    extensionName !== 'jpg' &&
+    extensionName !== 'jpeg' &&
+    extensionName !== 'png'
+  ) {
+    message.error('图片类型必须为jpg,jpeg,png');
+    return false;
+  }
+
+  // 判断大小是否符合
+  if (file.size > 1024 * 1024 * 10) {
+    // 10MB
+    message.error('图片文件大小必须小于10MB');
+    return false;
+  }
+
+  return true;
+};

@@ -31,7 +31,8 @@ export default Form.create({ name: 'document' })(({ form }) => {
     [previewUrl, setPreviewUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
-    formDocumentUrl = getFieldValue('documentUrl');
+    formDocumentUrl =
+      getFieldValue('documentUrl') && getFieldValue('documentUrl')[0];
 
   // 将已有的数据回显
   useEffect(() => {
@@ -45,7 +46,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
         );
 
         // 数据回显
-        if (registrationDocument) {
+        if (registrationDocument && registrationDocument.url) {
           // 数据处理
           setFieldsValue({ documentUrl: registrationDocument.url });
           setIsNeedUrlFresh(true);
@@ -61,20 +62,24 @@ export default Form.create({ name: 'document' })(({ form }) => {
    * @param {File} file 上传的文件
    */
   const handleUploadFile = async file => {
-    // loading
-    setDocumentLoading(true);
-    // 参数需要加上oss的文件夹位置
-    const fileUrl = await proxyFileFetch(UPLOAD_WORD_FILE, {
-      file: file.file,
-      folderName: 'registration/document'
-    });
-    // loading
-    setDocumentLoading(false);
+    if (handleBeforeUpload(file)) {
+      // loading
+      setDocumentLoading(true);
 
-    if (fileUrl) {
-      // 设置form
-      setFieldsValue({ documentUrl: fileUrl });
-      setIsNeedUrlFresh(true);
+      // 参数需要加上oss的文件夹位置
+      const fileUrl = await proxyFileFetch(UPLOAD_WORD_FILE, {
+        file: file.file,
+        folderName: 'registration/document'
+      });
+
+      // loading
+      setDocumentLoading(false);
+
+      if (fileUrl) {
+        // 设置form
+        setFieldsValue({ documentUrl: [fileUrl] });
+        setIsNeedUrlFresh(true);
+      }
     }
   };
 
@@ -82,11 +87,13 @@ export default Form.create({ name: 'document' })(({ form }) => {
     if (formDocumentUrl && isNeedUrlFresh) {
       (async () => {
         setDocumentLoading(true);
+
         const previewUrl = await proxyFetch(
           GET_FILE_URL,
           { fileUrl: formDocumentUrl },
           'GET'
         );
+
         setDocumentLoading(false);
         // 切换下载的url
         setPreviewUrl(previewUrl);
@@ -94,31 +101,6 @@ export default Form.create({ name: 'document' })(({ form }) => {
       })();
     }
   }, [formDocumentUrl, isNeedUrlFresh]);
-
-  const handleBeforeUpload = file => {
-    // 后缀名
-    const extensionName = file.name.split('.')[1].toLowerCase();
-    console.log(extensionName);
-
-    // 判断后缀名是否非法
-    if (
-      extensionName !== 'doc' &&
-      extensionName !== 'docx' &&
-      extensionName !== 'pdf'
-    ) {
-      message.error('文件类型必须为doc,docx,pdf');
-      return false;
-    }
-
-    // 判断大小是否符合
-    if (file.size > 1024 * 1024 * 10) {
-      // 10MB
-      message.error('文件大小必须小于10MB');
-      return false;
-    }
-
-    return true;
-  };
 
   /**
    * 提交事件
@@ -131,6 +113,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
       if (enterpriseRegistrationUuid) {
         if (!err) {
           value.registrationUuid = enterpriseRegistrationUuid;
+          value.documentUrl = value.documentUrl[0];
 
           setSaveDataLoading(true);
           const res = await proxyFetch(SAVE_REGISTRATION_DOCUMENT, value);
@@ -164,6 +147,9 @@ export default Form.create({ name: 'document' })(({ form }) => {
               <Form.Item label='用户文档集'>
                 {getFieldDecorator('documentUrl', {
                   valuePropName: 'fileList',
+                  getValueFromEvent: e => {
+                    return e && e.fileList;
+                  },
                   rules: [
                     {
                       required: true,
@@ -174,7 +160,6 @@ export default Form.create({ name: 'document' })(({ form }) => {
                   <Upload
                     showUploadList={false}
                     // 进行将图片格式和大小判断
-                    beforeUpload={handleBeforeUpload}
                     customRequest={handleUploadFile}
                   >
                     {previewUrl && !documentLoading ? (
@@ -217,3 +202,27 @@ export default Form.create({ name: 'document' })(({ form }) => {
     </>
   );
 });
+
+const handleBeforeUpload = ({ file }) => {
+  // 后缀名
+  const extensionName = file.name.split('.')[1].toLowerCase();
+
+  // 判断后缀名是否非法
+  if (
+    extensionName !== 'doc' &&
+    extensionName !== 'docx' &&
+    extensionName !== 'pdf'
+  ) {
+    message.error('文件类型必须为doc,docx,pdf');
+    return false;
+  }
+
+  // 判断大小是否符合
+  if (file.size > 1024 * 1024 * 10) {
+    // 10MB
+    message.error('文件大小必须小于10MB');
+    return false;
+  }
+
+  return true;
+};

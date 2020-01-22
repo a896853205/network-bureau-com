@@ -31,7 +31,9 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     [previewUrl, setPreviewUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
-    formProductDescriptionUrl = getFieldValue('productDescriptionUrl');
+    formProductDescriptionUrl =
+      getFieldValue('productDescriptionUrl') &&
+      getFieldValue('productDescriptionUrl')[0];
 
   // 将已有的数据回显
   useEffect(() => {
@@ -45,7 +47,10 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
         );
 
         // 数据回显
-        if (registrationProductDescription) {
+        if (
+          registrationProductDescription &&
+          registrationProductDescription.url
+        ) {
           // 数据处理
           setFieldsValue({
             productDescriptionUrl: registrationProductDescription.url
@@ -63,20 +68,24 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
    * @param {File} file 上传的文件
    */
   const handleUploadFile = async file => {
-    // loading
-    setProductDescriptionLoading(true);
-    // 参数需要加上oss的文件夹位置
-    const fileUrl = await proxyFileFetch(UPLOAD_WORD_FILE, {
-      file: file.file,
-      folderName: 'registration/productDescription'
-    });
-    // loading
-    setProductDescriptionLoading(false);
+    if (handleBeforeUpload(file)) {
+      // loading
+      setProductDescriptionLoading(true);
 
-    if (fileUrl) {
-      // 设置form
-      setFieldsValue({ productDescriptionUrl: fileUrl });
-      setIsNeedUrlFresh(true);
+      // 参数需要加上oss的文件夹位置
+      const fileUrl = await proxyFileFetch(UPLOAD_WORD_FILE, {
+        file: file.file,
+        folderName: 'registration/productDescription'
+      });
+
+      // loading
+      setProductDescriptionLoading(false);
+
+      if (fileUrl) {
+        // 设置form
+        setFieldsValue({ productDescriptionUrl: [fileUrl] });
+        setIsNeedUrlFresh(true);
+      }
     }
   };
 
@@ -84,11 +93,13 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     if (formProductDescriptionUrl && isNeedUrlFresh) {
       (async () => {
         setProductDescriptionLoading(true);
+
         const previewUrl = await proxyFetch(
           GET_FILE_URL,
           { fileUrl: formProductDescriptionUrl },
           'GET'
         );
+
         setProductDescriptionLoading(false);
         // 切换下载的url
         setPreviewUrl(previewUrl);
@@ -96,30 +107,6 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
       })();
     }
   }, [formProductDescriptionUrl, isNeedUrlFresh]);
-
-  const handleBeforeUpload = file => {
-    // 后缀名
-    const extensionName = file.name.split('.')[1].toLowerCase();
-
-    // 判断后缀名是否非法
-    if (
-      extensionName !== 'doc' &&
-      extensionName !== 'docx' &&
-      extensionName !== 'pdf'
-    ) {
-      message.error('文件类型必须为doc,docx,pdf');
-      return false;
-    }
-
-    // 判断大小是否符合
-    if (file.size > 1024 * 1024 * 10) {
-      // 10MB
-      message.error('文件大小必须小于10MB');
-      return false;
-    }
-
-    return true;
-  };
 
   /**
    * 提交事件
@@ -132,6 +119,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
       if (enterpriseRegistrationUuid) {
         if (!err) {
           value.registrationUuid = enterpriseRegistrationUuid;
+          value.productDescriptionUrl = value.productDescriptionUrl[0];
 
           setSaveDataLoading(true);
           const res = await proxyFetch(
@@ -168,6 +156,9 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
               <Form.Item label='内容'>
                 {getFieldDecorator('productDescriptionUrl', {
                   valuePropName: 'fileList',
+                  getValueFromEvent: e => {
+                    return e && e.fileList;
+                  },
                   rules: [
                     {
                       required: true,
@@ -178,7 +169,6 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                   <Upload
                     showUploadList={false}
                     // 进行将文件格式和大小判断
-                    beforeUpload={handleBeforeUpload}
                     customRequest={handleUploadFile}
                   >
                     {previewUrl && !productDescriptionLoading ? (
@@ -221,3 +211,27 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     </>
   );
 });
+
+const handleBeforeUpload = ({ file }) => {
+  // 后缀名
+  const extensionName = file.name.split('.')[1].toLowerCase();
+
+  // 判断后缀名是否非法
+  if (
+    extensionName !== 'doc' &&
+    extensionName !== 'docx' &&
+    extensionName !== 'pdf'
+  ) {
+    message.error('文件类型必须为doc,docx,pdf');
+    return false;
+  }
+
+  // 判断大小是否符合
+  if (file.size > 1024 * 1024 * 10) {
+    // 10MB
+    message.error('文件大小必须小于10MB');
+    return false;
+  }
+
+  return true;
+};

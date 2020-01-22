@@ -31,7 +31,8 @@ export default Form.create({ name: 'product' })(({ form }) => {
     [previewUrl, setPreviewUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
-    formProductUrl = getFieldValue('productUrl');
+    formProductUrl =
+      getFieldValue('productUrl') && getFieldValue('productUrl')[0];
 
   // 将已有的数据回显
   useEffect(() => {
@@ -45,9 +46,9 @@ export default Form.create({ name: 'product' })(({ form }) => {
         );
 
         // 数据回显
-        if (registrationProduct) {
+        if (registrationProduct && registrationProduct.url) {
           // 数据处理
-          setFieldsValue({ productUrl: registrationProduct.url });
+          setFieldsValue({ productUrl: [registrationProduct.url] });
           setIsNeedUrlFresh(true);
         }
 
@@ -61,20 +62,24 @@ export default Form.create({ name: 'product' })(({ form }) => {
    * @param {File} file 上传的文件
    */
   const handleUploadImage = async file => {
-    // loading
-    setProductLoading(true);
-    // 参数需要加上oss的文件夹位置
-    const fileUrl = await proxyFileFetch(UPLOAD_ZIP_FILE, {
-      file: file.file,
-      folderName: 'registration/product'
-    });
-    // loading
-    setProductLoading(false);
+    if (handleBeforeUpload(file)) {
+      // loading
+      setProductLoading(true);
 
-    if (fileUrl) {
-      // 设置form
-      setFieldsValue({ productUrl: fileUrl });
-      setIsNeedUrlFresh(true);
+      // 参数需要加上oss的文件夹位置
+      const fileUrl = await proxyFileFetch(UPLOAD_ZIP_FILE, {
+        file: file.file,
+        folderName: 'registration/product'
+      });
+
+      // loading
+      setProductLoading(false);
+
+      if (fileUrl) {
+        // 设置form
+        setFieldsValue({ productUrl: [fileUrl] });
+        setIsNeedUrlFresh(true);
+      }
     }
   };
 
@@ -82,11 +87,13 @@ export default Form.create({ name: 'product' })(({ form }) => {
     if (formProductUrl && isNeedUrlFresh) {
       (async () => {
         setProductLoading(true);
+
         const previewUrl = await proxyFetch(
           GET_FILE_URL,
           { fileUrl: formProductUrl },
           'GET'
         );
+
         setProductLoading(false);
         // 切换下载的url
         setPreviewUrl(previewUrl);
@@ -94,29 +101,6 @@ export default Form.create({ name: 'product' })(({ form }) => {
       })();
     }
   }, [formProductUrl, isNeedUrlFresh]);
-
-  const handleBeforeUpload = file => {
-    // 后缀名
-    const extensionName = file.name.split('.')[1].toLowerCase();
-
-    // 判断后缀名是否非法
-    if (
-      extensionName !== 'zip' &&
-      extensionName !== 'rar' 
-    ) {
-      message.error('文件类型必须为zip,rar');
-      return false;
-    }
-
-    // 判断大小是否符合
-    if (file.size > 1024 * 1024 * 10) {
-      // 10MB
-      message.error('文件大小必须小于10MB');
-      return false;
-    }
-
-    return true;
-  };
 
   /**
    * 提交事件
@@ -129,6 +113,7 @@ export default Form.create({ name: 'product' })(({ form }) => {
       if (enterpriseRegistrationUuid) {
         if (!err) {
           value.registrationUuid = enterpriseRegistrationUuid;
+          value.productUrl = value.productUrl[0];
 
           setSaveDataLoading(true);
           const res = await proxyFetch(SAVE_REGISTRATION_PRODUCT, value);
@@ -151,24 +136,30 @@ export default Form.create({ name: 'product' })(({ form }) => {
         <p className='subtitle-title'>产品介质</p>
       </div>
       <div className='detail-product-box'>
-      <Skeleton loading={getDataLoading}>
-        <div className='product-left-box'>
-          <Form labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}onSubmit={handleSumbitSave}>
-            {/* 内容 */}
-            <Form.Item label='内容'>
-              {getFieldDecorator('productUrl', {
-                valuePropName: 'fileList',
-                rules: [
-                  {
-                    required: true,
-                    message: '请上传产品介质文件！'
-                  }
-                ]
-              })(
-                <Upload
+        <Skeleton loading={getDataLoading}>
+          <div className='product-left-box'>
+            <Form
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 20 }}
+              onSubmit={handleSumbitSave}
+            >
+              {/* 内容 */}
+              <Form.Item label='内容'>
+                {getFieldDecorator('productUrl', {
+                  valuePropName: 'fileList',
+                  getValueFromEvent: e => {
+                    return e && e.fileList;
+                  },
+                  rules: [
+                    {
+                      required: true,
+                      message: '请上传产品介质文件！'
+                    }
+                  ]
+                })(
+                  <Upload
                     showUploadList={false}
                     // 进行将压缩文件格式和大小判断
-                    beforeUpload={handleBeforeUpload}
                     customRequest={handleUploadImage}
                   >
                     {previewUrl && !productLoading ? (
@@ -185,9 +176,9 @@ export default Form.create({ name: 'product' })(({ form }) => {
                       </Button>
                     )}
                   </Upload>
-              )}
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 4 }}>
+                )}
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 4 }}>
                 <Button
                   type='primary'
                   htmlType='submit'
@@ -196,18 +187,38 @@ export default Form.create({ name: 'product' })(({ form }) => {
                   提交
                 </Button>
               </Form.Item>
-          </Form>
-        </div>
-        <div className='product-right-box'>
-          <Alert
-            message='上传产品介质注意事项'
-            description='请企业用户确保上传的rar或zip文件内容真实完整,确保上传完毕后点击下方提交按钮。'
-            type='info'
-            showIcon
-          />
-        </div>
+            </Form>
+          </div>
+          <div className='product-right-box'>
+            <Alert
+              message='上传产品介质注意事项'
+              description='请企业用户确保上传的rar或zip文件内容真实完整,确保上传完毕后点击下方提交按钮。'
+              type='info'
+              showIcon
+            />
+          </div>
         </Skeleton>
       </div>
     </>
   );
 });
+
+const handleBeforeUpload = ({ file }) => {
+  // 后缀名
+  const extensionName = file.name.split('.')[1].toLowerCase();
+
+  // 判断后缀名是否非法
+  if (extensionName !== 'zip' && extensionName !== 'rar') {
+    message.error('文件类型必须为zip,rar');
+    return false;
+  }
+
+  // 判断大小是否符合
+  if (file.size > 1024 * 1024 * 1024 * 10) {
+    // 10MB
+    message.error('文件大小必须小于10GB');
+    return false;
+  }
+
+  return true;
+};
