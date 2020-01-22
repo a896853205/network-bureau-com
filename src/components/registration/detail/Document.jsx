@@ -48,7 +48,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
         // 数据回显
         if (registrationDocument && registrationDocument.url) {
           // 数据处理
-          setFieldsValue({ documentUrl: registrationDocument.url });
+          setFieldsValue({ documentUrl: [registrationDocument.url] });
           setIsNeedUrlFresh(true);
         }
 

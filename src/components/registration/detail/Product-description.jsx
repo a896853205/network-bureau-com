@@ -53,7 +53,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
         ) {
           // 数据处理
           setFieldsValue({
-            productDescriptionUrl: registrationProductDescription.url
+            productDescriptionUrl: [registrationProductDescription.url]
           });
           setIsNeedUrlFresh(true);
         }
