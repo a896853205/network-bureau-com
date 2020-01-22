@@ -127,6 +127,9 @@ export default Form.create({ name: 'apply' })(({ form }) => {
                     maxLength='800'
                   />
                 )}
+              </Form.Item>
+              {/* 提交按钮 */}
+              <Form.Item wrapperCol={{ offset: 4 }}>
                 <Button
                   type='primary'
                   htmlType='submit'

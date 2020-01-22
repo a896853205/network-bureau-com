@@ -104,14 +104,14 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
               <Form.Item label='注册商标'>
                 {getFieldDecorator('trademark', {
                   rules: [{ required: true, message: '请输入注册商标！' }]
-                })(<Input placeholder='请输入注册商标' maxLength={32}/>)}
+                })(<Input placeholder='请输入注册商标' maxLength={32} />)}
               </Form.Item>
 
               {/* 开发工具 */}
               <Form.Item label='开发工具'>
                 {getFieldDecorator('developmentTool', {
                   rules: [{ required: true, message: '请输入开发工具！' }]
-                })(<Input placeholder='请输入开发工具' maxLength={32}/>)}
+                })(<Input placeholder='请输入开发工具' maxLength={32} />)}
               </Form.Item>
 
               {/* 产品密级 */}
@@ -146,7 +146,11 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
               <Form.Item label='邮箱'>
                 {getFieldDecorator('email', {
                   rules: [{ required: true, message: '请输入邮箱！' }]
-                })(<Input placeholder='请输入邮箱' maxLength={32}/>)}
+                })(<Input placeholder='请输入邮箱' maxLength={32} />)}
+              </Form.Item>
+
+              {/* 提交按钮 */}
+              <Form.Item wrapperCol={{ offset: 6 }}>
                 <Button
                   type='primary'
                   htmlType='submit'
