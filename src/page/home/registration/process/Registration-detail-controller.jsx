@@ -9,7 +9,7 @@ import Document from '@/components/registration/detail/Document.jsx';
 import ProductDescription from '@/components/registration/detail/Product-description.jsx';
 import Product from '@/components/registration/detail/Product.jsx';
 import Specimen from '@/components/registration/detail/Specimen.jsx';
-import Basic from '@/components/registration/detail/Basic';
+import Basic from '@/components/registration/detail/Basic.jsx';
 export default ({ type }) => {
   let content = null;
 

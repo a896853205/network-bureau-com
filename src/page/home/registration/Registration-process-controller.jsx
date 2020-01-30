@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+
+// 样式
 import '@/style/home/registration/process.styl';
 import '@/style/home/registration/item.styl';
+import { Skeleton } from 'antd';
 
 // 组件
 import RegistrationPersonProfile from '@/components/registration/Registration-person-profile.jsx';
@@ -17,8 +20,6 @@ import { LOCAL_STORAGE } from '@/constants/app-constants';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import enterpriseAction from '@/redux/action/enterprise';
-
-import { Skeleton } from 'antd';
 
 export default props => {
   const localStorageRegistrationUuid = window.localStorage.getItem(
