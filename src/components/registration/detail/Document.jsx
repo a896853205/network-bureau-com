@@ -26,6 +26,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
       state => state.enterpriseStore
     ),
     history = useHistory(),
+    [failText, setFailText] = useState(''),
     [documentLoading, setDocumentLoading] = useState(false),
     [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [previewUrl, setPreviewUrl] = useState(''),
@@ -51,6 +52,11 @@ export default Form.create({ name: 'document' })(({ form }) => {
           // 数据处理
           setFieldsValue({ documentUrl: [registrationDocument.url] });
           setIsNeedUrlFresh(true);
+        }
+
+        if (registrationDocument.failText) {
+          setFailText(registrationDocument.failText);
+          delete registrationDocument.failText;
         }
 
         setGetDataLoading(false);
@@ -149,6 +155,14 @@ export default Form.create({ name: 'document' })(({ form }) => {
         </Link>
         <p className='subtitle-title'>用户文档集</p>
       </div>
+      {failText ? (
+        <Alert
+          message='上传错误,请按描述修改'
+          description={failText}
+          type='error'
+          showIcon
+        />
+      ) : null}
       <div className='detail-document-box'>
         <Skeleton loading={getDataLoading}>
           <div className='document-left-box'>

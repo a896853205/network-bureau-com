@@ -26,6 +26,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
       state => state.enterpriseStore
     ),
     history = useHistory(),
+    [failText, setFailText] = useState(''),
     [productDescriptionLoading, setProductDescriptionLoading] = useState(false),
     [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [previewUrl, setPreviewUrl] = useState(''),
@@ -57,6 +58,11 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
             productDescriptionUrl: [registrationProductDescription.url]
           });
           setIsNeedUrlFresh(true);
+        }
+
+        if (registrationProductDescription.failText) {
+          setFailText(registrationProductDescription.failText);
+          delete registrationProductDescription.failText;
         }
 
         setGetDataLoading(false);
@@ -158,6 +164,14 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
         </Link>
         <p className='subtitle-title'>产品说明表</p>
       </div>
+      {failText ? (
+        <Alert
+          message='上传错误,请按描述修改'
+          description={failText}
+          type='error'
+          showIcon
+        />
+      ) : null}
       <div className='detail-description-box'>
         <Skeleton loading={getDataLoading}>
           <div className='description-left-box'>

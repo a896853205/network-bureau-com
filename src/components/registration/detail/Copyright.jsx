@@ -26,6 +26,7 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
       state => state.enterpriseStore
     ),
     history = useHistory(),
+    [failText, setFailText] = useState(''),
     [copyprightLoading, setCopyprightLoading] = useState(false),
     [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [previewUrl, setPreviewUrl] = useState(''),
@@ -50,6 +51,11 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
           // 数据处理
           setFieldsValue({ copyrightUrl: [registrationCopyright.url] });
           setIsNeedUrlFresh(true);
+        }
+
+        if (registrationCopyright.failText) {
+          setFailText(registrationCopyright.failText);
+          delete registrationCopyright.failText;
         }
 
         setGetDataLoading(false);
@@ -93,7 +99,7 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
           { fileUrl: formCopyrightUrl },
           'GET'
         );
-        
+
         setCopyprightLoading(false);
         // 切换下载的url
         setPreviewUrl(previewUrl);
@@ -135,6 +141,14 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
         </Link>
         <p className='subtitle-title'>软件著作权证书</p>
       </div>
+      {failText ? (
+        <Alert
+          message='上传错误,请按描述修改'
+          description={failText}
+          type='error'
+          showIcon
+        />
+      ) : null}
       <div className='detail-copyright-box'>
         <Skeleton loading={getDataLoading}>
           <div className='copyright-left-box'>
