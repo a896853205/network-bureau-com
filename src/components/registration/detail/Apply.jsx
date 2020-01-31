@@ -28,6 +28,7 @@ export default Form.create({ name: 'apply' })(({ form }) => {
       state => state.enterpriseStore
     ),
     history = useHistory(),
+    [failText, setFailText] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
     contentInitValue = `服务器硬件环境（CPU、硬盘、内存）
@@ -58,6 +59,11 @@ export default Form.create({ name: 'apply' })(({ form }) => {
             registrationApply.devStartTime = moment(
               registrationApply.devStartTime
             );
+          }
+
+          if (registrationApply.failText) {
+            setFailText(registrationApply.failText);
+            delete registrationApply.failText;
           }
 
           setFieldsValue({
@@ -103,6 +109,14 @@ export default Form.create({ name: 'apply' })(({ form }) => {
         </Link>
         <p className='subtitle-title'>现场测试申请表</p>
       </div>
+      {failText ? (
+        <Alert
+          message='填写错误,请按描述修改'
+          description={failText}
+          type='error'
+          showIcon
+        />
+      ) : null}
       <div className='detail-apply-box'>
         <Skeleton loading={getDataLoading}>
           <div className='apply-left-box'>

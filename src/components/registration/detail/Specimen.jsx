@@ -28,6 +28,7 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
       state => state.enterpriseStore
     ),
     history = useHistory(),
+    [failText, setFailText] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false);
 
@@ -52,6 +53,10 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
             );
           }
 
+          if (registrationSpecimen.failText) {
+            setFailText(registrationSpecimen.failText);
+            delete registrationSpecimen.failText;
+          }
           setFieldsValue(registrationSpecimen);
         }
 
@@ -92,6 +97,14 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
         </Link>
         <p className='subtitle-title'>样品登记表</p>
       </div>
+      {failText ? (
+        <Alert
+          message='填写错误,请按描述修改'
+          description={failText}
+          type='error'
+          showIcon
+        />
+      ) : null}
       <div className='detail-specimen-box'>
         <Skeleton loading={getDataLoading}>
           <div className='specimen-left-box'>

@@ -27,6 +27,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
       state => state.enterpriseStore
     ),
     history = useHistory(),
+    [failText, setFailText] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false);
 
@@ -51,6 +52,10 @@ export default Form.create({ name: 'basic' })(({ form }) => {
             );
           }
 
+          if (registrationBasic.failText) {
+            setFailText(registrationBasic.failText);
+            delete registrationBasic.failText;
+          }
           setFieldsValue(registrationBasic);
         }
 
@@ -91,6 +96,14 @@ export default Form.create({ name: 'basic' })(({ form }) => {
         </Link>
         <p className='subtitle-title'>登记测试基本信息</p>
       </div>
+      {failText ? (
+        <Alert
+          message='填写错误,请按描述修改'
+          description={failText}
+          type='error'
+          showIcon
+        />
+      ) : null}
       <div className='detail-basic-box'>
         <Skeleton loading={getDataLoading}>
           <div className='basic-left-box'>
