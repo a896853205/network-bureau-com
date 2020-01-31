@@ -21,9 +21,9 @@ const getTagColor = status => {
     case 1:
       return 'blue';
     case 2:
-      return 'blue';
-    case 3:
       return 'green';
+    case 3:
+      return 'red';
     default:
       return 'gray';
   }

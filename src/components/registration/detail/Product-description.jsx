@@ -31,6 +31,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     [previewUrl, setPreviewUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
+    [templateUrl, setTemplateUrl] = useState(''),
     formProductDescriptionUrl =
       getFieldValue('productDescriptionUrl') &&
       getFieldValue('productDescriptionUrl')[0];
@@ -108,6 +109,19 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     }
   }, [formProductDescriptionUrl, isNeedUrlFresh]);
 
+  useEffect(() => {
+    (async () => {
+      const templateUrl = await proxyFetch(
+        GET_FILE_URL,
+        { fileUrl: 'sys/registration/产品说明模板.doc' },
+        'GET'
+      );
+
+      // 切换下载模板的url
+      setTemplateUrl(templateUrl);
+    })();
+  }, []);
+
   /**
    * 提交事件
    */
@@ -148,10 +162,21 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
         <Skeleton loading={getDataLoading}>
           <div className='description-left-box'>
             <Form
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 20 }}
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 18 }}
               onSubmit={handleSumbitSave}
             >
+              <Form.Item label='下载产品说明表模板'>
+                {templateUrl ? (
+                  <a href={templateUrl}>
+                    <Button type='primary' icon='download' size='large'>
+                      下载模板
+                    </Button>
+                  </a>
+                ) : (
+                  <Button disabled>请等待</Button>
+                )}
+              </Form.Item>
               {/* 内容 */}
               <Form.Item label='内容'>
                 {getFieldDecorator('productDescriptionUrl', {
@@ -187,7 +212,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                   </Upload>
                 )}
               </Form.Item>
-              <Form.Item wrapperCol={{ offset: 4 }}>
+              <Form.Item wrapperCol={{ offset: 6 }}>
                 <Button
                   type='primary'
                   htmlType='submit'

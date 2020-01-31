@@ -31,6 +31,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
     [previewUrl, setPreviewUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
+    [templateUrl, setTemplateUrl] = useState(''),
     formDocumentUrl =
       getFieldValue('documentUrl') && getFieldValue('documentUrl')[0];
 
@@ -82,6 +83,19 @@ export default Form.create({ name: 'document' })(({ form }) => {
       }
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const templateUrl = await proxyFetch(
+        GET_FILE_URL,
+        { fileUrl: 'sys/registration/用户文档集模板.doc' },
+        'GET'
+      );
+
+      // 切换下载模板的url
+      setTemplateUrl(templateUrl);
+    })();
+  }, []);
 
   useEffect(() => {
     if (formDocumentUrl && isNeedUrlFresh) {
@@ -143,6 +157,17 @@ export default Form.create({ name: 'document' })(({ form }) => {
               wrapperCol={{ span: 18 }}
               onSubmit={handleSumbitSave}
             >
+              <Form.Item label='下载用户文档集模板'>
+                {templateUrl ? (
+                  <a href={templateUrl}>
+                    <Button type='primary' icon='download' size='large'>
+                      下载模板
+                    </Button>
+                  </a>
+                ) : (
+                  <Button disabled>请等待</Button>
+                )}
+              </Form.Item>
               {/* 内容 */}
               <Form.Item label='用户文档集'>
                 {getFieldDecorator('documentUrl', {
