@@ -16,13 +16,13 @@ import { REGISTRATION_DETAIL } from '@/constants/route-constants';
 
 const getTagColor = status => {
   switch (status) {
-    case 0:
-      return 'gray';
     case 1:
-      return 'blue';
+      return 'gray';
     case 2:
-      return 'green';
+      return 'blue';
     case 3:
+      return 'green';
+    case 4:
       return 'red';
     default:
       return 'gray';
@@ -119,14 +119,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationBasicStatus.status !== 2 ? (
+              {enterpriseRegistrationBasicStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/basic`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='edit' /> 填写内容
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationBasicStatus.status !== 0 ? (
+              {enterpriseRegistrationBasicStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
@@ -147,14 +147,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationContractStatus.status !== 2 ? (
+              {enterpriseRegistrationContractStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/contract`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='edit' /> 填写内容
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationContractStatus.status !== 0 ? (
+              {enterpriseRegistrationContractStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
@@ -177,14 +177,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationCopyrightStatus.status !== 2 ? (
+              {enterpriseRegistrationCopyrightStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/copyright`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='edit' /> 上传文件
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationCopyrightStatus.status !== 0 ? (
+              {enterpriseRegistrationCopyrightStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
@@ -205,14 +205,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationSpecimenStatus.status !== 2 ? (
+              {enterpriseRegistrationSpecimenStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/specimen`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='edit' /> 填写内容
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationSpecimenStatus.status !== 0 ? (
+              {enterpriseRegistrationSpecimenStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
@@ -235,14 +235,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationProductDescriptionStatus.status !== 2 ? (
+              {enterpriseRegistrationProductDescriptionStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='upload' /> 上传文件
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationProductDescriptionStatus.status !== 0 ? (
+              {enterpriseRegistrationProductDescriptionStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
@@ -263,14 +263,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationDocumentStatus.status !== 2 ? (
+              {enterpriseRegistrationDocumentStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/document`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='upload' /> 上传文件
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationDocumentStatus.status !== 0 ? (
+              {enterpriseRegistrationDocumentStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
@@ -291,14 +291,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationProductStatus.status !== 2 ? (
+              {enterpriseRegistrationProductStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/product`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='upload' /> 上传文件
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationProductStatus.status !== 0 ? (
+              {enterpriseRegistrationProductStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
@@ -319,14 +319,14 @@ export default props => {
               </Tag>
             </p>
             <div>
-              {enterpriseRegistrationApplyStatus.status !== 2 ? (
+              {enterpriseRegistrationApplyStatus.status !== 3 ? (
                 <Link to={`${REGISTRATION_DETAIL.path}/apply`}>
                   <span className='current-right-box current-upload-button'>
                     <Icon type='edit' /> 填写内容
                   </span>
                 </Link>
               ) : null}
-              {enterpriseRegistrationApplyStatus.status !== 0 ? (
+              {enterpriseRegistrationApplyStatus.status !== 1 ? (
                 <Icon
                   type='check-circle'
                   theme='twoTone'
