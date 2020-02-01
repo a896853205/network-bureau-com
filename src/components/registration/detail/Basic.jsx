@@ -52,6 +52,9 @@ export default Form.create({ name: 'basic' })(({ form }) => {
             );
           }
 
+          delete registrationBasic.status;
+          delete registrationBasic.statusText;
+
           if (registrationBasic.failText) {
             setFailText(registrationBasic.failText);
             delete registrationBasic.failText;
