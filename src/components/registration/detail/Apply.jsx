@@ -63,8 +63,11 @@ export default Form.create({ name: 'apply' })(({ form }) => {
 
           if (registrationApply.failText) {
             setFailText(registrationApply.failText);
-            delete registrationApply.failText;
           }
+
+          delete registrationApply.status;
+          delete registrationApply.statusText;
+          delete registrationApply.failText;
 
           setFieldsValue({
             ...registrationApply,

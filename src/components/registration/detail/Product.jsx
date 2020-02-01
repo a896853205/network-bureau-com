@@ -55,8 +55,11 @@ export default Form.create({ name: 'product' })(({ form }) => {
 
         if (registrationProduct.failText) {
           setFailText(registrationProduct.failText);
-          delete registrationProduct.failText;
         }
+
+        delete registrationProduct.status;
+        delete registrationProduct.statusText;
+        delete registrationProduct.failText;
 
         setGetDataLoading(false);
       })();

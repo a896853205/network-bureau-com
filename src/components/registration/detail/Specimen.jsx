@@ -55,8 +55,12 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
 
           if (registrationSpecimen.failText) {
             setFailText(registrationSpecimen.failText);
-            delete registrationSpecimen.failText;
           }
+
+          delete registrationSpecimen.status;
+          delete registrationSpecimen.statusText;
+          delete registrationSpecimen.failText;
+
           setFieldsValue(registrationSpecimen);
         }
 

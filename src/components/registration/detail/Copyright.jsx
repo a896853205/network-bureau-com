@@ -55,8 +55,11 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
 
         if (registrationCopyright.failText) {
           setFailText(registrationCopyright.failText);
-          delete registrationCopyright.failText;
         }
+
+        delete registrationCopyright.status;
+        delete registrationCopyright.statusText;
+        delete registrationCopyright.failText;
 
         setGetDataLoading(false);
       })();

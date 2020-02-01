@@ -55,8 +55,12 @@ export default Form.create({ name: 'contract' })(({ form }) => {
 
           if (registrationContract.failText) {
             setFailText(registrationContract.failText);
-            delete registrationContract.failText;
           }
+
+          delete registrationContract.status;
+          delete registrationContract.statusText;
+          delete registrationContract.failText;
+
           setFieldsValue(registrationContract);
         }
 
@@ -98,7 +102,12 @@ export default Form.create({ name: 'contract' })(({ form }) => {
         <p className='subtitle-title'>评测合同</p>
       </div>
       {failText ? (
-        <Alert message='填写错误,请按描述修改' description={failText} type='error' showIcon />
+        <Alert
+          message='填写错误,请按描述修改'
+          description={failText}
+          type='error'
+          showIcon
+        />
       ) : null}
       <div className='detail-contract-box'>
         <Skeleton loading={getDataLoading}>
