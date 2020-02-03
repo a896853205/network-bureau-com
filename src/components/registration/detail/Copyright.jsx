@@ -129,7 +129,7 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
           setSaveDataLoading(false);
 
           if (res) {
-            history.push(`${REGISTRATION_PROFILE.path}`);
+            history.push(REGISTRATION_PROFILE.path);
           }
         }
       }
