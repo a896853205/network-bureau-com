@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // 样式
-import { Icon, Tag } from 'antd';
+import { Icon, Tag, Alert } from 'antd';
 
 // 请求
 import proxyFetch from '@/util/request';
@@ -63,7 +63,8 @@ export default props => {
     [
       enterpriseRegistrationBasicStatus,
       setEnterpriseRegistrationBasicStatus
-    ] = useState(null);
+    ] = useState(null),
+    [waitAlert, setWaitAlert] = useState(0);
 
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
@@ -98,15 +99,35 @@ export default props => {
         setEnterpriseRegistrationBasicStatus(
           res.enterpriseRegistrationBasicStatus
         );
+
+        let temp = 1;
+        for (let itemStatus in res) {
+          if (res[itemStatus].status === 1 || res[itemStatus].status === 4) {
+            temp = 0;
+            break;
+          }
+        }
+        if (temp) {
+          setWaitAlert(1);
+        }
       })();
     }
-  }, [enterpriseRegistrationUuid]);
+  }, [enterpriseRegistrationUuid, waitAlert]);
 
   return (
     <div className='item-box process-item-box current-profile-box'>
       <p className='title-box'>
         <span>当前步骤</span>-<span>提交上传8种材料</span>
       </p>
+      {waitAlert ? (
+        <Alert
+          message='请等待审核'
+          description='请耐心等待2-3个工作日,等待相关人员进行审核'
+          type='success'
+          showIcon
+          className='process-alert-box'
+        />
+      ) : null}
       <ol className='process-profile-ol'>
         {enterpriseRegistrationBasicStatus ? (
           <li>
