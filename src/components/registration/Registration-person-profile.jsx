@@ -5,7 +5,7 @@ import proxyFetch from '@/util/request';
 // redux
 import { useSelector } from 'react-redux';
 
-import { GET_MANANGER_INFO } from '@/constants/api-constants';
+import { SELECT_MANANGER_INFO } from '@/constants/api-constants';
 
 export default props => {
   const { steps, registration } = useSelector(state => state.enterpriseStore),
@@ -25,7 +25,7 @@ export default props => {
         });
 
         let { headPreviewUrl, phone, name, star } = await proxyFetch(
-          GET_MANANGER_INFO,
+          SELECT_MANANGER_INFO,
           { managerUuid },
           'GET'
         );

@@ -9,7 +9,7 @@ import proxyFetch, { proxyFileFetch } from '@/util/request';
 import {
   UPLOAD_WORD_FILE,
   GET_FILE_URL,
-  GET_REGISTRATION_PRODUCT_DESCRIPTION,
+  SELECT_REGISTRATION_PRODUCT_DESCRIPTION,
   SAVE_REGISTRATION_PRODUCT_DESCRIPTION
 } from '@/constants/api-constants';
 
@@ -43,7 +43,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
       (async () => {
         setGetDataLoading(true);
         let registrationProductDescription = await proxyFetch(
-          GET_REGISTRATION_PRODUCT_DESCRIPTION,
+          SELECT_REGISTRATION_PRODUCT_DESCRIPTION,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );

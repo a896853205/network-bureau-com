@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 // 请求
 import proxyFetch from '@/util/request';
 import {
-  GET_REGISTRATION_APPLY,
+  SELECT_REGISTRATION_APPLY,
   SAVE_REGISTRATION_APPLY
 } from '@/constants/api-constants';
 
@@ -46,7 +46,7 @@ export default Form.create({ name: 'apply' })(({ form }) => {
       (async () => {
         setGetDataLoading(true);
         let registrationApply = await proxyFetch(
-          GET_REGISTRATION_APPLY,
+          SELECT_REGISTRATION_APPLY,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );

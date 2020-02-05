@@ -9,7 +9,7 @@ import proxyFetch, { proxyFileFetch } from '@/util/request';
 import {
   UPLOAD_FILE,
   GET_FILE_URL,
-  GET_REGISTRATION_COPYRIGHT,
+  SELECT_REGISTRATION_COPYRIGHT,
   SAVE_REGISTRATION_COPYRIGHT
 } from '@/constants/api-constants';
 
@@ -41,7 +41,7 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
       (async () => {
         setGetDataLoading(true);
         let registrationCopyright = await proxyFetch(
-          GET_REGISTRATION_COPYRIGHT,
+          SELECT_REGISTRATION_COPYRIGHT,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
