@@ -98,6 +98,7 @@ export default props => {
 
       setSaveDataLoading(true);
       await proxyFetch(SAVE_ENTERPRISE_CONTRACT_URL, value);
+      setFailText(null);
       setSaveDataLoading(false);
     }
   };
@@ -111,8 +112,10 @@ export default props => {
           'GET'
         );
 
-        if (contractList.failText) {
+        if (!(contractList.managerStatus === 4) && contractList.failText) {
           setFailText(contractList.failText);
+        } else {
+          setFailText('');
         }
 
         setManagerStatus(contractList.managerStatus);
