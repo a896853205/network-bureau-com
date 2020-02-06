@@ -25,8 +25,8 @@ export default props => {
     [managerUrl, setManagerUrl] = useState(''),
     [contractEnterpriseLoading, setContractEnterpriseLoading] = useState(false),
     [contractManagerUrl, setContractManagerUrl] = useState(''),
-    [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [previewUrl, setPreviewUrl] = useState(''),
+    [failText, setFailText] = useState(''),
     [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [managerStatus, setManagerStatus] = useState(null),
@@ -80,13 +80,12 @@ export default props => {
         if (enterpriseContract && enterpriseContract.enterpriseUrl) {
           // 数据处理
           setContractEnterpriseUrl(enterpriseContract.enterpriseUrl);
-          setIsNeedUrlFresh(true);
         }
 
         setGetDataLoading(false);
       })();
     }
-  }, [enterpriseRegistrationUuid, contractEnterpriseUrl]);
+  }, [enterpriseRegistrationUuid]);
 
   /**
    * 提交事件
@@ -111,6 +110,10 @@ export default props => {
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
+
+        if (contractList.failText) {
+          setFailText(contractList.failText);
+        }
 
         setManagerStatus(contractList.managerStatus);
       })();
@@ -137,13 +140,12 @@ export default props => {
 
       if (fileUrl) {
         setContractEnterpriseUrl(fileUrl);
-        setIsNeedUrlFresh(true);
       }
     }
   };
 
   useEffect(() => {
-    if (contractEnterpriseUrl && isNeedUrlFresh) {
+    if (contractEnterpriseUrl) {
       (async () => {
         setContractEnterpriseLoading(true);
 
@@ -156,10 +158,9 @@ export default props => {
         setContractEnterpriseLoading(false);
         // 切换下载的url
         setPreviewUrl(previewUrl);
-        setIsNeedUrlFresh(false);
       })();
     }
-  }, [contractEnterpriseUrl, isNeedUrlFresh]);
+  }, [contractEnterpriseUrl]);
 
   return (
     <>
@@ -169,6 +170,16 @@ export default props => {
             message='您已提交完毕请等待审核'
             description='请耐心等待2-3个工作日,审核完成前可修改文件并重新提交'
             type='info'
+          />
+        </div>
+      ) : null}
+      {failText ? (
+        <div className='electronic-contract-alert-box'>
+          <Alert
+            message='填写错误,请按描述修改'
+            description={failText}
+            type='error'
+            showIcon
           />
         </div>
       ) : null}

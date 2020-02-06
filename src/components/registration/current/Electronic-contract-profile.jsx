@@ -43,6 +43,7 @@ export default props => {
           break;
         case 3:
         case 4:
+        case 6:
           // 步骤二的上传组件
           setContent(<ContractUpload />);
           break;
