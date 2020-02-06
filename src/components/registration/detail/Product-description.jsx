@@ -64,7 +64,6 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
           setFailText(registrationProductDescription.failText);
         }
 
-        
         delete registrationProductDescription.status;
         delete registrationProductDescription.statusText;
         delete registrationProductDescription.failText;
@@ -184,10 +183,10 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
               wrapperCol={{ span: 18 }}
               onSubmit={handleSumbitSave}
             >
-              <Form.Item label='下载产品说明表模板'>
+              <Form.Item label='产品说明表模板'>
                 {templateUrl ? (
                   <a href={templateUrl}>
-                    <Button type='primary' icon='download' size='large'>
+                    <Button className='button' icon='download' size='large'>
                       下载模板
                     </Button>
                   </a>
@@ -215,14 +214,21 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                     customRequest={handleUploadFile}
                   >
                     {previewUrl && !productDescriptionLoading ? (
-                      <div>
-                        <a href={previewUrl} onClick={e => e.stopPropagation()}>
-                          <Button>查看上传</Button>
-                        </a>
-                        <Button>重新上传</Button>
-                      </div>
+                      <Button.Group size='large'>
+                        <Button
+                          className='helf-button'
+                          onClick={() => window.open(previewUrl)}
+                        >
+                          查看上传
+                        </Button>
+                        <Button className='helf-button'>重新上传</Button>
+                      </Button.Group>
                     ) : (
-                      <Button size='large' loading={productDescriptionLoading}>
+                      <Button
+                        className='button'
+                        size='large'
+                        loading={productDescriptionLoading}
+                      >
                         点击文件上传word,PDF
                         <Icon type='inbox' />
                       </Button>
@@ -235,6 +241,8 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                   type='primary'
                   htmlType='submit'
                   loading={saveDataLoading}
+                  className='button'
+                  size='large'
                 >
                   提交
                 </Button>
