@@ -27,6 +27,7 @@ export default props => {
     [contractManagerUrl, setContractManagerUrl] = useState(''),
     [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [previewUrl, setPreviewUrl] = useState(''),
+    [failText, setFailText] = useState(''),
     [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [managerStatus, setManagerStatus] = useState(null),
@@ -100,7 +101,6 @@ export default props => {
       setSaveDataLoading(true);
       await proxyFetch(SAVE_ENTERPRISE_CONTRACT_URL, value);
       setSaveDataLoading(false);
-
     }
   };
 
@@ -112,6 +112,10 @@ export default props => {
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
+
+        if (contractList.failText) {
+          setFailText(contractList.failText);
+        }
 
         setManagerStatus(contractList.managerStatus);
       })();
@@ -166,11 +170,21 @@ export default props => {
     <>
       {managerStatus === 4 ? (
         <div className='electronic-contract-alert-box'>
-        <Alert
-          message='请等待审核或重新提交'
-          description='请耐心等待2-3个工作日,审核完成前可修改文件并重新提交'
-          type='info'
-        />
+          <Alert
+            message='请等待审核或重新提交'
+            description='请耐心等待2-3个工作日,审核完成前可修改文件并重新提交'
+            type='info'
+          />
+        </div>
+      ) : null}
+      {failText ? (
+        <div className='electronic-contract-alert-box'>
+          <Alert
+            message='填写错误,请按描述修改'
+            description={failText}
+            type='error'
+            showIcon
+          />
         </div>
       ) : null}
       <div className='electronic-contract-detail-box'>
