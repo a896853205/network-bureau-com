@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 //样式
-import { Alert, Button, Icon, Upload, message, Skeleton } from 'antd';
+import { Alert, Button, Icon, Upload, message, Skeleton, Timeline } from 'antd';
 import '@/style/home/registration/electronic-contract.styl';
 
 // 请求
@@ -100,7 +100,6 @@ export default props => {
       setSaveDataLoading(true);
       await proxyFetch(SAVE_ENTERPRISE_CONTRACT_URL, value);
       setSaveDataLoading(false);
-
     }
   };
 
@@ -166,61 +165,77 @@ export default props => {
     <>
       {managerStatus === 4 ? (
         <div className='electronic-contract-alert-box'>
-        <Alert
-          message='请等待审核或重新提交'
-          description='请耐心等待2-3个工作日,审核完成前可修改文件并重新提交'
-          type='info'
-        />
+          <Alert
+            message='您已提交完毕请等待审核'
+            description='请耐心等待2-3个工作日,审核完成前可修改文件并重新提交'
+            type='info'
+          />
         </div>
       ) : null}
       <div className='electronic-contract-detail-box'>
         <Skeleton loading={getDataLoading}>
           <div className='detail-left-box'>
-            {managerUrl ? (
-              <a href={managerUrl} target='_blank' rel='noopener noreferrer'>
-                <Button
-                  type='primary'
-                  icon='download'
-                  className='electronic-contract-download-button'
-                >
-                  下载合同
-                </Button>
-              </a>
-            ) : (
-              <Button disabled>请等待</Button>
-            )}
-            <Upload showUploadList={false} customRequest={handleUploadFile}>
-              {previewUrl && !contractEnterpriseLoading ? (
-                <div>
+            <Timeline>
+              <Timeline.Item>
+                {managerUrl ? (
                   <a
-                    href={previewUrl}
-                    onClick={e => e.stopPropagation()}
+                    href={managerUrl}
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    <Button>查看上传</Button>
+                    <Button
+                      size='large'
+                      type='primary'
+                      icon='download'
+                      className='electronic-contract-download-button'
+                    >
+                      下载合同
+                    </Button>
                   </a>
-                  <Button>重新上传</Button>
-                </div>
-              ) : (
+                ) : (
+                  <Button disabled size='large'>
+                    请等待
+                  </Button>
+                )}
+              </Timeline.Item>
+              <Timeline.Item>
+                <Upload showUploadList={false} customRequest={handleUploadFile}>
+                  {previewUrl && !contractEnterpriseLoading ? (
+                    <div>
+                      <a
+                        href={previewUrl}
+                        onClick={e => e.stopPropagation()}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <Button size='large'>查看上传</Button>
+                      </a>
+                      <Button size='large'>重新上传</Button>
+                    </div>
+                  ) : (
+                    <Button
+                      size='large'
+                      className='electronic-contract-upload-button'
+                      loading={contractEnterpriseLoading}
+                    >
+                      扫描后上传PDF合同
+                      <Icon type='inbox' />
+                    </Button>
+                  )}
+                </Upload>
+              </Timeline.Item>
+              <Timeline.Item>
                 <Button
                   size='large'
-                  className='electronic-contract-upload-button'
-                  loading={contractEnterpriseLoading}
+                  type='primary'
+                  className='electronic-contract-submit-button'
+                  loading={saveDataLoading}
+                  onClick={handleEnterpriseUrlSave}
                 >
-                  扫描后上传PDF合同
-                  <Icon type='inbox' />
+                  提交
                 </Button>
-              )}
-            </Upload>
-            <Button
-              type='primary'
-              className='electronic-contract-submit-button'
-              loading={saveDataLoading}
-              onClick={handleEnterpriseUrlSave}
-            >
-              提交
-            </Button>
+              </Timeline.Item>
+            </Timeline>
           </div>
           <div className='detail-right-box'>
             <Alert
