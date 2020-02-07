@@ -216,12 +216,12 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                     {previewUrl && !productDescriptionLoading ? (
                       <Button.Group size='large'>
                         <Button
-                          className='helf-button'
+                          className='half-button'
                           onClick={() => window.open(previewUrl)}
                         >
                           查看上传
                         </Button>
-                        <Button className='helf-button'>重新上传</Button>
+                        <Button className='half-button'>重新上传</Button>
                       </Button.Group>
                     ) : (
                       <Button

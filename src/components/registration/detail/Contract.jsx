@@ -178,6 +178,8 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                   type='primary'
                   htmlType='submit'
                   loading={saveDataLoading}
+                  className='button'
+                  size='large'
                 >
                   提交
                 </Button>

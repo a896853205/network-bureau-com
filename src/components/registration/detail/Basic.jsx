@@ -59,7 +59,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
           delete registrationBasic.status;
           delete registrationBasic.statusText;
           delete registrationBasic.failText;
-          
+
           setFieldsValue(registrationBasic);
         }
 
@@ -189,6 +189,8 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                   type='primary'
                   htmlType='submit'
                   loading={saveDataLoading}
+                  className='button'
+                  size='large'
                 >
                   提交
                 </Button>

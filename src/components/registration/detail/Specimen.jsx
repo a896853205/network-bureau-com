@@ -172,6 +172,8 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
                   type='primary'
                   htmlType='submit'
                   loading={saveDataLoading}
+                  className='button'
+                  size='large'
                 >
                   提交
                 </Button>

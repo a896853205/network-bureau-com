@@ -156,8 +156,8 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
         <Skeleton loading={getDataLoading}>
           <div className='copyright-left-box'>
             <Form
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 16 }}
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 18 }}
               onSubmit={handleSumbitSave}
             >
               {/* 内容 */}
@@ -180,14 +180,21 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
                     customRequest={handleUploadImage}
                   >
                     {previewUrl && !copyprightLoading ? (
-                      <div>
-                        <a href={previewUrl} onClick={e => e.stopPropagation()}>
-                          <Button>查看上传</Button>
-                        </a>
-                        <Button>重新上传</Button>
-                      </div>
+                      <Button.Group size='large'>
+                        <Button
+                          className='half-button'
+                          onClick={() => window.open(previewUrl)}
+                        >
+                          查看上传
+                        </Button>
+                        <Button className='half-button'>重新上传</Button>
+                      </Button.Group>
                     ) : (
-                      <Button size='large' loading={copyprightLoading}>
+                      <Button
+                        className='button'
+                        size='large'
+                        loading={copyprightLoading}
+                      >
                         点击文件上传jpg,jpeg,png
                         <Icon type='inbox' />
                       </Button>
@@ -195,11 +202,13 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
                   </Upload>
                 )}
               </Form.Item>
-              <Form.Item wrapperCol={{ offset: 8 }}>
+              <Form.Item wrapperCol={{ offset: 6 }}>
                 <Button
                   type='primary'
                   htmlType='submit'
                   loading={saveDataLoading}
+                  className='button'
+                  size='large'
                 >
                   提交
                 </Button>

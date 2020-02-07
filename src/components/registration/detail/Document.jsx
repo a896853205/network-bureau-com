@@ -177,7 +177,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
               <Form.Item label='下载用户文档集模板'>
                 {templateUrl ? (
                   <a href={templateUrl}>
-                    <Button type='primary' icon='download' size='large'>
+                    <Button className='button' icon='download' size='large'>
                       下载模板
                     </Button>
                   </a>
@@ -205,14 +205,21 @@ export default Form.create({ name: 'document' })(({ form }) => {
                     customRequest={handleUploadFile}
                   >
                     {previewUrl && !documentLoading ? (
-                      <div>
-                        <a href={previewUrl} onClick={e => e.stopPropagation()}>
-                          <Button>查看上传</Button>
-                        </a>
-                        <Button>重新上传</Button>
-                      </div>
+                      <Button.Group size='large'>
+                        <Button
+                          className='half-button'
+                          onClick={() => window.open(previewUrl)}
+                        >
+                          查看上传
+                        </Button>
+                        <Button className='half-button'>重新上传</Button>
+                      </Button.Group>
                     ) : (
-                      <Button size='large' loading={documentLoading}>
+                      <Button
+                        className='button'
+                        size='large'
+                        loading={documentLoading}
+                      >
                         点击文件上传word,PDF
                         <Icon type='inbox' />
                       </Button>
@@ -225,6 +232,8 @@ export default Form.create({ name: 'document' })(({ form }) => {
                   type='primary'
                   htmlType='submit'
                   loading={saveDataLoading}
+                  className='button'
+                  size='large'
                 >
                   提交
                 </Button>
