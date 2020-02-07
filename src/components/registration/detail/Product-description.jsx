@@ -172,7 +172,6 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
           message='上传错误,请按描述修改'
           description={failText}
           type='error'
-          showIcon
         />
       ) : null}
       <div className='detail-description-box'>
@@ -259,7 +258,6 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
               message='上传产品说明表注意事项'
               description='请企业用户确保上传的word或PDF文件内容真实完整,并加盖公章,确保上传完毕后点击下方提交按钮。'
               type='info'
-              showIcon
             />
           </div>
         </Skeleton>

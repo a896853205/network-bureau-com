@@ -149,7 +149,6 @@ export default Form.create({ name: 'product' })(({ form }) => {
           message='上传错误,请按描述修改'
           description={failText}
           type='error'
-          showIcon
         />
       ) : null}
       <div className='detail-product-box'>
@@ -190,7 +189,9 @@ export default Form.create({ name: 'product' })(({ form }) => {
                       customRequest={handleUploadImage}
                     >
                       {previewUrl && !productLoading ? (
-                        <Button className='half-button'>重新上传</Button>
+                        <Button className='half-button' size='large'>
+                          重新上传
+                        </Button>
                       ) : (
                         <Button
                           className='button'
@@ -223,7 +224,6 @@ export default Form.create({ name: 'product' })(({ form }) => {
               message='上传产品介质注意事项'
               description='请企业用户确保上传的rar或zip文件内容真实完整,确保上传完毕后点击下方提交按钮。'
               type='info'
-              showIcon
             />
           </div>
         </Skeleton>

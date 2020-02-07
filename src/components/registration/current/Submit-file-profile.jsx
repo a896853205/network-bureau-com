@@ -126,7 +126,6 @@ export default props => {
             message='请等待审核'
             description='请耐心等待2-3个工作日,等待相关人员进行审核'
             type='success'
-            showIcon
             className='process-alert-box'
           />
         ) : null}

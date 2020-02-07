@@ -106,7 +106,6 @@ export default Form.create({ name: 'contract' })(({ form }) => {
           message='填写错误,请按描述修改'
           description={failText}
           type='error'
-          showIcon
         />
       ) : null}
       <div className='detail-contract-box'>
@@ -192,7 +191,6 @@ export default Form.create({ name: 'contract' })(({ form }) => {
             message='填写评测合同内容注意事项'
             description='此块内容是生成评测合同的必要信息,请提供的信息真实完整和准确。其中传真不是必填项'
             type='info'
-            showIcon
           />
         </div>
       </div>

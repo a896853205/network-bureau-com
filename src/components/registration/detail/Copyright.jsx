@@ -149,7 +149,6 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
           message='上传错误,请按描述修改'
           description={failText}
           type='error'
-          showIcon
         />
       ) : null}
       <div className='detail-copyright-box'>
@@ -225,7 +224,6 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
               message='上传软件著作权证书注意事项'
               description='请企业用户扫描其软件著作权证书,确保上传完毕后点击下方提交按钮。'
               type='info'
-              showIcon
             />
           </div>
         </Skeleton>

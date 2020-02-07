@@ -116,8 +116,7 @@ export default Form.create({ name: 'apply' })(({ form }) => {
         <Alert
           message='填写错误,请按描述修改'
           description={failText}
-          type='error'
-          showIcon
+          type='error'        
         />
       ) : null}
       <div className='detail-apply-box'>
@@ -164,8 +163,7 @@ export default Form.create({ name: 'apply' })(({ form }) => {
           <Alert
             message='填写现场测试申请表注意事项'
             description='此块内容是现场测试申请表的测试环境等内容,请企业提供的信息真实完整和准确。'
-            type='info'
-            showIcon
+            type='info'     
           />
         </div>
       </div>

@@ -106,7 +106,6 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
           message='填写错误,请按描述修改'
           description={failText}
           type='error'
-          showIcon
         />
       ) : null}
       <div className='detail-specimen-box'>
@@ -186,7 +185,6 @@ export default Form.create({ name: 'specimen' })(({ form }) => {
             message='填写样品登记表注意事项'
             description='此块内容是登记样品的基本信息,均为必填项,请企业提供的信息真实完整和准确。'
             type='info'
-            showIcon
           />
         </div>
       </div>

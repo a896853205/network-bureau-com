@@ -105,7 +105,6 @@ export default Form.create({ name: 'basic' })(({ form }) => {
           message='填写错误,请按描述修改'
           description={failText}
           type='error'
-          showIcon
         />
       ) : null}
       <div className='detail-basic-box'>
@@ -203,7 +202,6 @@ export default Form.create({ name: 'basic' })(({ form }) => {
             message='填写登记测试基本信息内容注意事项'
             description='此块内容是登记测试的基本信息,均为必填项,其中注册地址应与营业执照上的地址完全一致,请企业提供的信息真实完整和准确。'
             type='info'
-            showIcon
           />
         </div>
       </div>

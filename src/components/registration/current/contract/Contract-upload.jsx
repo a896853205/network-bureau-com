@@ -25,7 +25,7 @@ export default props => {
     [contractEnterpriseLoading, setContractEnterpriseLoading] = useState(false),
     [contractManagerUrl, setContractManagerUrl] = useState(''),
     [previewUrl, setPreviewUrl] = useState(''),
-    [failText, setFailText] = useState(''),
+    [managerFailText, setManagermanagerFailText] = useState(''),
     [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [managerStatus, setManagerStatus] = useState(null),
@@ -97,7 +97,7 @@ export default props => {
         );
 
         if (contractStatus.managerStatus === 6) {
-          setFailText(contractStatus.failText);
+          setManagermanagerFailText(contractStatus.managerFailText);
         }
 
         setManagerStatus(contractStatus.managerStatus);
@@ -163,13 +163,12 @@ export default props => {
           />
         </div>
       ) : null}
-      {failText ? (
+      {managerFailText ? (
         <div className='electronic-contract-alert-box'>
           <Alert
             message='填写错误,请按描述修改'
-            description={failText}
+            description={managerFailText}
             type='error'
-            showIcon
           />
         </div>
       ) : null}
@@ -188,7 +187,7 @@ export default props => {
                       size='large'
                       type='primary'
                       icon='download'
-                      className='electronic-contract-download-button'
+                      className='button'
                     >
                       下载合同
                     </Button>
@@ -209,14 +208,18 @@ export default props => {
                         target='_blank'
                         rel='noopener noreferrer'
                       >
-                        <Button size='large'>查看上传</Button>
+                        <Button size='large' className='half-button'>
+                          查看上传
+                        </Button>
                       </a>
-                      <Button size='large'>重新上传</Button>
+                      <Button size='large' className='half-button'>
+                        重新上传
+                      </Button>
                     </div>
                   ) : (
                     <Button
                       size='large'
-                      className='electronic-contract-upload-button'
+                      className='button'
                       loading={contractEnterpriseLoading}
                     >
                       扫描后上传PDF合同
@@ -229,7 +232,7 @@ export default props => {
                 <Button
                   size='large'
                   type='primary'
-                  className='electronic-contract-submit-button'
+                  className='button'
                   loading={saveDataLoading}
                   onClick={handleEnterpriseUrlSave}
                 >
@@ -243,7 +246,6 @@ export default props => {
               message='注意事项'
               description='请企业用户点击下载按钮,下载甲方生成的合同,并按规定盖章,扫描后上传合同pdf文件,确认无误后点击提交按钮'
               type='info'
-              showIcon
             />
           </div>
         </Skeleton>

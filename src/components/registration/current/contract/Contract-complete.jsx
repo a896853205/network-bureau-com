@@ -11,7 +11,6 @@ export default props => {
           message='审查合格'
           description='电子签合同审查通过,下一步流程:交付汇款'
           type='success'
-          showIcon
         />
       </div>
     </>

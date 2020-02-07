@@ -163,7 +163,6 @@ export default Form.create({ name: 'document' })(({ form }) => {
           message='上传错误,请按描述修改'
           description={failText}
           type='error'
-          showIcon
         />
       ) : null}
       <div className='detail-document-box'>
@@ -250,7 +249,6 @@ export default Form.create({ name: 'document' })(({ form }) => {
               message='上传用户文档集注意事项'
               description='请企业用户确保上传的word或PDF文件内容真实完整,确保上传完毕后点击下方提交按钮。'
               type='info'
-              showIcon
             />
           </div>
         </Skeleton>

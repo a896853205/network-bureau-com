@@ -11,7 +11,6 @@ export default props => {
           message='请等待合同生成'
           description='管理员正在生成合同,请耐心等待2-3个工作日'
           type='info'
-          showIcon
         />
       </div>
     </>
