@@ -12,10 +12,8 @@ import proxyFetch, { proxyFileFetch } from '@/util/request';
 import {
   GET_FILE_URL,
   SELECT_CONTRACT_MANAGER,
-  SELECT_MANAGER_CONTRACT_URL,
   UPLOAD_PDF_FILE,
-  SAVE_ENTERPRISE_CONTRACT_URL,
-  SELECT_ENTERPRISE_CONTRACT_URL
+  SAVE_ENTERPRISE_CONTRACT_URL
 } from '@/constants/api-constants';
 
 export default props => {
@@ -32,25 +30,6 @@ export default props => {
     [managerStatus, setManagerStatus] = useState(null),
     [saveDataLoading, setSaveDataLoading] = useState(false);
 
-  // 查找甲方上传url
-  useEffect(() => {
-    if (enterpriseRegistrationUuid) {
-      (async () => {
-        let managerContract = await proxyFetch(
-          SELECT_MANAGER_CONTRACT_URL,
-          { registrationUuid: enterpriseRegistrationUuid },
-          'GET'
-        );
-
-        // 数据回显
-        if (managerContract && managerContract.managerUrl) {
-          // 数据处理
-          setContractManagerUrl(managerContract.managerUrl);
-        }
-      })();
-    }
-  }, [enterpriseRegistrationUuid, contractManagerUrl]);
-
   useEffect(() => {
     (async () => {
       if (contractManagerUrl) {
@@ -64,28 +43,6 @@ export default props => {
       }
     })();
   }, [contractManagerUrl]);
-
-  // 将已有的数据回显
-  useEffect(() => {
-    if (enterpriseRegistrationUuid) {
-      (async () => {
-        setGetDataLoading(true);
-        let enterpriseContract = await proxyFetch(
-          SELECT_ENTERPRISE_CONTRACT_URL,
-          { registrationUuid: enterpriseRegistrationUuid },
-          'GET'
-        );
-
-        // 数据回显
-        if (enterpriseContract && enterpriseContract.enterpriseUrl) {
-          // 数据处理
-          setContractEnterpriseUrl(enterpriseContract.enterpriseUrl);
-        }
-
-        setGetDataLoading(false);
-      })();
-    }
-  }, [enterpriseRegistrationUuid]);
 
   /**
    * 提交事件
@@ -106,11 +63,21 @@ export default props => {
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
       (async () => {
+        setGetDataLoading(true);
         let contractList = await proxyFetch(
           SELECT_CONTRACT_MANAGER,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
+
+        // 数据回显
+        if (contractList) {
+          setContractManagerUrl(contractList.managerUrl);
+        }
+        if (contractList && contractList.enterpriseUrl) {
+          // 数据处理
+          setContractEnterpriseUrl(contractList.enterpriseUrl);
+        }
 
         if (!(contractList.managerStatus === 4) && contractList.failText) {
           setFailText(contractList.failText);
@@ -119,9 +86,10 @@ export default props => {
         }
 
         setManagerStatus(contractList.managerStatus);
+        setGetDataLoading(false);
       })();
     }
-  }, [enterpriseRegistrationUuid, saveDataLoading]);
+  }, [enterpriseRegistrationUuid, saveDataLoading, contractManagerUrl]);
 
   /**
    * 上传pdf文件

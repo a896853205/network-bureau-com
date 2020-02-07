@@ -44,6 +44,4 @@ export const SAVE_REGISTRATION_PRODUCT_DESCRIPTION = `${DominConfigs.DOMAIN}${Do
 export const SELECT_REGISTRATION_PRODUCT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectRegistrationProduct`; // 查询产品介质信息
 export const SAVE_REGISTRATION_PRODUCT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveRegistrationProduct`; // 保存产品介质信息
 export const SELECT_CONTRACT_MANAGER = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectContractManager`; // 查询评测合同甲方上传pdf合同的信息
-export const SELECT_MANAGER_CONTRACT_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectManagerContractUrl`; // 查询评测合同甲方上传pdf合同的信息
 export const SAVE_ENTERPRISE_CONTRACT_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveEnterpriseContractUrl`; // 保存乙方评测合同信息
-export const SELECT_ENTERPRISE_CONTRACT_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectEnterpriseContractUrl`; // 查询乙方上传评测合同信息
