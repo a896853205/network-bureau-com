@@ -13,7 +13,8 @@ import {
   GET_FILE_URL,
   SELECT_CONTRACT_MANAGER,
   UPLOAD_PDF_FILE,
-  SAVE_ENTERPRISE_CONTRACT_URL
+  SAVE_ENTERPRISE_CONTRACT_URL,
+  SELECT_CONTRACT_URL
 } from '@/constants/api-constants';
 
 export default props => {
@@ -28,6 +29,7 @@ export default props => {
     [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [managerStatus, setManagerStatus] = useState(null),
+    [needContractStatus,setNeedContractStatus] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false);
 
   useEffect(() => {
@@ -55,7 +57,6 @@ export default props => {
 
       setSaveDataLoading(true);
       await proxyFetch(SAVE_ENTERPRISE_CONTRACT_URL, value);
-      setFailText(null);
       setSaveDataLoading(false);
     }
   };
@@ -64,8 +65,32 @@ export default props => {
     if (enterpriseRegistrationUuid) {
       (async () => {
         setGetDataLoading(true);
+        setSaveDataLoading(true);
         let contractList = await proxyFetch(
           SELECT_CONTRACT_MANAGER,
+          { registrationUuid: enterpriseRegistrationUuid },
+          'GET'
+        );
+
+        if (!(contractList.managerStatus === 4) && contractList.failText) {
+          setFailText(contractList.failText);
+        } 
+
+        setManagerStatus(contractList.managerStatus);
+        
+        setNeedContractStatus(false);
+        setSaveDataLoading(false);
+        setGetDataLoading(false);
+      })();
+    }
+  }, [enterpriseRegistrationUuid,needContractStatus]);
+
+  useEffect(() => {
+    if (enterpriseRegistrationUuid) {
+      (async () => {
+        setGetDataLoading(true);
+        let contractList = await proxyFetch(
+          SELECT_CONTRACT_URL,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
@@ -78,18 +103,9 @@ export default props => {
           // 数据处理
           setContractEnterpriseUrl(contractList.enterpriseUrl);
         }
-
-        if (!(contractList.managerStatus === 4) && contractList.failText) {
-          setFailText(contractList.failText);
-        } else {
-          setFailText('');
-        }
-
-        setManagerStatus(contractList.managerStatus);
-        setGetDataLoading(false);
       })();
     }
-  }, [enterpriseRegistrationUuid, saveDataLoading, contractManagerUrl]);
+  }, [enterpriseRegistrationUuid]);
 
   /**
    * 上传pdf文件
