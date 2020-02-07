@@ -11,7 +11,7 @@ import '@/style/home/registration/electronic-contract.styl';
 import proxyFetch, { proxyFileFetch } from '@/util/request';
 import {
   GET_FILE_URL,
-  SELECT_CONTRACT_MANAGER,
+  SELECT_CONTRACT_MANAGER_STATUS,
   UPLOAD_PDF_FILE,
   SAVE_ENTERPRISE_CONTRACT_URL,
   SELECT_CONTRACT_URL
@@ -29,9 +29,10 @@ export default props => {
     [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [managerStatus, setManagerStatus] = useState(null),
-    [needContractStatus,setNeedContractStatus] = useState(true),
+    [needContractStatus, setNeedContractStatus] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false);
 
+  // 通过url获取文件
   useEffect(() => {
     (async () => {
       if (contractManagerUrl) {
@@ -46,6 +47,25 @@ export default props => {
     })();
   }, [contractManagerUrl]);
 
+  // 通过url获取文件
+  useEffect(() => {
+    if (contractEnterpriseUrl) {
+      (async () => {
+        setContractEnterpriseLoading(true);
+
+        const previewUrl = await proxyFetch(
+          GET_FILE_URL,
+          { fileUrl: contractEnterpriseUrl },
+          'GET'
+        );
+
+        setContractEnterpriseLoading(false);
+        // 切换下载的url
+        setPreviewUrl(previewUrl);
+      })();
+    }
+  }, [contractEnterpriseUrl]);
+
   /**
    * 提交事件
    */
@@ -57,33 +77,36 @@ export default props => {
 
       setSaveDataLoading(true);
       await proxyFetch(SAVE_ENTERPRISE_CONTRACT_URL, value);
+
+      setNeedContractStatus(true);
       setSaveDataLoading(false);
+    } else {
+      message.error('请上传pdf成功后再点击提交');
     }
   };
 
   useEffect(() => {
-    if (enterpriseRegistrationUuid) {
+    if (enterpriseRegistrationUuid && needContractStatus) {
       (async () => {
         setGetDataLoading(true);
-        setSaveDataLoading(true);
-        let contractList = await proxyFetch(
-          SELECT_CONTRACT_MANAGER,
+
+        let contractStatus = await proxyFetch(
+          SELECT_CONTRACT_MANAGER_STATUS,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
 
-        if (!(contractList.managerStatus === 4) && contractList.failText) {
-          setFailText(contractList.failText);
-        } 
+        if (contractStatus.managerStatus === 6) {
+          setFailText(contractStatus.failText);
+        }
 
-        setManagerStatus(contractList.managerStatus);
-        
+        setManagerStatus(contractStatus.managerStatus);
+
         setNeedContractStatus(false);
-        setSaveDataLoading(false);
         setGetDataLoading(false);
       })();
     }
-  }, [enterpriseRegistrationUuid,needContractStatus]);
+  }, [enterpriseRegistrationUuid, needContractStatus]);
 
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
@@ -98,11 +121,9 @@ export default props => {
         // 数据回显
         if (contractList) {
           setContractManagerUrl(contractList.managerUrl);
-        }
-        if (contractList && contractList.enterpriseUrl) {
-          // 数据处理
           setContractEnterpriseUrl(contractList.enterpriseUrl);
         }
+        setGetDataLoading(false);
       })();
     }
   }, [enterpriseRegistrationUuid]);
@@ -130,24 +151,6 @@ export default props => {
       }
     }
   };
-
-  useEffect(() => {
-    if (contractEnterpriseUrl) {
-      (async () => {
-        setContractEnterpriseLoading(true);
-
-        const previewUrl = await proxyFetch(
-          GET_FILE_URL,
-          { fileUrl: contractEnterpriseUrl },
-          'GET'
-        );
-
-        setContractEnterpriseLoading(false);
-        // 切换下载的url
-        setPreviewUrl(previewUrl);
-      })();
-    }
-  }, [contractEnterpriseUrl]);
 
   return (
     <>

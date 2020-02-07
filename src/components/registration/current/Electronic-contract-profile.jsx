@@ -10,7 +10,7 @@ import ContractComplete from '@/components/registration/current/contract/Contrac
 
 // 请求
 import proxyFetch from '@/util/request';
-import { SELECT_CONTRACT_MANAGER } from '@/constants/api-constants';
+import { SELECT_CONTRACT_MANAGER_STATUS } from '@/constants/api-constants';
 
 export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
@@ -23,7 +23,7 @@ export default props => {
     if (enterpriseRegistrationUuid) {
       (async () => {
         let contract = await proxyFetch(
-          SELECT_CONTRACT_MANAGER,
+          SELECT_CONTRACT_MANAGER_STATUS,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
