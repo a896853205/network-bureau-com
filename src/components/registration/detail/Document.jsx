@@ -199,32 +199,37 @@ export default Form.create({ name: 'document' })(({ form }) => {
                     }
                   ]
                 })(
-                  <Upload
-                    showUploadList={false}
-                    // 进行将图片格式和大小判断
-                    customRequest={handleUploadFile}
-                  >
-                    {previewUrl && !documentLoading ? (
-                      <Button.Group size='large'>
-                        <Button
-                          className='half-button'
-                          onClick={() => window.open(previewUrl)}
-                        >
-                          查看上传
-                        </Button>
-                        <Button className='half-button'>重新上传</Button>
-                      </Button.Group>
-                    ) : (
+                  <>
+                    {previewUrl ? (
                       <Button
-                        className='button'
+                        className='half-button'
                         size='large'
-                        loading={documentLoading}
+                        onClick={() => window.open(previewUrl)}
                       >
-                        点击文件上传word,PDF
-                        <Icon type='inbox' />
+                        查看上传
                       </Button>
-                    )}
-                  </Upload>
+                    ) : null}
+                    <Upload
+                      showUploadList={false}
+                      // 进行将图片格式和大小判断
+                      customRequest={handleUploadFile}
+                    >
+                      {previewUrl && !documentLoading ? (
+                        <Button size='large' className='half-button'>
+                          重新上传
+                        </Button>
+                      ) : (
+                        <Button
+                          className='button'
+                          size='large'
+                          loading={documentLoading}
+                        >
+                          点击文件上传word,PDF
+                          <Icon type='inbox' />
+                        </Button>
+                      )}
+                    </Upload>
+                  </>
                 )}
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 6 }}>

@@ -174,32 +174,37 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
                     }
                   ]
                 })(
-                  <Upload
-                    showUploadList={false}
-                    // 进行将图片格式和大小判断
-                    customRequest={handleUploadImage}
-                  >
-                    {previewUrl && !copyprightLoading ? (
-                      <Button.Group size='large'>
-                        <Button
-                          className='half-button'
-                          onClick={() => window.open(previewUrl)}
-                        >
-                          查看上传
-                        </Button>
-                        <Button className='half-button'>重新上传</Button>
-                      </Button.Group>
-                    ) : (
+                  <>
+                    {previewUrl ? (
                       <Button
-                        className='button'
+                        className='half-button'
                         size='large'
-                        loading={copyprightLoading}
+                        onClick={() => window.open(previewUrl)}
                       >
-                        点击文件上传jpg,jpeg,png
-                        <Icon type='inbox' />
+                        查看上传
                       </Button>
-                    )}
-                  </Upload>
+                    ) : null}
+                    <Upload
+                      showUploadList={false}
+                      // 进行将图片格式和大小判断
+                      customRequest={handleUploadImage}
+                    >
+                      {previewUrl && !copyprightLoading ? (
+                        <Button size='large' className='half-button'>
+                          重新上传
+                        </Button>
+                      ) : (
+                        <Button
+                          className='button'
+                          size='large'
+                          loading={copyprightLoading}
+                        >
+                          点击文件上传jpg,jpeg,png
+                          <Icon type='inbox' />
+                        </Button>
+                      )}
+                    </Upload>
+                  </>
                 )}
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 6 }}>

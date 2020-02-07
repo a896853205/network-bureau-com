@@ -174,32 +174,35 @@ export default Form.create({ name: 'product' })(({ form }) => {
                     }
                   ]
                 })(
-                  <Upload
-                    showUploadList={false}
-                    // 进行将压缩文件格式和大小判断
-                    customRequest={handleUploadImage}
-                  >
-                    {previewUrl && !productLoading ? (
-                      <Button.Group size='large'>
-                        <Button
-                          className='half-button'
-                          onClick={() => window.open(previewUrl)}
-                        >
-                          查看上传
-                        </Button>
-                        <Button className='half-button'>重新上传</Button>
-                      </Button.Group>
-                    ) : (
+                  <>
+                    {previewUrl ? (
                       <Button
-                        className='button'
+                        className='half-button'
                         size='large'
-                        loading={productLoading}
+                        onClick={() => window.open(previewUrl)}
                       >
-                        点击文件上传zip,rar
-                        <Icon type='inbox' />
+                        查看上传
                       </Button>
-                    )}
-                  </Upload>
+                    ) : null}
+                    <Upload
+                      showUploadList={false}
+                      // 进行将压缩文件格式和大小判断
+                      customRequest={handleUploadImage}
+                    >
+                      {previewUrl && !productLoading ? (
+                        <Button className='half-button'>重新上传</Button>
+                      ) : (
+                        <Button
+                          className='button'
+                          size='large'
+                          loading={productLoading}
+                        >
+                          点击文件上传zip,rar
+                          <Icon type='inbox' />
+                        </Button>
+                      )}
+                    </Upload>
+                  </>
                 )}
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 6 }}>
