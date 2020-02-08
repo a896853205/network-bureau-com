@@ -22,13 +22,13 @@ export default props => {
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
       (async () => {
-        let contract = await proxyFetch(
+        let payment = await proxyFetch(
           SELECT_PAYMENT_STATUS,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
 
-        setStatus(contract.status);
+        setStatus(payment.status);
       })();
     }
   }, [enterpriseRegistrationUuid]);
@@ -56,13 +56,11 @@ export default props => {
   }, [status]);
 
   return (
-    <>
-      <div className='item-box process-item-box current-profile-box'>
-        <p className='title-box'>
-          <span>当前步骤</span>-<span>交付汇款</span>
-        </p>
-        {content}
-      </div>
-    </>
+    <div className='item-box process-item-box current-profile-box'>
+      <p className='title-box'>
+        <span>当前步骤</span>-<span>交付汇款</span>
+      </p>
+      {content}
+    </div>
   );
 };
