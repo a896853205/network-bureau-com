@@ -4,7 +4,8 @@ import { Descriptions, Button } from 'antd';
 import '@/style/home/registration/payment.styl';
 
 // redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
 
 // 请求
 import proxyFetch from '@/util/request';
@@ -14,21 +15,26 @@ export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
       state => state.enterpriseStore
     ),
-    [saveDataLoading, setSaveDataLoading] = useState(false);
+    [saveDataLoading, setSaveDataLoading] = useState(false),
+    dispatch = useDispatch();
 
   /**
    * 提交事件
    */
   const handleEnterpriseUrlSave = async () => {
     if (enterpriseRegistrationUuid) {
-      let value = {};
-      value.registrationUuid = enterpriseRegistrationUuid;
-      value.status = 3;
-
       setSaveDataLoading(true);
-      await proxyFetch(UPDATE_PAYMENT_STATUS, value);
+      const res = await proxyFetch(UPDATE_PAYMENT_STATUS, {
+        registrationUuid: enterpriseRegistrationUuid,
+        status: 3
+      });
+
+      if (res) {
+        // 重新获取付款状态
+        dispatch(enterpriseAction.setNeedPaymentStatus(true));
+      }
+
       setSaveDataLoading(false);
-      
     }
   };
 

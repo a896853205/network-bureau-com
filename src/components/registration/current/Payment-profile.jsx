@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 // redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
 
 // 组件
 import PaymentInfo from '@/components/registration/current/payment/Payment-info.jsx';
@@ -12,15 +13,16 @@ import PaymentWelcome from '@/components/registration/current/payment/Payment-we
 import proxyFetch from '@/util/request';
 import { SELECT_PAYMENT_STATUS } from '@/constants/api-constants';
 
-export default props => {
-  const { enterpriseRegistrationUuid } = useSelector(
+export default () => {
+  const { enterpriseRegistrationUuid, needPaymentStatus } = useSelector(
       state => state.enterpriseStore
     ),
     [status, setStatus] = useState(''),
-    [content, setContent] = useState(null);
+    [content, setContent] = useState(null),
+    dispatch = useDispatch();
 
   useEffect(() => {
-    if (enterpriseRegistrationUuid) {
+    if (enterpriseRegistrationUuid && needPaymentStatus) {
       (async () => {
         let payment = await proxyFetch(
           SELECT_PAYMENT_STATUS,
@@ -29,24 +31,25 @@ export default props => {
         );
 
         setStatus(payment.status);
+        dispatch(enterpriseAction.setNeedPaymentStatus(false));
       })();
     }
-  }, [enterpriseRegistrationUuid]);
+  }, [enterpriseRegistrationUuid, needPaymentStatus, dispatch]);
 
   useEffect(() => {
     if (status) {
       switch (status) {
         case 1:
-          // 步骤一的预览组件
+          // 步骤一的欢迎组件
           setContent(<PaymentWelcome />);
           break;
         case 2:
-          // 步骤二的上传组件
+          // 步骤二的交款信息
           setContent(<PaymentInfo />);
           break;
         case 3:
         case 4:
-          // 步骤三的完成组件
+          // 步骤三的交款结果
           setContent(<PaymentResult />);
           break;
         default:

@@ -47,6 +47,12 @@ export default handleActions(
         ...state,
         registrationLoading: result
       };
+    },
+    setNeedPaymentStatus(state, { payload: result }) {
+      return {
+        ...state,
+        needPaymentStatus: result
+      };
     }
   },
   {
@@ -60,6 +66,8 @@ export default handleActions(
     enterpriseRegistrationUuid: '',
     steps: [], // 步骤详细信息
     registration: null,
-    registrationLoading: true // 查询登记测试的loading
+    registrationLoading: true, // 查询登记测试的loading
+    // 登记测试第三步需要状态值控制获取状态值
+    needPaymentStatus: true
   }
 );

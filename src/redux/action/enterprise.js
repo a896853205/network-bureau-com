@@ -16,5 +16,6 @@ export default {
   setSteps: createAction('setSteps'),
   setRegistration: createAction('setRegistration'),
   asyncSetRestration: createAction('asyncSetRestration'),
-  setRegistrationLoading: createAction('setRegistrationLoading')
+  setRegistrationLoading: createAction('setRegistrationLoading'),
+  setNeedPaymentStatus: createAction('setNeedPaymentStatus')
 };
