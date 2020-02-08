@@ -163,7 +163,7 @@ export default props => {
           />
         </div>
       ) : null}
-      {managerFailText ? (
+      {managerFailText && managerStatus === 6 ? (
         <div className='electronic-contract-alert-box'>
           <Alert
             message='填写错误,请按描述修改'
