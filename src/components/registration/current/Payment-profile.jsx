@@ -28,8 +28,6 @@ export default props => {
           'GET'
         );
 
-        console.log('contract=', contract);
-
         setStatus(contract.status);
       })();
     }
@@ -61,7 +59,7 @@ export default props => {
     <>
       <div className='item-box process-item-box current-profile-box'>
         <p className='title-box'>
-          <span>当前步骤</span>-<span>电子签合同</span>
+          <span>当前步骤</span>-<span>交付汇款</span>
         </p>
         {content}
       </div>
