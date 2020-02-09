@@ -46,5 +46,4 @@ export const SAVE_REGISTRATION_PRODUCT = `${DominConfigs.DOMAIN}${DominConfigs.P
 export const SELECT_CONTRACT_MANAGER_STATUS = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectContractManagerStatus`; // 查询经管部门填写评测合同的状态
 export const SAVE_ENTERPRISE_CONTRACT_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/saveEnterpriseContractUrl`; // 保存乙方评测合同信息
 export const SELECT_CONTRACT_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectContractUrl`; // 查询评测合同路由
-export const SELECT_PAYMENT_STATUS = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/selectPaymentStatus`; // 查询交付汇款状态
 export const UPDATE_PAYMENT_STATUS = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE_REGISTRATION}/updatePaymentStatus`; // 更新交付汇款状态

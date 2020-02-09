@@ -26,7 +26,9 @@ export default props => {
       setSaveDataLoading(true);
       const res = await proxyFetch(UPDATE_PAYMENT_STATUS, {
         registrationUuid: enterpriseRegistrationUuid,
-        status: 3
+        status: 3,
+        statusText:'企业点击已交款按钮',
+        step:3
       });
 
       if (res) {

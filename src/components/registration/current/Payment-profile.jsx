@@ -11,7 +11,7 @@ import PaymentWelcome from '@/components/registration/current/payment/Payment-we
 
 // 请求
 import proxyFetch from '@/util/request';
-import { SELECT_PAYMENT_STATUS } from '@/constants/api-constants';
+import { QUERY_ENTERPRISE_REGISTRATION_STEP } from '@/constants/api-constants';
 
 export default () => {
   const { enterpriseRegistrationUuid, needPaymentStatus } = useSelector(
@@ -24,13 +24,13 @@ export default () => {
   useEffect(() => {
     if (enterpriseRegistrationUuid && needPaymentStatus) {
       (async () => {
-        let payment = await proxyFetch(
-          SELECT_PAYMENT_STATUS,
+        let stepList = await proxyFetch(
+          QUERY_ENTERPRISE_REGISTRATION_STEP,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
 
-        setStatus(payment.status);
+        setStatus(stepList[2].status);
         dispatch(enterpriseAction.setNeedPaymentStatus(false));
       })();
     }
