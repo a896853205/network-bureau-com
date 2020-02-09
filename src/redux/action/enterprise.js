@@ -17,5 +17,9 @@ export default {
   setRegistration: createAction('setRegistration'),
   asyncSetRestration: createAction('asyncSetRestration'),
   setRegistrationLoading: createAction('setRegistrationLoading'),
-  setNeedPaymentStatus: createAction('setNeedPaymentStatus')
+  setNeedPaymentStatus: createAction('setNeedPaymentStatus'),
+  // 系统步骤名称
+  setSysRegistrationStep: createAction('setSysRegistrationStep'),
+  asyncSetSysRegistrationStep: createAction('asyncSetSysRegistrationStep'),
+  setSysRegistrationStepLoading: createAction('setSysRegistrationStepLoading')
 };

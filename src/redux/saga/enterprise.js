@@ -96,6 +96,20 @@ const effects = {
 
     // loading
     yield put(enterpriseAction.setRegistrationLoading(false));
+  },
+
+  asyncSetSysRegistrationStep: function*({ payload }) {
+    yield put(enterpriseAction.setSysRegistrationStepLoading(true));
+
+    const sysRegistrationStep = yield call(
+      proxyFetch,
+      APIS.QUERY_SYS_REGISTRATION_STEP,
+      {},
+      'GET'
+    );
+
+    yield put(enterpriseAction.setSysRegistrationStep(sysRegistrationStep));
+    yield put(enterpriseAction.setSysRegistrationStepLoading(false));
   }
 };
 
@@ -111,5 +125,9 @@ export default function*() {
   yield takeLatest(
     enterpriseAction.asyncSetRestration,
     effects.asyncSetRestration
+  );
+  yield takeLatest(
+    enterpriseAction.asyncSetSysRegistrationStep,
+    effects.asyncSetSysRegistrationStep
   );
 }

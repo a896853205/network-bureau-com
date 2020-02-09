@@ -1,64 +1,23 @@
-import React, { useState, useEffect } from 'react';
-
-// 请求
-import { QUERY_SYS_REGISTRATION_STEP } from '@/constants/api-constants';
-import proxyFetch from '@/util/request';
+import React, { useEffect } from 'react';
 
 // 样式
 import { Timeline, Skeleton, Tag } from 'antd';
 
 // redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
 
 export default props => {
-  const { steps } = useSelector(state => state.enterpriseStore),
-    [sysRegistrationStepList, setSysRegistrationStepList] = useState([]),
-    [loading, setLoading] = useState(true),
-    [stepStatus, setStepStatus] = useState([]);
+  const {
+      steps,
+      sysRegistrationStepLoading: loading,
+      sysRegistrationStep
+    } = useSelector(state => state.enterpriseStore),
+    dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const sysRegistrationStepList = await proxyFetch(
-        QUERY_SYS_REGISTRATION_STEP,
-        {},
-        'GET'
-      );
-
-      setSysRegistrationStepList(sysRegistrationStepList);
-      setLoading(false);
-    })();
-  }, []);
-
-  useEffect(() => {
-    setStepStatus(
-      steps.map(step => {
-        let color = '';
-
-        switch (step.status) {
-          case 1:
-            color = 'gray';
-            break;
-          case 2:
-            color = 'blue';
-            break;
-          case 3:
-            color = 'green';
-            break;
-          case 4:
-            color = 'red';
-            break;
-          default:
-            color = 'blue';
-        }
-
-        return {
-          ...step,
-          color
-        };
-      })
-    );
-  }, [steps]);
+    dispatch(enterpriseAction.asyncSetSysRegistrationStep());
+  }, [dispatch]);
 
   return (
     <div className='item-box process-item-box'>
@@ -66,16 +25,11 @@ export default props => {
       <div className='process-profile-bottom-box'>
         <Skeleton loading={loading}>
           <Timeline>
-            {sysRegistrationStepList
-              ? sysRegistrationStepList.map((item, i) => (
-                  <Timeline.Item
-                    key={i}
-                    color={stepStatus[i] ? stepStatus[i].color : 'gray'}
-                  >
+            {sysRegistrationStep.length && steps.length
+              ? sysRegistrationStep.map((item, i) => (
+                  <Timeline.Item key={i} color={steps[i].color}>
                     <span style={{ marginRight: '5px' }}>{item.name}</span>
-                    <Tag color={stepStatus[i] ? stepStatus[i].color : 'gray'}>
-                      {stepStatus[i] ? stepStatus[i].statusText : ''}
-                    </Tag>
+                    <Tag color={steps[i].color}>{steps[i].statusText}</Tag>
                   </Timeline.Item>
                 ))
               : null}

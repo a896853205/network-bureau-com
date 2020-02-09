@@ -1,5 +1,27 @@
 import { handleActions } from 'redux-actions';
 
+const statusToColor = status => {
+  let color = '';
+
+  switch (status) {
+    case 1:
+      color = 'grey';
+      break;
+    case 2:
+      color = 'blue';
+      break;
+    case 3:
+      color = 'green';
+      break;
+    case 4:
+      color = 'red';
+      break;
+    default:
+      color = 'blue';
+  }
+  return color;
+};
+
 export default handleActions(
   {
     // 保存企业基本信息
@@ -31,9 +53,14 @@ export default handleActions(
       };
     },
     setSteps(state, { payload: result }) {
+      let stepWithColor = result.map(step => ({
+        ...step,
+        color: statusToColor(step.status)
+      }));
+
       return {
         ...state,
-        steps: result
+        steps: stepWithColor
       };
     },
     setRegistration(state, { payload: result }) {
@@ -53,6 +80,18 @@ export default handleActions(
         ...state,
         needPaymentStatus: result
       };
+    },
+    setSysRegistrationStep(state, { payload: result }) {
+      return {
+        ...state,
+        sysRegistrationStep: result
+      };
+    },
+    setSysRegistrationStepLoading(state, { payload: result }) {
+      return {
+        ...state,
+        sysRegistrationStepLoading: result
+      };
     }
   },
   {
@@ -68,6 +107,8 @@ export default handleActions(
     registration: null,
     registrationLoading: true, // 查询登记测试的loading
     // 登记测试第三步需要状态值控制获取状态值
-    needPaymentStatus: true
+    needPaymentStatus: true,
+    sysRegistrationStep: [],
+    sysRegistrationStepLoading: true
   }
 );
