@@ -9,7 +9,7 @@ import enterpriseAction from '@/redux/action/enterprise';
 
 // 请求
 import proxyFetch from '@/util/request';
-import { UPDATE_PAYMENT_STATUS } from '@/constants/api-constants';
+import { NOTICE_ACCOUNT_PAYMENT } from '@/constants/api-constants';
 
 export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
@@ -24,12 +24,13 @@ export default props => {
   const handleEnterpriseUrlSave = async () => {
     if (enterpriseRegistrationUuid) {
       setSaveDataLoading(true);
-      const res = await proxyFetch(UPDATE_PAYMENT_STATUS, {
-        registrationUuid: enterpriseRegistrationUuid,
-        status: 3,
-        statusText:'企业点击已交款按钮',
-        step:3
-      });
+      const res = await proxyFetch(
+        NOTICE_ACCOUNT_PAYMENT,
+        {
+          registrationUuid: enterpriseRegistrationUuid
+        },
+        'PUT'
+      );
 
       if (res) {
         // 重新获取付款状态
