@@ -1,25 +1,39 @@
 import { handleActions } from 'redux-actions';
 
 const statusToColor = status => {
-  let color = '';
-
   switch (status) {
     case 1:
-      color = 'grey';
-      break;
+      return 'grey';
     case 2:
-      color = 'blue';
-      break;
+      return 'blue';
     case 3:
-      color = 'green';
-      break;
+      return 'green';
     case 4:
-      color = 'red';
-      break;
+      return 'red';
     default:
-      color = 'blue';
+      return 'blue';
   }
-  return color;
+};
+
+const paymentStatusToColor = status => {
+  switch (status) {
+    case 1:
+      return 'grey';
+    case 2:
+      return 'blue';
+    case 3:
+      return 'blue';
+    case 4:
+      return 'green';
+    default:
+      return 'blue';
+  }
+};
+
+const proxyStatusColor = (step, status) => {
+  if (step === 1) return statusToColor(status);
+  else if (step === 2) return statusToColor(status);
+  else if (step === 3) return paymentStatusToColor(status);
 };
 
 export default handleActions(
@@ -55,7 +69,7 @@ export default handleActions(
     setSteps(state, { payload: result }) {
       let stepWithColor = result.map(step => ({
         ...step,
-        color: statusToColor(step.status)
+        color: proxyStatusColor(step.step, step.status)
       }));
 
       return {
