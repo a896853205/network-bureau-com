@@ -28,6 +28,7 @@ const getTagColor = status => {
       return 'gray';
   }
 };
+
 export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
       state => state.enterpriseStore
@@ -259,7 +260,7 @@ export default props => {
                     </span>
                   </Link>
                 ) : null}
-               {enterpriseRegistrationSpecimenStatus.status > 0 ? (
+                {enterpriseRegistrationSpecimenStatus.status > 0 ? (
                   <Icon
                     type='check-circle'
                     theme='twoTone'
@@ -289,7 +290,8 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationProductDescriptionStatus.status !== 100 ? (
+                {enterpriseRegistrationProductDescriptionStatus.status !==
+                100 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='upload' /> 上传文件
@@ -333,7 +335,7 @@ export default props => {
                     </span>
                   </Link>
                 ) : null}
-               {enterpriseRegistrationDocumentStatus.status > 0 ? (
+                {enterpriseRegistrationDocumentStatus.status > 0 ? (
                   <Icon
                     type='check-circle'
                     theme='twoTone'
@@ -370,7 +372,7 @@ export default props => {
                     </span>
                   </Link>
                 ) : null}
-                 {enterpriseRegistrationProductStatus.status > 0 ? (
+                {enterpriseRegistrationProductStatus.status > 0 ? (
                   <Icon
                     type='check-circle'
                     theme='twoTone'
