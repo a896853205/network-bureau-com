@@ -16,13 +16,13 @@ import { REGISTRATION_DETAIL } from '@/constants/route-constants';
 
 const getTagColor = status => {
   switch (status) {
-    case 1:
+    case 0:
       return 'gray';
-    case 2:
+    case 1:
       return 'blue';
-    case 3:
+    case 100:
       return 'green';
-    case 4:
+    case -1:
       return 'red';
     default:
       return 'gray';
@@ -104,7 +104,7 @@ export default props => {
         );
 
         for (let itemStatus in res) {
-          if (res[itemStatus].status === 1 || res[itemStatus].status === 4) {
+          if (res[itemStatus].status === 0 || res[itemStatus].status === 100) {
             setWaitAlert(false);
             break;
           }
