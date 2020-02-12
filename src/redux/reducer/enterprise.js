@@ -3,19 +3,18 @@ import { handleActions } from 'redux-actions';
 const statusToColor = status => {
   switch (status) {
     case 0:
-      return 'grey';
+      return 'gray';
     case 1:
       return 'blue';
-    case 2:
-      return 'blue';
-    case 3:
+    case 100:
       return 'green';
-    case 4:
+    case -1:
       return 'red';
     default:
-      return 'blue';
+      return 'gray';
   }
 };
+
 
 const paymentStatusToColor = status => {
   switch (status) {
