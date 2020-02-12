@@ -2,8 +2,10 @@ import { handleActions } from 'redux-actions';
 
 const statusToColor = status => {
   switch (status) {
-    case 1:
+    case 0:
       return 'grey';
+    case 1:
+      return 'blue';
     case 2:
       return 'blue';
     case 3:
@@ -17,8 +19,10 @@ const statusToColor = status => {
 
 const paymentStatusToColor = status => {
   switch (status) {
-    case 1:
+    case 0:
       return 'grey';
+    case 1:
+      return 'blue';
     case 2:
       return 'blue';
     case 3:
@@ -34,6 +38,9 @@ const proxyStatusColor = (step, status) => {
   if (step === 1) return statusToColor(status);
   else if (step === 2) return statusToColor(status);
   else if (step === 3) return paymentStatusToColor(status);
+  else if (step === 4) return statusToColor(status);
+  else if (step === 5) return statusToColor(status);
+  else if (step === 6) return statusToColor(status);
 };
 
 export default handleActions(
