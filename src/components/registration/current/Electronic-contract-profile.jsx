@@ -9,16 +9,16 @@ import ContractUpload from '@/components/registration/current/contract/Contract-
 import ContractComplete from '@/components/registration/current/contract/Contract-complete.jsx';
 
 // 请求
-import proxyFetch from '@/util/request';
-import { SELECT_CONTRACT_MANAGER_STATUS } from '@/constants/api-constants';
+//import proxyFetch from '@/util/request';
+//import { SELECT_CONTRACT_MANAGER_STATUS } from '@/constants/api-constants';
 
 export default props => {
-  const { enterpriseRegistrationUuid } = useSelector(
+  const { steps } = useSelector(
       state => state.enterpriseStore
     ),
-    [managerStatus, setManagerStatus] = useState(''),
     [content, setContent] = useState(null);
 
+    /*
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
       (async () => {
@@ -32,10 +32,11 @@ export default props => {
       })();
     }
   }, [enterpriseRegistrationUuid]);
+*/
 
   useEffect(() => {
-    if (managerStatus) {
-      switch (managerStatus) {
+    if (steps[1].status) {
+      switch (steps[1].status) {
         case 1:
         case 2:
           // 步骤一的预览组件
@@ -43,11 +44,11 @@ export default props => {
           break;
         case 3:
         case 4:
-        case 6:
+        case -1:
           // 步骤二的上传组件
           setContent(<ContractUpload />);
           break;
-        case 5:
+        case 100:
           // 步骤三的完成组件
           setContent(<ContractComplete />);
           break;
@@ -55,7 +56,7 @@ export default props => {
           setContent(null);
       }
     }
-  }, [managerStatus]);
+  }, [steps]);
 
   return (
     <>
