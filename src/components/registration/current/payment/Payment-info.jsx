@@ -45,10 +45,13 @@ export default props => {
     <div className='payment-info-box'>
       <Descriptions bordered className='payment-description-box'>
         <Descriptions.Item label='名称' span={3}>
-          黑龙江省国防科技研究院
+          黑龙江省国防科学技术研究院
         </Descriptions.Item>
         <Descriptions.Item label='地址' span={3}>
-          哈尔滨市南岗区名人府邸
+          哈尔滨市南岗区名人府邸F栋
+        </Descriptions.Item>
+        <Descriptions.Item label='电话' span={3}>
+          0451-58685770
         </Descriptions.Item>
         <Descriptions.Item label='开户行' span={3}>
           中国建设银行股份有限公司农垦分行
