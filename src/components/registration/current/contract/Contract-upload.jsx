@@ -11,24 +11,23 @@ import '@/style/home/registration/electronic-contract.styl';
 import proxyFetch, { proxyFileFetch } from '@/util/request';
 import {
   GET_FILE_URL,
-  SELECT_CONTRACT_MANAGER_STATUS,
+  SELECT_CONTRACT_MANAGER_FAIL_TEXT,
   UPLOAD_PDF_FILE,
   SAVE_ENTERPRISE_CONTRACT_URL,
   SELECT_CONTRACT_URL
 } from '@/constants/api-constants';
 
 export default props => {
-  const { enterpriseRegistrationUuid } = useSelector(
+  const { steps, enterpriseRegistrationUuid } = useSelector(
       state => state.enterpriseStore
     ),
     [managerUrl, setManagerUrl] = useState(''),
     [contractEnterpriseLoading, setContractEnterpriseLoading] = useState(false),
     [contractManagerUrl, setContractManagerUrl] = useState(''),
     [previewUrl, setPreviewUrl] = useState(''),
-    [managerFailText, setManagermanagerFailText] = useState(''),
+    [managerFailText, setManagerFailText] = useState(''),
     [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
-    [managerStatus, setManagerStatus] = useState(null),
     [needContractStatus, setNeedContractStatus] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false);
 
@@ -90,23 +89,21 @@ export default props => {
       (async () => {
         setGetDataLoading(true);
 
-        let contractStatus = await proxyFetch(
-          SELECT_CONTRACT_MANAGER_STATUS,
+        let managerFailText = await proxyFetch(
+          SELECT_CONTRACT_MANAGER_FAIL_TEXT,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
 
-        if (contractStatus.managerStatus === 6) {
-          setManagermanagerFailText(contractStatus.managerFailText);
+        if (steps[1].status === -1) {
+          setManagerFailText(managerFailText.managerFailText);
         }
-
-        setManagerStatus(contractStatus.managerStatus);
 
         setNeedContractStatus(false);
         setGetDataLoading(false);
       })();
     }
-  }, [enterpriseRegistrationUuid, needContractStatus]);
+  }, [enterpriseRegistrationUuid, steps, needContractStatus]);
 
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
@@ -154,7 +151,7 @@ export default props => {
 
   return (
     <>
-      {managerStatus === 4 ? (
+      {steps[1].status === 4 ? (
         <div className='electronic-contract-alert-box'>
           <Alert
             message='您已提交完毕请等待审核'
@@ -163,7 +160,7 @@ export default props => {
           />
         </div>
       ) : null}
-      {managerFailText && managerStatus === 6 ? (
+      {managerFailText && steps[1].status === -1 ? (
         <div className='electronic-contract-alert-box'>
           <Alert
             message='填写错误,请按描述修改'
