@@ -13,6 +13,7 @@ export default {
     'setCreateEnterpriseRegistrationLoading'
   ),
   setEnterpriseRegistrationUuid: createAction('setEnterpriseRegistrationUuid'),
+  asyncSetSteps: createAction('asyncSetSteps'),
   setSteps: createAction('setSteps'),
   setRegistration: createAction('setRegistration'),
   asyncSetRestration: createAction('asyncSetRestration'),

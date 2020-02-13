@@ -8,31 +8,9 @@ import ContractWelcome from '@/components/registration/current/contract/Contract
 import ContractUpload from '@/components/registration/current/contract/Contract-upload.jsx';
 import ContractComplete from '@/components/registration/current/contract/Contract-complete.jsx';
 
-// 请求
-//import proxyFetch from '@/util/request';
-//import { SELECT_CONTRACT_MANAGER_STATUS } from '@/constants/api-constants';
-
 export default props => {
-  const { steps } = useSelector(
-      state => state.enterpriseStore
-    ),
+  const { steps } = useSelector(state => state.enterpriseStore),
     [content, setContent] = useState(null);
-
-    /*
-  useEffect(() => {
-    if (enterpriseRegistrationUuid) {
-      (async () => {
-        let contract = await proxyFetch(
-          SELECT_CONTRACT_MANAGER_STATUS,
-          { registrationUuid: enterpriseRegistrationUuid },
-          'GET'
-        );
-
-        setManagerStatus(contract.managerStatus);
-      })();
-    }
-  }, [enterpriseRegistrationUuid]);
-*/
 
   useEffect(() => {
     if (steps[1].status) {
@@ -59,13 +37,11 @@ export default props => {
   }, [steps]);
 
   return (
-    <>
-      <div className='item-box process-item-box current-profile-box'>
-        <p className='title-box'>
-          <span>当前步骤</span>-<span>电子签合同</span>
-        </p>
-        {content}
-      </div>
-    </>
+    <div className='item-box process-item-box current-profile-box'>
+      <p className='title-box'>
+        <span>当前步骤</span>-<span>电子签合同</span>
+      </p>
+      {content}
+    </div>
   );
 };

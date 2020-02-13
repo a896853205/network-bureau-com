@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 // redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
 
-//样式
+// 样式
 import { Alert, Button, Icon, Upload, message, Skeleton, Timeline } from 'antd';
 import '@/style/home/registration/electronic-contract.styl';
 
@@ -18,17 +19,18 @@ import {
 } from '@/constants/api-constants';
 
 export default props => {
-  const { steps, enterpriseRegistrationUuid } = useSelector(
+  const { enterpriseRegistrationUuid, steps } = useSelector(
       state => state.enterpriseStore
     ),
+    dispatch = useDispatch(),
     [managerUrl, setManagerUrl] = useState(''),
     [contractEnterpriseLoading, setContractEnterpriseLoading] = useState(false),
     [contractManagerUrl, setContractManagerUrl] = useState(''),
     [previewUrl, setPreviewUrl] = useState(''),
-    [managerFailText, setManagerFailText] = useState(''),
+    [managerFailText, setManagermanagerFailText] = useState(''),
     [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
-    [needContractStatus, setNeedContractStatus] = useState(true),
+    [needContractStatus, setNeedContractStatus] = useState(false),
     [saveDataLoading, setSaveDataLoading] = useState(false);
 
   // 通过url获取文件
@@ -86,40 +88,31 @@ export default props => {
 
   useEffect(() => {
     if (enterpriseRegistrationUuid && needContractStatus) {
-      (async () => {
-        setGetDataLoading(true);
-
-        let managerFailText = await proxyFetch(
-          SELECT_CONTRACT_MANAGER_FAIL_TEXT,
-          { registrationUuid: enterpriseRegistrationUuid },
-          'GET'
-        );
-
-        if (steps[1].status === -1) {
-          setManagerFailText(managerFailText.managerFailText);
-        }
-
-        setNeedContractStatus(false);
-        setGetDataLoading(false);
-      })();
+      dispatch(enterpriseAction.asyncSetSteps(enterpriseRegistrationUuid));
     }
-  }, [enterpriseRegistrationUuid, steps, needContractStatus]);
+  }, [enterpriseRegistrationUuid, needContractStatus, dispatch]);
 
   useEffect(() => {
     if (enterpriseRegistrationUuid) {
       (async () => {
         setGetDataLoading(true);
-        let contractList = await proxyFetch(
-          SELECT_CONTRACT_URL,
-          { registrationUuid: enterpriseRegistrationUuid },
-          'GET'
-        );
+        let [contractList, contract] = await Promise.all([
+          proxyFetch(
+            SELECT_CONTRACT_URL,
+            { registrationUuid: enterpriseRegistrationUuid },
+            'GET'
+          ),
+          proxyFetch(
+            SELECT_CONTRACT_MANAGER_FAIL_TEXT,
+            { registrationUuid: enterpriseRegistrationUuid },
+            'GET'
+          )
+        ]);
 
         // 数据回显
-        if (contractList) {
-          setContractManagerUrl(contractList.managerUrl);
-          setContractEnterpriseUrl(contractList.enterpriseUrl);
-        }
+        setContractManagerUrl(contractList?.managerUrl);
+        setContractEnterpriseUrl(contractList?.enterpriseUrl);
+        setManagermanagerFailText(contract?.managerFailText);
         setGetDataLoading(false);
       })();
     }
