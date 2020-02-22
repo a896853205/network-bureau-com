@@ -59,11 +59,38 @@ const paymentStatusToColor = status => {
   }
 };
 
+const testStatusToColor = status => {
+  switch (status) {
+    case -1:
+      return 'red';
+    case 0:
+      return 'grey';
+    case 1:
+      return 'blue';
+    case 2:
+      return 'blue';
+    case 3:
+      return 'blue';
+    case 4:
+      return 'blue';
+    case 5:
+      return 'blue';
+    case 6:
+      return 'blue';
+    case 7:
+      return 'blue';
+    case 100:
+      return 'green';
+    default:
+      return 'grey';
+  }
+};
+
 const proxyStatusColor = (step, status) => {
   if (step === 1) return statusToColor(status);
   else if (step === 2) return contractStatusToColor(status);
   else if (step === 3) return paymentStatusToColor(status);
-  else if (step === 4) return statusToColor(status);
+  else if (step === 4) return testStatusToColor(status);
   else if (step === 5) return statusToColor(status);
   else if (step === 6) return statusToColor(status);
 };

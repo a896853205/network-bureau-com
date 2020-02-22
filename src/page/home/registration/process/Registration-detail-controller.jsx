@@ -10,6 +10,8 @@ import ProductDescription from '@/components/registration/detail/Product-descrip
 import Product from '@/components/registration/detail/Product.jsx';
 import Specimen from '@/components/registration/detail/Specimen.jsx';
 import Basic from '@/components/registration/detail/Basic.jsx';
+import ApplyTest from '@/components/registration/detail/Apply-test.jsx';
+import SpecimenTest from '@/components/registration/detail/Specimen-test.jsx';
 export default ({ type }) => {
   let content = null;
 
@@ -37,6 +39,12 @@ export default ({ type }) => {
       break;
     case 'basic':
       content = <Basic />;
+      break;
+      case 'applyTest':
+      content = <ApplyTest />;
+      break;
+      case 'specimenTest':
+      content = <SpecimenTest />;
       break;
     default:
       content = null;

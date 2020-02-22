@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 // 请求
 import proxyFetch from '@/util/request';
 import {
-  SELECT_REGISTRATION_APPLY,
-  SAVE_REGISTRATION_APPLY
+  SELECT_TEST_REGISTRATION_APPLY,
+  SAVE_TEST_REGISTRATION_APPLY
 } from '@/constants/api-constants';
 
 // 样式
@@ -25,17 +25,9 @@ export default Form.create({ name: 'apply' })(({ form }) => {
       state => state.enterpriseStore
     ),
     history = useHistory(),
-    [failText, setFailText] = useState(''),
+    [failManagerText, setFailManagerText] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
-    [saveDataLoading, setSaveDataLoading] = useState(false),
-    contentInitValue = `服务器硬件环境（CPU、硬盘、内存）
-服务器软件环境（运行系统、数据库及通讯协议等
-客户端硬件环境（CPU、硬盘、内存）
-客户端软件环境（运行系统、数据库及通讯协议等）
-上位机硬件环境（CPU、硬盘、内存）
-下位机核心电路（核心芯片）、外围电路（相应的支持电路）
-备注（连接的设备机械和电气及其他设备）
-具体原因`;
+    [saveDataLoading, setSaveDataLoading] = useState(false);
 
   // 将已有的数据回显
   useEffect(() => {
@@ -43,7 +35,7 @@ export default Form.create({ name: 'apply' })(({ form }) => {
       (async () => {
         setGetDataLoading(true);
         let registrationApply = await proxyFetch(
-          SELECT_REGISTRATION_APPLY,
+          SELECT_TEST_REGISTRATION_APPLY,
           { registrationUuid: enterpriseRegistrationUuid },
           'GET'
         );
@@ -52,24 +44,23 @@ export default Form.create({ name: 'apply' })(({ form }) => {
         if (registrationApply) {
           // 数据处理
 
-          if (registrationApply.failText) {
-            setFailText(registrationApply.failText);
+          if (registrationApply.failManagerText) {
+            setFailManagerText(registrationApply.failManagerText);
           }
 
-          delete registrationApply.status;
-          delete registrationApply.statusText;
-          delete registrationApply.failText;
+          delete registrationApply.managerStatus;
+          delete registrationApply.failManagerText;
 
           setFieldsValue({
             ...registrationApply,
-            content: registrationApply.content || contentInitValue
+            content: registrationApply.content
           });
         }
 
         setGetDataLoading(false);
       })();
     }
-  }, [enterpriseRegistrationUuid, setFieldsValue, contentInitValue]);
+  }, [enterpriseRegistrationUuid, setFieldsValue]);
 
   /**
    * 提交事件
@@ -84,7 +75,7 @@ export default Form.create({ name: 'apply' })(({ form }) => {
           value.registrationUuid = enterpriseRegistrationUuid;
 
           setSaveDataLoading(true);
-          const res = await proxyFetch(SAVE_REGISTRATION_APPLY, value);
+          const res = await proxyFetch(SAVE_TEST_REGISTRATION_APPLY, value);
           setSaveDataLoading(false);
 
           if (res) {
@@ -103,10 +94,10 @@ export default Form.create({ name: 'apply' })(({ form }) => {
         </Link>
         <p className='subtitle-title'>现场测试申请表</p>
       </div>
-      {failText ? (
+      {failManagerText ? (
         <Alert
           message='填写错误,请按描述修改'
-          description={failText}
+          description={failManagerText}
           type='error'        
         />
       ) : null}
@@ -121,7 +112,6 @@ export default Form.create({ name: 'apply' })(({ form }) => {
               {/* 内容 */}
               <Form.Item label='内容'>
                 {getFieldDecorator('content', {
-                  initialValue: contentInitValue,
                   rules: [
                     {
                       required: true,

@@ -47,3 +47,7 @@ export const SELECT_CONTRACT_MANAGER_FAIL_TEXT = `${DominConfigs.DOMAIN}${DominC
 export const SAVE_ENTERPRISE_CONTRACT_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/saveEnterpriseContractUrl`; // 保存乙方评测合同信息
 export const SELECT_CONTRACT_URL = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectContractUrl`; // 查询评测合同路由
 export const NOTICE_ACCOUNT_PAYMENT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/noticeAccountPayment`; // 更新交付汇款状态
+export const SELECT_TEST_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectTestRegistrationApply`; // 查询现场测试申请表信息
+export const SELECT_TEST_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectTestRegistrationSpecimen`; // 查询样品登记表信息
+export const SAVE_TEST_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/saveTestRegistrationApply`; // 保存现场测试申请表信息
+export const SAVE_TEST_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/saveTestRegistrationSpecimen`; // 保存样品登记表信息
