@@ -20,7 +20,7 @@ const contractStatusToColor = status => {
     case -1:
       return 'red';
     case 0:
-      return 'grey';
+      return 'gray';
     case 1:
       return 'blue';
     case 2:
@@ -34,7 +34,7 @@ const contractStatusToColor = status => {
     case 100:
       return 'green';
     default:
-      return 'grey';
+      return 'gray';
   }
 };
 
@@ -43,7 +43,7 @@ const paymentStatusToColor = status => {
     case -1:
       return 'red';
     case 0:
-      return 'grey';
+      return 'gray';
     case 1:
       return 'blue';
     case 2:
@@ -55,7 +55,7 @@ const paymentStatusToColor = status => {
     case 100:
       return 'green';
     default:
-      return 'grey';
+      return 'gray';
   }
 };
 
@@ -64,7 +64,7 @@ const testStatusToColor = status => {
     case -1:
       return 'red';
     case 0:
-      return 'grey';
+      return 'gray';
     case 1:
       return 'blue';
     case 2:
@@ -82,7 +82,7 @@ const testStatusToColor = status => {
     case 100:
       return 'green';
     default:
-      return 'grey';
+      return 'gray';
   }
 };
 
