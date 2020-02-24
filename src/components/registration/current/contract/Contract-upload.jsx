@@ -5,7 +5,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import enterpriseAction from '@/redux/action/enterprise';
 
 // 样式
-import { Alert, Button, Icon, Upload, message, Skeleton, Timeline } from 'antd';
+import {
+  Alert,
+  Button,
+  Icon,
+  Upload,
+  message,
+  Skeleton,
+  Timeline,
+  Form
+} from 'antd';
 import '@/style/home/registration/electronic-contract.styl';
 
 // 请求
@@ -18,8 +27,9 @@ import {
   SELECT_CONTRACT_URL
 } from '@/constants/api-constants';
 
-export default props => {
-  const { enterpriseRegistrationUuid, steps } = useSelector(
+export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
+  const { getFieldDecorator, setFieldsValue, getFieldValue } = form,
+    { enterpriseRegistrationUuid, steps } = useSelector(
       state => state.enterpriseStore
     ),
     dispatch = useDispatch(),
@@ -28,10 +38,11 @@ export default props => {
     [contractManagerUrl, setContractManagerUrl] = useState(''),
     [previewUrl, setPreviewUrl] = useState(''),
     [managerFailText, setManagermanagerFailText] = useState(''),
-    [contractEnterpriseUrl, setContractEnterpriseUrl] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [needContractStatus, setNeedContractStatus] = useState(false),
-    [saveDataLoading, setSaveDataLoading] = useState(false);
+    [saveDataLoading, setSaveDataLoading] = useState(false),
+    formEnterpriseUrl =
+      getFieldValue('enterpriseUrl') && getFieldValue('enterpriseUrl')[0];
 
   // 通过url获取文件
   useEffect(() => {
@@ -50,13 +61,13 @@ export default props => {
 
   // 通过url获取文件
   useEffect(() => {
-    if (contractEnterpriseUrl) {
+    if (formEnterpriseUrl) {
       (async () => {
         setContractEnterpriseLoading(true);
 
         const previewUrl = await proxyFetch(
           GET_FILE_URL,
-          { fileUrl: contractEnterpriseUrl },
+          { fileUrl: formEnterpriseUrl },
           'GET'
         );
 
@@ -65,25 +76,28 @@ export default props => {
         setPreviewUrl(previewUrl);
       })();
     }
-  }, [contractEnterpriseUrl]);
+  }, [formEnterpriseUrl]);
 
   /**
    * 提交事件
    */
-  const handleEnterpriseUrlSave = async () => {
-    if (enterpriseRegistrationUuid && contractEnterpriseUrl) {
-      let value = {};
-      value.registrationUuid = enterpriseRegistrationUuid;
-      value.enterpriseUrl = contractEnterpriseUrl;
+  const handleEnterpriseUrlSave = e => {
+    e.preventDefault();
 
-      setSaveDataLoading(true);
-      await proxyFetch(SAVE_ENTERPRISE_CONTRACT_URL, value);
+    // 表单判断
+    form.validateFields(async (err, value) => {
+      if (enterpriseRegistrationUuid) {
+        if (!err) {
+          value.registrationUuid = enterpriseRegistrationUuid;
+          value.enterpriseUrl = value.enterpriseUrl[0];
+          setSaveDataLoading(true);
+          await proxyFetch(SAVE_ENTERPRISE_CONTRACT_URL, value);
 
-      setNeedContractStatus(true);
-      setSaveDataLoading(false);
-    } else {
-      message.error('请上传pdf成功后再点击提交');
-    }
+          setNeedContractStatus(true);
+          setSaveDataLoading(false);
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -111,12 +125,16 @@ export default props => {
 
         // 数据回显
         setContractManagerUrl(contractList?.managerUrl);
-        setContractEnterpriseUrl(contractList?.enterpriseUrl);
+        if (contractList.enterpriseUrl) {
+          setFieldsValue({
+            enterpriseUrl: [contractList?.enterpriseUrl]
+          });
+        }
         setManagermanagerFailText(contract?.managerFailText);
         setGetDataLoading(false);
       })();
     }
-  }, [enterpriseRegistrationUuid]);
+  }, [enterpriseRegistrationUuid, setFieldsValue]);
 
   /**
    * 上传pdf文件
@@ -137,7 +155,7 @@ export default props => {
       setContractEnterpriseLoading(false);
 
       if (fileUrl) {
-        setContractEnterpriseUrl(fileUrl);
+        setFieldsValue({ enterpriseUrl: [fileUrl] });
       }
     }
   };
@@ -189,45 +207,79 @@ export default props => {
                 )}
               </Timeline.Item>
               <Timeline.Item>
-                <Upload showUploadList={false} customRequest={handleUploadFile}>
-                  {previewUrl && !contractEnterpriseLoading ? (
-                    <div>
-                      <a
-                        href={previewUrl}
-                        onClick={e => e.stopPropagation()}
-                        target='_blank'
-                        rel='noopener noreferrer'
+                <Form
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 18 }}
+                  onSubmit={handleEnterpriseUrlSave}
+                >
+                  <Form.Item>
+                    {getFieldDecorator('enterpriseUrl', {
+                      rules: [
+                        {
+                          required: true,
+                          message: '请上传合同PDF文件！'
+                        }
+                      ],
+                      valuePropName: 'fileList',
+                      getValueFromEvent: e => {
+                        return e && e.fileList;
+                      }
+                    })(
+                      <Upload
+                        showUploadList={false}
+                        customRequest={handleUploadFile}
+                        htmlType='button'
                       >
-                        <Button size='large' className='half-button'>
-                          查看上传
-                        </Button>
-                      </a>
-                      <Button size='large' className='half-button'>
-                        重新上传
-                      </Button>
-                    </div>
-                  ) : (
+                        {previewUrl && !contractEnterpriseLoading ? (
+                          <div>
+                            <a
+                              href={previewUrl}
+                              onClick={e => e.stopPropagation()}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                            >
+                              <Button
+                                size='large'
+                                className='half-button'
+                                htmlType='button'
+                              >
+                                查看上传
+                              </Button>
+                            </a>
+                            <Button
+                              size='large'
+                              className='half-button'
+                              htmlType='button'
+                            >
+                              重新上传
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button
+                            size='large'
+                            className='button'
+                            loading={contractEnterpriseLoading}
+                            htmlType='button'
+                          >
+                            扫描后上传PDF合同
+                            <Icon type='inbox' />
+                          </Button>
+                        )}
+                      </Upload>
+                    )}
+                  </Form.Item>
+                  <Form.Item>
                     <Button
                       size='large'
+                      type='primary'
                       className='button'
-                      loading={contractEnterpriseLoading}
+                      htmlType='submit'
+                      loading={saveDataLoading}
                     >
-                      扫描后上传PDF合同
-                      <Icon type='inbox' />
+                      提交
                     </Button>
-                  )}
-                </Upload>
-              </Timeline.Item>
-              <Timeline.Item>
-                <Button
-                  size='large'
-                  type='primary'
-                  className='button'
-                  loading={saveDataLoading}
-                  onClick={handleEnterpriseUrlSave}
-                >
-                  提交
-                </Button>
+                  </Form.Item>
+                </Form>
               </Timeline.Item>
             </Timeline>
           </div>
@@ -242,7 +294,7 @@ export default props => {
       </div>
     </>
   );
-};
+});
 
 const handleBeforeUpload = ({ file }) => {
   // 后缀名
