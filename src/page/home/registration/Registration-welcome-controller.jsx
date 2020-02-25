@@ -70,7 +70,9 @@ export default props => {
             size='large'
             type='primary'
             className='button'
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation();
+              
               confirm({
                 title: '请核对测试产品名称',
                 content: '开始办理之后此测试产品名称不可修改,请认真核对!',
