@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 // 样式
 import '@/style/home/registration/welcome.styl';
-import { Input, Icon, Button, message } from 'antd';
+import { Input, Icon, Button, message, Modal } from 'antd';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import enterpriseAction from '@/redux/action/enterprise';
+const { confirm } = Modal;
 
 export default props => {
   const { createEnterpriseRegistrationLoading } = useSelector(
@@ -15,9 +16,7 @@ export default props => {
     [registrationName, setRegistrationName] = useState(''),
     dispatch = useDispatch();
 
-  const handleSubmitCreateRegistration = e => {
-    e.preventDefault();
-
+  const handleSubmitCreateRegistration = () => {
     if (registrationName) {
       dispatch(
         enterpriseAction.asyncCreateEnterpriseRegistration(registrationName)
@@ -71,10 +70,22 @@ export default props => {
             size='large'
             type='primary'
             className='button'
-            onClick={handleSubmitCreateRegistration}
+            onClick={() => {
+              confirm({
+                title: '请核对测试产品名称',
+                content: '开始办理之后此测试产品名称不可修改,请认真核对!',
+                okText: '确认',
+                icon: 'exclamation-circle',
+                cancelText: '取消',
+                onOk() {
+                  handleSubmitCreateRegistration();
+                },
+                onCancel() {}
+              });
+            }}
             loading={createEnterpriseRegistrationLoading}
           >
-            确认
+            开始办理
           </Button>
         </div>
       </div>
