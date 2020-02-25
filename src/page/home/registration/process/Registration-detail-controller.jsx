@@ -40,10 +40,10 @@ export default ({ type }) => {
     case 'basic':
       content = <Basic />;
       break;
-      case 'applyTest':
+    case 'applyTest':
       content = <ApplyTest />;
       break;
-      case 'specimenTest':
+    case 'specimenTest':
       content = <SpecimenTest />;
       break;
     default:

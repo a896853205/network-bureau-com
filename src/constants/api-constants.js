@@ -53,3 +53,4 @@ export const SAVE_TEST_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfig
 export const SAVE_TEST_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/saveTestRegistrationSpecimen`; // 保存样品登记表信息
 export const SELECT_ENTERPRISE_REGISTRATION_REPORT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectEnterpriseRegistrationReport`; // 查找现场报告url
 export const SELECT_ENTERPRISE_REGISTRATION_RECORD = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectEnterpriseRegistrationRecord`; // 查找原始记录url
+export const GET_REGISTRATION_MANAGER_INFO = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/getRegistrationManagerInfo`; // 查询登记测试管理员uuid(用户评价页面)

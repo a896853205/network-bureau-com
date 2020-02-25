@@ -31,3 +31,7 @@ export const REGISTRATION_DETAIL = {
   path: '/home/registration/process/detail',
   name: '详细内容页'
 };
+export const REGISTRATION_APPRAISAL = {
+  path: '/home/registration/process/appraisal',
+  name: '人员评价页'
+};

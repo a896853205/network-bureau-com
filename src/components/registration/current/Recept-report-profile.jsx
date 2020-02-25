@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+// 路由
+import { Link } from 'react-router-dom';
+import { REGISTRATION_APPRAISAL } from '@/constants/route-constants';
+
 // redux
 import { useSelector } from 'react-redux';
 
@@ -147,6 +151,11 @@ export default props => {
                 <Button disabled>未生成现场报告</Button>
               )}
             </div>
+          </div>
+          <div>
+            <Link to={REGISTRATION_APPRAISAL.path}>
+              <span>我要评价</span>
+            </Link>
           </div>
         </div>
       </div>

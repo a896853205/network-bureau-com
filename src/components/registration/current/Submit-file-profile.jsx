@@ -105,7 +105,7 @@ export default props => {
         );
 
         for (let itemStatus in res) {
-          if (res[itemStatus].status === 0 || res[itemStatus].status === 100) {
+          if (res[itemStatus].status === 0 || res[itemStatus].status === -1) {
             setWaitAlert(false);
             break;
           }
