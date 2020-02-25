@@ -13,6 +13,7 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 import * as ROUTES from '@/constants/route-constants';
 import RegistrationProfile from '@/page/home/registration/process/Registration-profile-controller.jsx';
 import RegistrationDetail from '@/page/home/registration/process/Registration-detail-controller.jsx';
+import PersonalAppraisal from '@/page/home/registration/process/Personal-appraisal-controller.jsx';
 
 // localStorage
 import { LOCAL_STORAGE } from '@/constants/app-constants';
@@ -60,6 +61,9 @@ export default props => {
     }),
     detail = useRouteMatch({
       path: `${ROUTES.REGISTRATION_DETAIL.path}/:type`
+    }),
+    appraisal = useRouteMatch({
+      path: ROUTES.REGISTRATION_APPRAISAL.path
     });
 
   let content = null;
@@ -70,6 +74,8 @@ export default props => {
   } else if (detail) {
     // 详细填写组件
     content = <RegistrationDetail type={detail.params.type} />;
+  } else if (appraisal) {
+    content = <PersonalAppraisal />;
   }
 
   return (
