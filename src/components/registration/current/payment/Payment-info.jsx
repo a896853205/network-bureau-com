@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 //样式
-import { Descriptions, Button } from 'antd';
+import { Descriptions, Button, Modal } from 'antd';
 import '@/style/home/registration/payment.styl';
 
 // redux
@@ -10,6 +10,7 @@ import enterpriseAction from '@/redux/action/enterprise';
 // 请求
 import proxyFetch from '@/util/request';
 import { NOTICE_ACCOUNT_PAYMENT } from '@/constants/api-constants';
+const { confirm } = Modal;
 
 export default props => {
   const { enterpriseRegistrationUuid } = useSelector(
@@ -62,7 +63,18 @@ export default props => {
       </Descriptions>
       <Button
         loading={saveDataLoading}
-        onClick={handleEnterpriseUrlSave}
+        onClick={() => {
+          confirm({
+            title: '确定已汇款?',
+            content: '请核对已汇款后点击确认',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+              handleEnterpriseUrlSave();
+            },
+            onCancel() {}
+          });
+        }}
         className='button'
         size='large'
         type='primary'

@@ -51,3 +51,5 @@ export const SELECT_TEST_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConf
 export const SELECT_TEST_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectTestRegistrationSpecimen`; // 查询样品登记表信息
 export const SAVE_TEST_REGISTRATION_APPLY = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/saveTestRegistrationApply`; // 保存现场测试申请表信息
 export const SAVE_TEST_REGISTRATION_SPECIMEN = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/saveTestRegistrationSpecimen`; // 保存样品登记表信息
+export const SELECT_ENTERPRISE_REGISTRATION_REPORT = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectEnterpriseRegistrationReport`; // 查找现场报告url
+export const SELECT_ENTERPRISE_REGISTRATION_RECORD = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectEnterpriseRegistrationRecord`; // 查找原始记录url

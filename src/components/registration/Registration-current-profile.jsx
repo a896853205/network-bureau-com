@@ -5,6 +5,7 @@ import SubmitFileProfile from './current/Submit-file-profile.jsx';
 import ElectronicContractProfile from './current/Electronic-contract-profile.jsx';
 import PaymentProfile from './current/Payment-profile.jsx';
 import FieldTestsProfile from './current/Field-tests-profile.jsx';
+import ReceptReportProfile from './current/Recept-report-profile.jsx';
 
 // redux
 import { useSelector } from 'react-redux';
@@ -31,6 +32,10 @@ export default props => {
         case 4:
           // 步骤四的预览组件
           setContent(<FieldTestsProfile />);
+          break;
+        case 5:
+          // 步骤五的预览组件
+          setContent(<ReceptReportProfile />);
           break;
         default:
           setContent(<></>);
