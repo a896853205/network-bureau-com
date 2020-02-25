@@ -71,7 +71,9 @@
   "scripts": {
     "start": "set NODE_ENV=development&&node scripts/start.js",
     "build": "export NODE_ENV=production&&node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "initDeploy": "pm2 deploy production setup",
+    "deploy": "pm2 deploy production update"
   },
   "eslintConfig": {
     "extends": "react-app"
