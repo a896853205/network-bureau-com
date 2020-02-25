@@ -126,7 +126,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                         '请输入正确的版本号,格式为X.Y.Z,X,Y,Z均在0-99之间'
                     }
                   ]
-                })(<Input placeholder='请输入版本' maxLength={32} />)}
+                })(<Input addonBefore={<span>V</span>} placeholder='1.0.0' maxLength={32} />)}
               </Form.Item>
 
               {/* 传真 */}
@@ -153,7 +153,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                       message: '请输入正确的电话(手机号)'
                     }
                   ]
-                })(<Input placeholder='请输入电话(手机)' maxLength={32} />)}
+                })(<Input placeholder='13912345678' maxLength={32} />)}
               </Form.Item>
 
               {/* 注册地址 */}
@@ -172,7 +172,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
               <Form.Item label='开发研发日期'>
                 {getFieldDecorator('devStartTime', {
                   rules: [{ required: true, message: '请选择开发研发日期！' }]
-                })(<DatePicker placeholder='请选择开发研发日期' />)}
+                })(<DatePicker placeholder='20XX-XX-XX' />)}
               </Form.Item>
 
               {/* 开发单位全称 */}
