@@ -120,7 +120,7 @@ export default Form.create({ name: 'contract' })(({ form }) => {
               <Form.Item label='数量'>
                 {getFieldDecorator('amount', {
                   rules: [{ required: true, message: '请输入数量！' }]
-                })(<InputNumber min={1} max={999} />)}
+                })(<InputNumber min={1} max={999} placeholder={1} />)}
               </Form.Item>
 
               {/* 传真 */}
