@@ -20,8 +20,8 @@ module.exports = {
       repo: 'git@github.com:a896853205/network-bureau-com.git',
       path: '/network-bureau/network-bureau-com',
       'post-deploy':
-        'cnpm install && npm run build',
-      'post-setup': 'cnpm install && npm run build'
+        'npm install && npm run build',
+      'post-setup': 'npm install && npm run build'
     }
   }
 };
