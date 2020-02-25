@@ -68,37 +68,6 @@ export default Form.create({ name: 'register' })(props => {
         )}
       </Form.Item>
       <Form.Item>
-        {getFieldDecorator('name', {
-          rules: [{ required: true, message: '请输入企业名称！' }]
-        })(
-          <Input
-            prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder='企业名称'
-            size='large'
-          />
-        )}
-      </Form.Item>
-      <Form.Item>
-        {getFieldDecorator('phone', {
-          rules: [
-            {
-              required: true,
-              message: '请输入电话！'
-            },
-            {
-              pattern: /^[1][0-9][0-9]{9}$/,
-              message: '电话号码不符合规则'
-            }
-          ]
-        })(
-          <Input
-            prefix={<Icon type='phone' style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder='电话'
-            size='large'
-          />
-        )}
-      </Form.Item>
-      <Form.Item>
         {getFieldDecorator('password', {
           rules: [
             { required: true, message: '请输入密码！' },
@@ -136,6 +105,37 @@ export default Form.create({ name: 'register' })(props => {
             placeholder='确认密码'
             size='large'
             type='password'
+          />
+        )}
+      </Form.Item>
+      <Form.Item>
+        {getFieldDecorator('name', {
+          rules: [{ required: true, message: '请输入企业名称！' }]
+        })(
+          <Input
+            prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='企业名称'
+            size='large'
+          />
+        )}
+      </Form.Item>
+      <Form.Item>
+        {getFieldDecorator('phone', {
+          rules: [
+            {
+              required: true,
+              message: '请输入电话！'
+            },
+            {
+              pattern: /^(\d)(\d|-){4,19}$/,
+              message: '电话号码不符合规则'
+            }
+          ]
+        })(
+          <Input
+            prefix={<Icon type='phone' style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='电话'
+            size='large'
           />
         )}
       </Form.Item>
