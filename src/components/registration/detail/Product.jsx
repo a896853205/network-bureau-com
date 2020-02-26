@@ -173,37 +173,35 @@ export default Form.create({ name: 'product' })(({ form }) => {
                     }
                   ]
                 })(
-                  <>
-                    {previewUrl ? (
-                      <Button
-                        className='half-button'
-                        size='large'
-                        onClick={() => window.open(previewUrl)}
-                      >
-                        查看上传
-                      </Button>
-                    ) : null}
-                    <Upload
-                      showUploadList={false}
-                      // 进行将压缩文件格式和大小判断
-                      customRequest={handleUploadImage}
-                    >
-                      {previewUrl && !productLoading ? (
+                  <Upload
+                    showUploadList={false}
+                    // 进行将压缩文件格式和大小判断
+                    customRequest={handleUploadImage}
+                  >
+                    {previewUrl && !productLoading ? (
+                      <div>
+                        <Button
+                          className='half-button'
+                          size='large'
+                          onClick={() => window.open(previewUrl)}
+                        >
+                          查看上传
+                        </Button>
                         <Button className='half-button' size='large'>
                           重新上传
                         </Button>
-                      ) : (
-                        <Button
-                          className='button'
-                          size='large'
-                          loading={productLoading}
-                        >
-                          点击文件上传zip,rar
-                          <Icon type='inbox' />
-                        </Button>
-                      )}
-                    </Upload>
-                  </>
+                      </div>
+                    ) : (
+                      <Button
+                        className='button'
+                        size='large'
+                        loading={productLoading}
+                      >
+                        点击文件上传zip,rar
+                        <Icon type='inbox' />
+                      </Button>
+                    )}
+                  </Upload>
                 )}
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 6 }}>

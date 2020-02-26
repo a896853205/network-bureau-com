@@ -207,37 +207,35 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                     }
                   ]
                 })(
-                  <>
-                    {previewUrl ? (
-                      <Button
-                        className='half-button'
-                        size='large'
-                        onClick={() => window.open(previewUrl)}
-                      >
-                        查看上传
-                      </Button>
-                    ) : null}
-                    <Upload
-                      showUploadList={false}
-                      // 进行将文件格式和大小判断
-                      customRequest={handleUploadFile}
-                    >
-                      {previewUrl && !productDescriptionLoading ? (
+                  <Upload
+                    showUploadList={false}
+                    // 进行将文件格式和大小判断
+                    customRequest={handleUploadFile}
+                  >
+                    {previewUrl && !productDescriptionLoading ? (
+                      <div>
+                        <Button
+                          className='half-button'
+                          size='large'
+                          onClick={() => window.open(previewUrl)}
+                        >
+                          查看上传
+                        </Button>
                         <Button size='large' className='half-button'>
                           重新上传
                         </Button>
-                      ) : (
-                        <Button
-                          className='button'
-                          size='large'
-                          loading={productDescriptionLoading}
-                        >
-                          点击文件上传word,PDF
-                          <Icon type='inbox' />
-                        </Button>
-                      )}
-                    </Upload>
-                  </>
+                      </div>
+                    ) : (
+                      <Button
+                        className='button'
+                        size='large'
+                        loading={productDescriptionLoading}
+                      >
+                        点击文件上传word,PDF
+                        <Icon type='inbox' />
+                      </Button>
+                    )}
+                  </Upload>
                 )}
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 6 }}>
