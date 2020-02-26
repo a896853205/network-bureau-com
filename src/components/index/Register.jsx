@@ -112,7 +112,7 @@ export default Form.create({ name: 'register' })(props => {
         {getFieldDecorator('name', {
           rules: [
             { required: true, message: '请输入企业名称！' },
-            { max: 16, message: '企业名称过长' }
+            { max: 32, message: '企业名称过长' }
           ]
         })(
           <Input
