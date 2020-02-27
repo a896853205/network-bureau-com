@@ -131,7 +131,6 @@ export default Form.create({ name: 'apply' })(({ form }) => {
                 })(
                   <TextArea
                     autoSize={{ minRows: 6, maxRows: 50 }}
-                    maxLength={1200}
                   />
                 )}
               </Form.Item>

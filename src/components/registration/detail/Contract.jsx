@@ -119,15 +119,29 @@ export default Form.create({ name: 'contract' })(({ form }) => {
               {/* 数量 */}
               <Form.Item label='数量'>
                 {getFieldDecorator('amount', {
-                  rules: [{ required: true, message: '请输入数量！' }]
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入数量！'
+                    },
+                    {
+                      pattern: /^[1-9]\d{0,2}$/,
+                      message: '请输入正确的数量,须在1-999之间'
+                    }
+                  ]
                 })(<InputNumber min={1} max={999} placeholder={1} />)}
               </Form.Item>
 
               {/* 传真 */}
               <Form.Item label='传真'>
                 {getFieldDecorator('fax', {
-                  rules: [{ message: '请输入传真！' }]
-                })(<Input placeholder='请输入传真' maxLength={32} />)}
+                  rules: [
+                    {
+                      message: '传真过长!',
+                      max: 32
+                    }
+                  ]
+                })(<Input placeholder='请输入传真' />)}
               </Form.Item>
 
               {/* 邮政编码 */}
@@ -135,7 +149,7 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                 {getFieldDecorator('postalCode', {
                   rules: [
                     { required: true, message: '请输入邮政编码！' },
-                    { pattern: /\d{6}$/, message: '请输入正确的邮政编码' }
+                    { pattern: /^\d{6}$/, message: '请输入正确的邮政编码' }
                   ]
                 })(<Input placeholder='请输入邮政编码' maxLength={32} />)}
               </Form.Item>
@@ -143,12 +157,20 @@ export default Form.create({ name: 'contract' })(({ form }) => {
               {/* 主要功能 */}
               <Form.Item label='主要功能'>
                 {getFieldDecorator('mainFunction', {
-                  rules: [{ required: true, message: '请输入主要功能！' }]
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入主要功能！'
+                    },
+                    {
+                      message: '主要功能过长！',
+                      max: 32
+                    }
+                  ]
                 })(
                   <TextArea
                     autoSize={{ minRows: 2, maxRows: 6 }}
                     placeholder='请输入主要功能!'
-                    maxLength='32'
                   />
                 )}
               </Form.Item>
@@ -160,13 +182,16 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                     {
                       required: true,
                       message: '请输入技术指标！'
+                    },
+                    {
+                      message: '技术指标过长！',
+                      max: 32
                     }
                   ]
                 })(
                   <TextArea
                     autoSize={{ minRows: 2, maxRows: 6 }}
                     placeholder='请输入技术指标!'
-                    maxLength='32'
                   />
                 )}
               </Form.Item>

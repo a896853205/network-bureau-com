@@ -119,52 +119,90 @@ export default Form.create({ name: 'basic' })(({ form }) => {
               <Form.Item label='版本'>
                 {getFieldDecorator('version', {
                   rules: [
-                    { required: true, message: '请输入版本！' },
+                    {
+                      required: true,
+                      message: '请输入版本！'
+                    },
+                    {
+                      message: '版本过长！',
+                      max: 32
+                    },
                     {
                       pattern: /^(\d{1,2})(.([1-9]\d|\d)){2}$/,
                       message:
                         '请输入正确的版本号,格式为X.Y.Z,X,Y,Z均在0-99之间'
                     }
                   ]
-                })(<Input addonBefore={<span>V</span>} placeholder='1.0.0' maxLength={32} />)}
+                })(<Input addonBefore={<span>V</span>} placeholder='1.0.0' />)}
               </Form.Item>
 
-              {/* 传真 */}
+              {/* 联系人 */}
               <Form.Item label='联系人'>
                 {getFieldDecorator('linkman', {
-                  rules: [{ required: true, message: '请输入联系人！' }]
-                })(<Input placeholder='请输入联系人' maxLength={32} />)}
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入联系人！'
+                    },
+                    {
+                      message: '联系人过长！',
+                      max: 32
+                    }
+                  ]
+                })(<Input placeholder='请输入联系人' />)}
               </Form.Item>
 
               {/* 委托单位(人) */}
               <Form.Item label='委托单位(人)'>
                 {getFieldDecorator('client', {
-                  rules: [{ required: true, message: '请输入委托单位(人)！' }]
-                })(<Input placeholder='请输入委托单位(人)' maxLength={32} />)}
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入委托单位(人)！'
+                    },
+                    {
+                      message: '委托单位(人)过长！',
+                      max: 32
+                    }
+                  ]
+                })(<Input placeholder='请输入委托单位(人)' />)}
               </Form.Item>
 
               {/* 电话(手机) */}
               <Form.Item label='电话(手机)'>
                 {getFieldDecorator('phone', {
                   rules: [
-                    { required: true, message: '请输入电话(手机)！' },
+                    {
+                      required: true,
+                      message: '请输入手机号！'
+                    },
+                    {
+                      message: '手机号过长！',
+                      max: 32
+                    },
                     {
                       pattern: /^(\d)(\d|-){4,20}$/,
                       message: '请输入正确的电话(手机号)'
                     }
                   ]
-                })(<Input placeholder='13912345678' maxLength={32} />)}
+                })(<Input placeholder='13912345678' />)}
               </Form.Item>
 
               {/* 注册地址 */}
               <Form.Item label='注册地址'>
                 {getFieldDecorator('address', {
-                  rules: [{ required: true, message: '请输入注册地址！' }]
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入注册地址！'
+                    },
+                    {
+                      message: '注册地址过长！',
+                      max: 32
+                    }
+                  ]
                 })(
-                  <Input
-                    placeholder='注册地址(应与营业执照上地址完全一致)'
-                    maxLength={32}
-                  />
+                  <Input placeholder='注册地址(应与营业执照上地址完全一致)' />
                 )}
               </Form.Item>
 
@@ -178,8 +216,10 @@ export default Form.create({ name: 'basic' })(({ form }) => {
               {/* 开发单位全称 */}
               <Form.Item label='开发单位全称'>
                 {getFieldDecorator('enterpriseName', {
-                  rules: [{ required: true, message: '请输入开发单位全称！' }]
-                })(<Input placeholder='请输入开发单位全称' maxLength={32} />)}
+                  rules: [
+                    { required: true, message: '请输入开发单位全称！', max: 32 }
+                  ]
+                })(<Input placeholder='请输入开发单位全称' />)}
               </Form.Item>
 
               {/* 提交按钮 */}
