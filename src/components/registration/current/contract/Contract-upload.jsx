@@ -13,7 +13,7 @@ import {
   message,
   Skeleton,
   Timeline,
-  Form
+  Form,
 } from 'antd';
 import '@/style/home/registration/electronic-contract.styl';
 
@@ -24,7 +24,7 @@ import {
   SELECT_CONTRACT_MANAGER_FAIL_TEXT,
   UPLOAD_PDF_FILE,
   SAVE_ENTERPRISE_CONTRACT_URL,
-  SELECT_CONTRACT_URL
+  SELECT_CONTRACT_URL,
 } from '@/constants/api-constants';
 
 export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
@@ -38,6 +38,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
     [contractManagerUrl, setContractManagerUrl] = useState(''),
     [previewUrl, setPreviewUrl] = useState(''),
     [managerFailText, setManagermanagerFailText] = useState(''),
+    [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [getDataLoading, setGetDataLoading] = useState(true),
     [needContractStatus, setNeedContractStatus] = useState(false),
     [saveDataLoading, setSaveDataLoading] = useState(false),
@@ -61,7 +62,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
 
   // 通过url获取文件
   useEffect(() => {
-    if (formEnterpriseUrl) {
+    if (formEnterpriseUrl && isNeedUrlFresh) {
       (async () => {
         setContractEnterpriseLoading(true);
 
@@ -74,9 +75,10 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
         setContractEnterpriseLoading(false);
         // 切换下载的url
         setPreviewUrl(previewUrl);
+        setIsNeedUrlFresh(false);
       })();
     }
-  }, [formEnterpriseUrl]);
+  }, [formEnterpriseUrl, isNeedUrlFresh]);
 
   /**
    * 提交事件
@@ -120,15 +122,16 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
             SELECT_CONTRACT_MANAGER_FAIL_TEXT,
             { registrationUuid: enterpriseRegistrationUuid },
             'GET'
-          )
+          ),
         ]);
 
         // 数据回显
         setContractManagerUrl(contractList?.managerUrl);
-        if (contractList.enterpriseUrl) {
+        if (contractList && contractList.enterpriseUrl) {
           setFieldsValue({
-            enterpriseUrl: [contractList?.enterpriseUrl]
+            enterpriseUrl: [contractList?.enterpriseUrl],
           });
+          setIsNeedUrlFresh(true);
         }
         setManagermanagerFailText(contract?.managerFailText);
         setGetDataLoading(false);
@@ -148,7 +151,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
       // 参数需要加上oss的文件夹位置
       const fileUrl = await proxyFileFetch(UPLOAD_PDF_FILE, {
         file: file.file,
-        folderName: 'registration/enterpriseContract'
+        folderName: 'registration/enterpriseContract',
       });
 
       // loading
@@ -156,6 +159,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
 
       if (fileUrl) {
         setFieldsValue({ enterpriseUrl: [fileUrl] });
+        setIsNeedUrlFresh(true);
       }
     }
   };
@@ -217,18 +221,17 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
                       rules: [
                         {
                           required: true,
-                          message: '请上传合同PDF文件！'
-                        }
+                          message: '请上传合同PDF文件！',
+                        },
                       ],
                       valuePropName: 'fileList',
                       getValueFromEvent: e => {
                         return e && e.fileList;
-                      }
+                      },
                     })(
                       <Upload
                         showUploadList={false}
                         customRequest={handleUploadFile}
-                        htmlType='button'
                       >
                         {previewUrl && !contractEnterpriseLoading ? (
                           <div>
@@ -238,19 +241,11 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
                               target='_blank'
                               rel='noopener noreferrer'
                             >
-                              <Button
-                                size='large'
-                                className='half-button'
-                                htmlType='button'
-                              >
+                              <Button size='large' className='half-button'>
                                 查看上传
                               </Button>
                             </a>
-                            <Button
-                              size='large'
-                              className='half-button'
-                              htmlType='button'
-                            >
+                            <Button size='large' className='half-button'>
                               重新上传
                             </Button>
                           </div>
@@ -259,7 +254,6 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
                             size='large'
                             className='button'
                             loading={contractEnterpriseLoading}
-                            htmlType='button'
                           >
                             扫描后上传PDF合同
                             <Icon type='inbox' />
@@ -300,6 +294,7 @@ const handleBeforeUpload = ({ file }) => {
   // 后缀名
   const extensionName = file.name.split('.')[1].toLowerCase();
 
+  console.log('extensionName', extensionName);
   // 判断后缀名是否非法
   if (extensionName !== 'pdf') {
     message.error('文件类型必须为pdf');
