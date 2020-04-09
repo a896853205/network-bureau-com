@@ -63,6 +63,7 @@ export default props => {
       </Descriptions>
       <Button
         loading={saveDataLoading}
+        closeIcon
         onClick={() => {
           confirm({
             title: '确定已汇款?',
