@@ -164,7 +164,7 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                     },
                     {
                       message: '主要功能过长！',
-                      max: 32
+                      max: 200
                     }
                   ]
                 })(
@@ -185,7 +185,7 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                     },
                     {
                       message: '技术指标过长！',
-                      max: 32
+                      max: 200
                     }
                   ]
                 })(
