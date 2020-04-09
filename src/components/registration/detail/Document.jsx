@@ -208,7 +208,10 @@ export default Form.create({ name: 'document' })(({ form }) => {
                         <Button
                           className='half-button'
                           size='large'
-                          onClick={() => window.open(previewUrl)}
+                          onClick={e => {
+                            e.stopPropagation();
+                            window.open(previewUrl);
+                          }}
                         >
                           查看上传
                         </Button>
