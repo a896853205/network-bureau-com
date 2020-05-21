@@ -143,7 +143,7 @@ export default Form.create({ name: 'apply' })(({ form }) => {
                   className='button'
                   size='large'
                 >
-                  提交
+                  保存
                 </Button>
               </Form.Item>
             </Form>

@@ -249,7 +249,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                   className='button'
                   size='large'
                 >
-                  提交
+                  保存
                 </Button>
               </Form.Item>
             </Form>

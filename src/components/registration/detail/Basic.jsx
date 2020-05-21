@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import proxyFetch from '@/util/request';
 import {
   SELECT_REGISTRATION_BASIC,
-  SAVE_REGISTRATION_BASIC
+  SAVE_REGISTRATION_BASIC,
 } from '@/constants/api-constants';
 
 // 样式
@@ -24,7 +24,7 @@ import moment from 'moment';
 export default Form.create({ name: 'basic' })(({ form }) => {
   const { getFieldDecorator, setFieldsValue } = form,
     { enterpriseRegistrationUuid } = useSelector(
-      state => state.enterpriseStore
+      (state) => state.enterpriseStore
     ),
     history = useHistory(),
     [failText, setFailText] = useState(''),
@@ -71,7 +71,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
   /**
    * 提交事件
    */
-  const handleSumbitSave = e => {
+  const handleSumbitSave = (e) => {
     e.preventDefault();
 
     // 表单判断
@@ -121,18 +121,18 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                   rules: [
                     {
                       required: true,
-                      message: '请输入版本！'
+                      message: '请输入版本！',
                     },
                     {
                       message: '版本过长！',
-                      max: 32
+                      max: 32,
                     },
                     {
-                      pattern: /^(\d{1,2})(.([1-9]\d|\d)){2}$/,
+                      pattern: /^(\d{1,2})(.([1-9]\d|\d)){1,2}$/,
                       message:
-                        '请输入正确的版本号,格式为X.Y.Z,X,Y,Z均在0-99之间'
-                    }
-                  ]
+                        '请输入正确的版本号,格式为X.Y.Z或X.Y,X,Y,Z均在0-99之间',
+                    },
+                  ],
                 })(<Input addonBefore={<span>V</span>} placeholder='1.0.0' />)}
               </Form.Item>
 
@@ -142,49 +142,49 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                   rules: [
                     {
                       required: true,
-                      message: '请输入联系人！'
+                      message: '请输入联系人！',
                     },
                     {
                       message: '联系人过长！',
-                      max: 32
-                    }
-                  ]
+                      max: 32,
+                    },
+                  ],
                 })(<Input placeholder='请输入联系人' />)}
               </Form.Item>
 
-              {/* 委托单位(人) */}
-              <Form.Item label='委托单位(人)'>
+              {/* 委托单位 */}
+              <Form.Item label='委托单位'>
                 {getFieldDecorator('client', {
                   rules: [
                     {
                       required: true,
-                      message: '请输入委托单位(人)！'
+                      message: '请输入委托单位！',
                     },
                     {
-                      message: '委托单位(人)过长！',
-                      max: 32
-                    }
-                  ]
-                })(<Input placeholder='请输入委托单位(人)' />)}
+                      message: '委托单位过长！',
+                      max: 32,
+                    },
+                  ],
+                })(<Input placeholder='请输入委托单位' />)}
               </Form.Item>
 
-              {/* 电话(手机) */}
-              <Form.Item label='电话(手机)'>
+              {/* 手机 */}
+              <Form.Item label='手机'>
                 {getFieldDecorator('phone', {
                   rules: [
                     {
                       required: true,
-                      message: '请输入手机号！'
+                      message: '请输入手机号！',
                     },
                     {
                       message: '手机号过长！',
-                      max: 32
+                      max: 32,
                     },
                     {
-                      pattern: /^(\d)(\d|-){4,20}$/,
-                      message: '请输入正确的电话(手机号)'
-                    }
-                  ]
+                      pattern: /^([1])(\d){10}$/,
+                      message: '请输入正确的电话(手机号)',
+                    },
+                  ],
                 })(<Input placeholder='13912345678' />)}
               </Form.Item>
 
@@ -194,13 +194,13 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                   rules: [
                     {
                       required: true,
-                      message: '请输入注册地址！'
+                      message: '请输入注册地址！',
                     },
                     {
                       message: '注册地址过长！',
-                      max: 32
-                    }
-                  ]
+                      max: 32,
+                    },
+                  ],
                 })(
                   <Input placeholder='注册地址(应与营业执照上地址完全一致)' />
                 )}
@@ -209,7 +209,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
               {/* 开发研发日期 */}
               <Form.Item label='开发研发日期'>
                 {getFieldDecorator('devStartTime', {
-                  rules: [{ required: true, message: '请选择开发研发日期！' }]
+                  rules: [{ required: true, message: '请选择开发研发日期！' }],
                 })(<DatePicker placeholder='20XX-XX-XX' />)}
               </Form.Item>
 
@@ -217,8 +217,24 @@ export default Form.create({ name: 'basic' })(({ form }) => {
               <Form.Item label='开发单位全称'>
                 {getFieldDecorator('enterpriseName', {
                   rules: [
-                    { required: true, message: '请输入开发单位全称！', max: 32 }
-                  ]
+                    {
+                      required: true,
+                      message: '请输入开发单位全称！',
+                      max: 32,
+                    },
+                    {
+                      validator: (rule, value, callback) => {
+                        if (
+                          value &&
+                          value !== form.getFieldValue('client')
+                        ) {
+                          callback('开发单位和委托单位应一致！');
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
                 })(<Input placeholder='请输入开发单位全称' />)}
               </Form.Item>
 
@@ -231,7 +247,7 @@ export default Form.create({ name: 'basic' })(({ form }) => {
                   className='button'
                   size='large'
                 >
-                  提交
+                  保存
                 </Button>
               </Form.Item>
             </Form>

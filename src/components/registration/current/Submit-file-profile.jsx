@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from 'react';
 
 // 样式
-import { Icon, Tag, Alert, Skeleton } from 'antd';
+import { Icon, Tag, Alert, Skeleton, Button } from 'antd';
 
 // 请求
 import proxyFetch from '@/util/request';
-import { SELECT_REGISTRATION_STATUS } from '@/constants/api-constants';
+import {
+  SELECT_REGISTRATION_STATUS,
+  SUBMIT_ALL_FILE,
+} from '@/constants/api-constants';
 
 // redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import enterpriseAction from '@/redux/action/enterprise';
 
 // 路由
 import { Link } from 'react-router-dom';
 import { REGISTRATION_DETAIL } from '@/constants/route-constants';
 
-const getTagColor = status => {
+const getTagColor = (status) => {
   switch (status) {
     case 0:
       return 'gray';
     case 1:
       return 'blue';
+    case 2:
+      return 'purple';
     case 100:
       return 'green';
     case -1:
@@ -29,43 +35,45 @@ const getTagColor = status => {
   }
 };
 
-export default props => {
+export default (props) => {
   const { enterpriseRegistrationUuid } = useSelector(
-      state => state.enterpriseStore
+      (state) => state.enterpriseStore
     ),
+    [submitAllFileLoading, setSubmitAllFileLoading] = useState(false),
     [
       enterpriseRegistrationContractStatus,
-      setEnterpriseRegistrationContractStatus
+      setEnterpriseRegistrationContractStatus,
     ] = useState(null),
     [
       enterpriseRegistrationApplyStatus,
-      setEnterpriseRegistrationApplyStatus
+      setEnterpriseRegistrationApplyStatus,
     ] = useState(null),
     [
       enterpriseRegistrationCopyrightStatus,
-      setEnterpriseRegistrationCopyrightStatus
+      setEnterpriseRegistrationCopyrightStatus,
     ] = useState(null),
     [
       enterpriseRegistrationDocumentStatus,
-      setEnterpriseRegistrationDocumentStatus
+      setEnterpriseRegistrationDocumentStatus,
     ] = useState(null),
     [
       enterpriseRegistrationProductDescriptionStatus,
-      setEnterpriseRegistrationProductDescriptionStatus
+      setEnterpriseRegistrationProductDescriptionStatus,
     ] = useState(null),
     [
       enterpriseRegistrationProductStatus,
-      setEnterpriseRegistrationProductStatus
+      setEnterpriseRegistrationProductStatus,
     ] = useState(null),
     [
       enterpriseRegistrationSpecimenStatus,
-      setEnterpriseRegistrationSpecimenStatus
+      setEnterpriseRegistrationSpecimenStatus,
     ] = useState(null),
     [
       enterpriseRegistrationBasicStatus,
-      setEnterpriseRegistrationBasicStatus
+      setEnterpriseRegistrationBasicStatus,
     ] = useState(null),
     [waitAlert, setWaitAlert] = useState(true),
+    dispatch = useDispatch(),
     [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -116,13 +124,40 @@ export default props => {
     }
   }, [enterpriseRegistrationUuid]);
 
+  /**
+   * 提交事件
+   */
+  const handleSubmitAllFile = async () => {
+    if (enterpriseRegistrationUuid) {
+      setSubmitAllFileLoading(true);
+
+      await proxyFetch(
+        SUBMIT_ALL_FILE,
+        { registrationUuid: enterpriseRegistrationUuid },
+        'POST'
+      );
+
+      dispatch(enterpriseAction.asyncSetSteps(enterpriseRegistrationUuid));
+
+      setSubmitAllFileLoading(false);
+    }
+  };
+
   return (
     <div className='item-box process-item-box current-profile-box'>
       <p className='title-box'>
         <span>当前步骤</span>-<span>提交上传8种材料</span>
       </p>
       <Skeleton loading={loading}>
-        {waitAlert ? (
+        {waitAlert &&
+        enterpriseRegistrationBasicStatus?.status > 1 &&
+        enterpriseRegistrationContractStatus?.status > 1 &&
+        enterpriseRegistrationApplyStatus?.status > 1 &&
+        enterpriseRegistrationCopyrightStatus?.status > 1 &&
+        enterpriseRegistrationDocumentStatus?.status > 1 &&
+        enterpriseRegistrationProductDescriptionStatus?.status > 1 &&
+        enterpriseRegistrationSpecimenStatus?.status > 1 &&
+        enterpriseRegistrationProductStatus?.status > 1 ? (
           <Alert
             message='请等待审核'
             description='请耐心等待2-3个工作日,等待相关人员进行审核'
@@ -142,7 +177,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationBasicStatus.status !== 100 ? (
+                {enterpriseRegistrationBasicStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/basic`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='edit' /> 填写内容
@@ -179,7 +214,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationContractStatus.status !== 100 ? (
+                {enterpriseRegistrationContractStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/contract`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='edit' /> 填写内容
@@ -216,7 +251,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationCopyrightStatus.status !== 100 ? (
+                {enterpriseRegistrationCopyrightStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/copyright`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='edit' /> 上传文件
@@ -253,7 +288,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationSpecimenStatus.status !== 100 ? (
+                {enterpriseRegistrationSpecimenStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/specimen`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='edit' /> 填写内容
@@ -290,8 +325,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationProductDescriptionStatus.status !==
-                100 ? (
+                {enterpriseRegistrationProductDescriptionStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/productDescription`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='upload' /> 上传文件
@@ -328,7 +362,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationDocumentStatus.status !== 100 ? (
+                {enterpriseRegistrationDocumentStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/document`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='upload' /> 上传文件
@@ -355,7 +389,7 @@ export default props => {
           {enterpriseRegistrationProductStatus ? (
             <li>
               <p>
-                <span className='profile-title'>产品介质</span>
+                <span className='profile-title'>样品</span>
                 <Tag
                   color={getTagColor(
                     enterpriseRegistrationProductStatus.status
@@ -365,7 +399,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationProductStatus.status !== 100 ? (
+                {enterpriseRegistrationProductStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/product`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='upload' /> 上传文件
@@ -400,7 +434,7 @@ export default props => {
                 </Tag>
               </p>
               <div>
-                {enterpriseRegistrationApplyStatus.status !== 100 ? (
+                {enterpriseRegistrationApplyStatus.status < 2 ? (
                   <Link to={`${REGISTRATION_DETAIL.path}/apply`}>
                     <span className='current-right-box current-upload-button'>
                       <Icon type='edit' /> 填写内容
@@ -426,6 +460,17 @@ export default props => {
           ) : null}
         </ol>
       </Skeleton>
+      <div className='submit-button-box'>
+        <Button
+          className='submit-button'
+          type='primary'
+          size='large'
+          onClick={handleSubmitAllFile}
+          loading={submitAllFileLoading}
+        >
+          确认已填写/修改8种文件完毕,提交
+        </Button>
+      </div>
     </div>
   );
 };

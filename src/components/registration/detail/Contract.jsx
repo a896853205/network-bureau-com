@@ -132,18 +132,6 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                 })(<InputNumber min={1} max={999} placeholder={1} />)}
               </Form.Item>
 
-              {/* 传真 */}
-              <Form.Item label='传真'>
-                {getFieldDecorator('fax', {
-                  rules: [
-                    {
-                      message: '传真过长!',
-                      max: 32
-                    }
-                  ]
-                })(<Input placeholder='请输入传真' />)}
-              </Form.Item>
-
               {/* 邮政编码 */}
               <Form.Item label='邮政编码'>
                 {getFieldDecorator('postalCode', {
@@ -205,7 +193,7 @@ export default Form.create({ name: 'contract' })(({ form }) => {
                   className='button'
                   size='large'
                 >
-                  提交
+                  保存
                 </Button>
               </Form.Item>
             </Form>
@@ -214,7 +202,7 @@ export default Form.create({ name: 'contract' })(({ form }) => {
         <div className='contract-right-box'>
           <Alert
             message='填写评测合同内容注意事项'
-            description='此块内容是生成评测合同的必要信息,请提供的信息真实完整和准确。其中传真不是必填项'
+            description='此块内容是生成评测合同的必要信息,请提供的信息真实完整和准确。'
             type='info'
           />
         </div>

@@ -142,7 +142,7 @@ export default Form.create({ name: 'product' })(({ form }) => {
         <Link to={`${REGISTRATION_PROFILE.path}`}>
           <Icon type='left' className='exit-icon' />
         </Link>
-        <p className='subtitle-title'>产品介质</p>
+        <p className='subtitle-title'>样品</p>
       </div>
       {failText ? (
         <Alert
@@ -169,7 +169,7 @@ export default Form.create({ name: 'product' })(({ form }) => {
                   rules: [
                     {
                       required: true,
-                      message: '请上传产品介质文件！'
+                      message: '请上传样品文件！'
                     }
                   ]
                 })(
@@ -215,14 +215,14 @@ export default Form.create({ name: 'product' })(({ form }) => {
                   className='button'
                   size='large'
                 >
-                  提交
+                  保存
                 </Button>
               </Form.Item>
             </Form>
           </div>
           <div className='product-right-box'>
             <Alert
-              message='上传产品介质注意事项'
+              message='上传样品注意事项'
               description='请企业用户确保上传的rar或zip文件内容真实完整,确保上传完毕后点击下方提交按钮。'
               type='info'
             />
