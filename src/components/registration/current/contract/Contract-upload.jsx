@@ -13,7 +13,7 @@ import {
   message,
   Skeleton,
   Timeline,
-  Form
+  Form,
 } from 'antd';
 import '@/style/home/registration/electronic-contract.styl';
 
@@ -24,18 +24,20 @@ import {
   SELECT_CONTRACT_MANAGER_FAIL_TEXT,
   UPLOAD_PDF_FILE,
   SAVE_ENTERPRISE_CONTRACT_URL,
-  SELECT_CONTRACT_URL
+  SELECT_CONTRACT_URL,
+  DOWNLOAD_CONTRACT_WORD,
 } from '@/constants/api-constants';
 
 export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
   const { getFieldDecorator, setFieldsValue, getFieldValue } = form,
     { enterpriseRegistrationUuid, steps } = useSelector(
-      state => state.enterpriseStore
+      (state) => state.enterpriseStore
     ),
     dispatch = useDispatch(),
-    [managerUrl, setManagerUrl] = useState(''),
+    // [managerUrl, setManagerUrl] = useState(''),
+    [downloadContractLoading, setDownloadContractLoading] = useState(false),
     [contractEnterpriseLoading, setContractEnterpriseLoading] = useState(false),
-    [contractManagerUrl, setContractManagerUrl] = useState(''),
+    // [contractManagerUrl, setContractManagerUrl] = useState(''),
     [previewUrl, setPreviewUrl] = useState(''),
     [managerFailText, setManagermanagerFailText] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
@@ -44,20 +46,40 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
     formEnterpriseUrl =
       getFieldValue('enterpriseUrl') && getFieldValue('enterpriseUrl')[0];
 
-  // 通过url获取文件
-  useEffect(() => {
-    (async () => {
-      if (contractManagerUrl) {
-        const managerUrl = await proxyFetch(
-          GET_FILE_URL,
-          { fileUrl: contractManagerUrl },
-          'GET'
-        );
+  const handleDownloadContractWord = async () => {
+    setDownloadContractLoading(true);
 
-        setManagerUrl(managerUrl);
-      }
-    })();
-  }, [contractManagerUrl]);
+    const tempUrl = await proxyFetch(
+      DOWNLOAD_CONTRACT_WORD,
+      { registrationUuid: enterpriseRegistrationUuid },
+      'GET'
+    );
+
+    const url = `http://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+      tempUrl
+    )}`;
+
+    if (url) {
+      window.open(url);
+    }
+
+    setDownloadContractLoading(false);
+  };
+
+  // // 通过url获取文件
+  // useEffect(() => {
+  //   (async () => {
+  //     if (contractManagerUrl) {
+  //       const managerUrl = await proxyFetch(
+  //         GET_FILE_URL,
+  //         { fileUrl: contractManagerUrl },
+  //         'GET'
+  //       );
+
+  //       setManagerUrl(managerUrl);
+  //     }
+  //   })();
+  // }, [contractManagerUrl]);
 
   // 通过url获取文件
   useEffect(() => {
@@ -65,7 +87,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
       (async () => {
         setContractEnterpriseLoading(true);
 
-        const previewUrl = await proxyFetch(
+        const contractPreviewUrl = await proxyFetch(
           GET_FILE_URL,
           { fileUrl: formEnterpriseUrl },
           'GET'
@@ -73,7 +95,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
 
         setContractEnterpriseLoading(false);
         // 切换下载的url
-        setPreviewUrl(previewUrl);
+        setPreviewUrl(contractPreviewUrl);
       })();
     }
   }, [formEnterpriseUrl]);
@@ -81,7 +103,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
   /**
    * 提交事件
    */
-  const handleEnterpriseUrlSave = e => {
+  const handleEnterpriseUrlSave = (e) => {
     e.preventDefault();
 
     // 表单判断
@@ -120,14 +142,14 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
             SELECT_CONTRACT_MANAGER_FAIL_TEXT,
             { registrationUuid: enterpriseRegistrationUuid },
             'GET'
-          )
+          ),
         ]);
 
         // 数据回显
-        setContractManagerUrl(contractList?.managerUrl);
+        // setContractManagerUrl(contractList?.managerUrl);
         if (contractList.enterpriseUrl) {
           setFieldsValue({
-            enterpriseUrl: [contractList?.enterpriseUrl]
+            enterpriseUrl: [contractList?.enterpriseUrl],
           });
         }
         setManagermanagerFailText(contract?.managerFailText);
@@ -140,7 +162,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
    * 上传pdf文件
    * @param {File} file 上传的文件
    */
-  const handleUploadFile = async file => {
+  const handleUploadFile = async (file) => {
     if (handleBeforeUpload(file)) {
       // loading
       setContractEnterpriseLoading(true);
@@ -148,7 +170,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
       // 参数需要加上oss的文件夹位置
       const fileUrl = await proxyFileFetch(UPLOAD_PDF_FILE, {
         file: file.file,
-        folderName: 'registration/enterpriseContract'
+        folderName: 'registration/enterpriseContract',
       });
 
       // loading
@@ -162,7 +184,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
 
   return (
     <>
-      {steps[1].status === 4 ? (
+      {/* {steps[1].status === 4 ? (
         <div className='electronic-contract-alert-box'>
           <Alert
             message='您已提交完毕请等待审核'
@@ -170,7 +192,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
             type='info'
           />
         </div>
-      ) : null}
+      ) : null} */}
       {managerFailText && steps[1].status === -1 ? (
         <div className='electronic-contract-alert-box'>
           <Alert
@@ -185,7 +207,17 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
           <div className='detail-left-box'>
             <Timeline>
               <Timeline.Item>
-                {managerUrl ? (
+                <Button
+                  icon='download'
+                  size='large'
+                  className='button'
+                  type='primary'
+                  loading={downloadContractLoading}
+                  onClick={handleDownloadContractWord}
+                >
+                  生成合同下载
+                </Button>
+                {/* {managerUrl ? (
                   <a
                     href={managerUrl}
                     target='_blank'
@@ -204,7 +236,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
                   <Button disabled size='large'>
                     请等待
                   </Button>
-                )}
+                )} */}
               </Timeline.Item>
               <Timeline.Item>
                 <Form
@@ -217,24 +249,24 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
                       rules: [
                         {
                           required: true,
-                          message: '请上传合同PDF文件！'
-                        }
+                          message: '请上传合同PDF文件！',
+                        },
                       ],
                       valuePropName: 'fileList',
-                      getValueFromEvent: e => {
+                      getValueFromEvent: (e) => {
                         return e && e.fileList;
-                      }
+                      },
                     })(
                       <Upload
                         showUploadList={false}
                         customRequest={handleUploadFile}
                         htmlType='button'
                       >
-                        {previewUrl && !contractEnterpriseLoading ? (
+                        {previewUrl && !contractEnterpriseLoading && formEnterpriseUrl?.[0] ? (
                           <div>
                             <a
                               href={previewUrl}
-                              onClick={e => e.stopPropagation()}
+                              onClick={(e) => e.stopPropagation()}
                               target='_blank'
                               rel='noopener noreferrer'
                             >
@@ -286,7 +318,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
           <div className='detail-right-box'>
             <Alert
               message='注意事项'
-              description='请企业用户点击下载按钮,下载甲方生成的合同,并按规定盖章,扫描后上传合同pdf文件,确认无误后点击提交按钮'
+              description='请企业用户点击下载按钮,下载生成的合同,并按规定盖章,扫描后上传合同pdf文件,确认无误后点击提交按钮'
               type='info'
             />
           </div>

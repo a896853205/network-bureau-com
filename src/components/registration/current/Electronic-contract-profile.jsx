@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 // 组件
 import ContractWelcome from '@/components/registration/current/contract/Contract-welcome.jsx';
 import ContractUpload from '@/components/registration/current/contract/Contract-upload.jsx';
+import ContractWait from '@/components/registration/current/contract/Contract-wait.jsx';
 import ContractComplete from '@/components/registration/current/contract/Contract-complete.jsx';
 
 export default props => {
@@ -16,16 +17,18 @@ export default props => {
     if (steps[1].status) {
       switch (steps[1].status) {
         case 1:
-        case 2:
           // 步骤一的预览组件
           setContent(<ContractWelcome />);
           break;
-        case 3:
-        case 4:
+        case 2:
         case -1:
           // 步骤二的上传组件
           setContent(<ContractUpload />);
           break;
+        case 3:
+          setContent(<ContractWait />);
+          break;
+        case 4:
         case 100:
           // 步骤三的完成组件
           setContent(<ContractComplete />);

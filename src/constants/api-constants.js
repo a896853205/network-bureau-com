@@ -55,3 +55,4 @@ export const SELECT_ENTERPRISE_REGISTRATION_REPORT = `${DominConfigs.DOMAIN}${Do
 export const SELECT_ENTERPRISE_REGISTRATION_RECORD = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/selectEnterpriseRegistrationRecord`; // 查找原始记录url
 export const GET_REGISTRATION_MANAGER_INFO = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/getRegistrationManagerInfo`; // 查询登记测试管理员uuid(用户评价页面)
 export const SUBMIT_ALL_FILE = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/submitAllFile`; // 查询登记测试管理员uuid(用户评价页面)
+export const DOWNLOAD_CONTRACT_WORD = `${DominConfigs.DOMAIN}${DominConfigs.PART.OPT_ENTERPRISE}/downloadContractWord`; // 生成下载word
