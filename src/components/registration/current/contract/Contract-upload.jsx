@@ -34,6 +34,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
       (state) => state.enterpriseStore
     ),
     dispatch = useDispatch(),
+    [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     // [managerUrl, setManagerUrl] = useState(''),
     [downloadContractLoading, setDownloadContractLoading] = useState(false),
     [contractEnterpriseLoading, setContractEnterpriseLoading] = useState(false),
@@ -83,7 +84,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
 
   // 通过url获取文件
   useEffect(() => {
-    if (formEnterpriseUrl) {
+    if (formEnterpriseUrl && isNeedUrlFresh ) {
       (async () => {
         setContractEnterpriseLoading(true);
 
@@ -96,9 +97,10 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
         setContractEnterpriseLoading(false);
         // 切换下载的url
         setPreviewUrl(contractPreviewUrl);
+        setIsNeedUrlFresh(false);
       })();
     }
-  }, [formEnterpriseUrl]);
+  }, [formEnterpriseUrl, isNeedUrlFresh]);
 
   /**
    * 提交事件
@@ -151,6 +153,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
           setFieldsValue({
             enterpriseUrl: [contractList?.enterpriseUrl],
           });
+          setIsNeedUrlFresh(true);
         }
         setManagermanagerFailText(contract?.managerFailText);
         setGetDataLoading(false);
@@ -178,6 +181,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
 
       if (fileUrl) {
         setFieldsValue({ enterpriseUrl: [fileUrl] });
+        setIsNeedUrlFresh(true);
       }
     }
   };
@@ -262,7 +266,7 @@ export default Form.create({ name: 'contractEnterprise' })(({ form }) => {
                         customRequest={handleUploadFile}
                         htmlType='button'
                       >
-                        {previewUrl && !contractEnterpriseLoading && formEnterpriseUrl?.[0] ? (
+                        {previewUrl && !contractEnterpriseLoading ? (
                           <div>
                             <a
                               href={previewUrl}

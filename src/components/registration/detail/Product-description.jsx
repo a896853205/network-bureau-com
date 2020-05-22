@@ -10,7 +10,7 @@ import {
   UPLOAD_WORD_FILE,
   GET_FILE_URL,
   SELECT_REGISTRATION_PRODUCT_DESCRIPTION,
-  SAVE_REGISTRATION_PRODUCT_DESCRIPTION
+  SAVE_REGISTRATION_PRODUCT_DESCRIPTION,
 } from '@/constants/api-constants';
 
 // redux
@@ -23,13 +23,14 @@ import { Form, Button, Icon, Alert, Upload, message, Skeleton } from 'antd';
 export default Form.create({ name: 'productDescription' })(({ form }) => {
   const { getFieldDecorator, setFieldsValue, getFieldValue } = form,
     { enterpriseRegistrationUuid } = useSelector(
-      state => state.enterpriseStore
+      (state) => state.enterpriseStore
     ),
     history = useHistory(),
     [failText, setFailText] = useState(''),
     [productDescriptionLoading, setProductDescriptionLoading] = useState(false),
     [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [previewUrl, setPreviewUrl] = useState(''),
+    [fileType, setFileType] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
     [templateUrl, setTemplateUrl] = useState(''),
@@ -55,7 +56,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
         ) {
           // 数据处理
           setFieldsValue({
-            productDescriptionUrl: [registrationProductDescription.url]
+            productDescriptionUrl: [registrationProductDescription.url],
           });
           setIsNeedUrlFresh(true);
         }
@@ -77,15 +78,21 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
    * 上传头像
    * @param {File} file 上传的文件
    */
-  const handleUploadFile = async file => {
+  const handleUploadFile = async (file) => {
     if (handleBeforeUpload(file)) {
       // loading
       setProductDescriptionLoading(true);
 
+      if (file && file.file.name.split('.')[1].toLowerCase() === 'pdf') {
+        setFileType('pdf');
+      } else {
+        setFileType('word');
+      }
+
       // 参数需要加上oss的文件夹位置
       const fileUrl = await proxyFileFetch(UPLOAD_WORD_FILE, {
         file: file.file,
-        folderName: 'registration/productDescription'
+        folderName: 'registration/productDescription',
       });
 
       // loading
@@ -134,7 +141,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
   /**
    * 提交事件
    */
-  const handleSumbitSave = e => {
+  const handleSumbitSave = (e) => {
     e.preventDefault();
 
     // 表单判断
@@ -184,7 +191,13 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
             >
               <Form.Item label='产品说明表模板'>
                 {templateUrl ? (
-                  <a href={templateUrl}>
+                  <a
+                    href={`http://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+                      templateUrl
+                    )}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
                     <Button className='button' icon='download' size='large'>
                       下载模板
                     </Button>
@@ -197,15 +210,15 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
               <Form.Item label='内容'>
                 {getFieldDecorator('productDescriptionUrl', {
                   valuePropName: 'fileList',
-                  getValueFromEvent: e => {
+                  getValueFromEvent: (e) => {
                     return e && e.fileList;
                   },
                   rules: [
                     {
                       required: true,
-                      message: '请上传产品说明文件！'
-                    }
-                  ]
+                      message: '请上传产品说明文件！',
+                    },
+                  ],
                 })(
                   <Upload
                     showUploadList={false}
@@ -217,9 +230,17 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                         <Button
                           className='half-button'
                           size='large'
-                          onClick={e => {
+                          onClick={(e) => {
                             e.stopPropagation();
-                            window.open(previewUrl);
+                            if (fileType === 'word') {
+                              window.open(
+                                `http://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+                                  previewUrl
+                                )}`
+                              );
+                            } else {
+                              window.open(previewUrl);
+                            }
                           }}
                         >
                           查看上传

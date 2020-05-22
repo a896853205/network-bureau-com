@@ -180,16 +180,7 @@ export default Form.create({ name: 'copyright' })(({ form }) => {
                   >
                     {previewUrl && !copyprightLoading ? (
                       <div>
-                        <Button
-                          className='half-button'
-                          size='large'
-                          onClick={e => {
-                            e.stopPropagation();
-                            window.open(previewUrl);
-                          }}
-                        >
-                          查看上传
-                        </Button>
+                        <img src={previewUrl} alt="avatar" style={{ width: '100%' }} className='img'/>
                         <Button size='large' className='half-button'>
                           重新上传
                         </Button>

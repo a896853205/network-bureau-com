@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 //样式
 import { Descriptions, Button, Modal } from 'antd';
 import '@/style/home/registration/payment.styl';
@@ -9,15 +9,54 @@ import enterpriseAction from '@/redux/action/enterprise';
 
 // 请求
 import proxyFetch from '@/util/request';
-import { NOTICE_ACCOUNT_PAYMENT } from '@/constants/api-constants';
+import {
+  NOTICE_ACCOUNT_PAYMENT,
+  GET_FILE_URL,
+  SELECT_CONTRACT_URL,
+} from '@/constants/api-constants';
 const { confirm } = Modal;
 
-export default props => {
+export default (props) => {
   const { enterpriseRegistrationUuid } = useSelector(
-      state => state.enterpriseStore
+      (state) => state.enterpriseStore
     ),
     [saveDataLoading, setSaveDataLoading] = useState(false),
+    [managerUrl, setManagerUrl] = useState(''),
+    [contractManagerUrl, setContractManagerUrl] = useState(''),
     dispatch = useDispatch();
+
+  useEffect(() => {
+    if (enterpriseRegistrationUuid) {
+      (async () => {
+        let contract = await proxyFetch(
+          SELECT_CONTRACT_URL,
+          { registrationUuid: enterpriseRegistrationUuid },
+          'GET'
+        );
+
+        // 数据回显
+        // setContractManagerUrl(contractList?.managerUrl);
+        if (contract.managerUrl) {
+          setContractManagerUrl(contract.managerUrl);
+        }
+      })();
+    }
+  }, [enterpriseRegistrationUuid]);
+
+  // 通过url获取文件
+  useEffect(() => {
+    (async () => {
+      if (contractManagerUrl) {
+        const managerUrl = await proxyFetch(
+          GET_FILE_URL,
+          { fileUrl: contractManagerUrl },
+          'GET'
+        );
+
+        setManagerUrl(managerUrl);
+      }
+    })();
+  }, [contractManagerUrl]);
 
   /**
    * 提交事件
@@ -28,7 +67,7 @@ export default props => {
       const res = await proxyFetch(
         NOTICE_ACCOUNT_PAYMENT,
         {
-          registrationUuid: enterpriseRegistrationUuid
+          registrationUuid: enterpriseRegistrationUuid,
         },
         'PUT'
       );
@@ -61,6 +100,16 @@ export default props => {
           230501186705100000472
         </Descriptions.Item>
       </Descriptions>
+      <a href={managerUrl} target='_blank' rel='noopener noreferrer'>
+        <Button
+          type='primary'
+          size='large'
+          icon='download'
+          className='download-button'
+        >
+          下载最终合同
+        </Button>
+      </a>
       <Button
         loading={saveDataLoading}
         closeIcon
@@ -73,7 +122,7 @@ export default props => {
             onOk() {
               handleEnterpriseUrlSave();
             },
-            onCancel() {}
+            onCancel() {},
           });
         }}
         className='button'

@@ -10,7 +10,7 @@ import {
   UPLOAD_WORD_FILE,
   GET_FILE_URL,
   SELECT_REGISTRATION_DOCUMENT,
-  SAVE_REGISTRATION_DOCUMENT
+  SAVE_REGISTRATION_DOCUMENT,
 } from '@/constants/api-constants';
 
 // redux
@@ -23,7 +23,7 @@ import { Form, Button, Icon, Alert, Upload, message, Skeleton } from 'antd';
 export default Form.create({ name: 'document' })(({ form }) => {
   const { getFieldDecorator, setFieldsValue, getFieldValue } = form,
     { enterpriseRegistrationUuid } = useSelector(
-      state => state.enterpriseStore
+      (state) => state.enterpriseStore
     ),
     history = useHistory(),
     [failText, setFailText] = useState(''),
@@ -71,7 +71,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
    * 上传头像
    * @param {File} file 上传的文件
    */
-  const handleUploadFile = async file => {
+  const handleUploadFile = async (file) => {
     if (handleBeforeUpload(file)) {
       // loading
       setDocumentLoading(true);
@@ -79,7 +79,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
       // 参数需要加上oss的文件夹位置
       const fileUrl = await proxyFileFetch(UPLOAD_WORD_FILE, {
         file: file.file,
-        folderName: 'registration/document'
+        folderName: 'registration/document',
       });
 
       // loading
@@ -128,7 +128,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
   /**
    * 提交事件
    */
-  const handleSumbitSave = e => {
+  const handleSumbitSave = (e) => {
     e.preventDefault();
 
     // 表单判断
@@ -175,7 +175,13 @@ export default Form.create({ name: 'document' })(({ form }) => {
             >
               <Form.Item label='下载用户文档集模板'>
                 {templateUrl ? (
-                  <a href={templateUrl}>
+                  <a
+                    href={`http://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+                      templateUrl
+                    )}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
                     <Button className='button' icon='download' size='large'>
                       下载模板
                     </Button>
@@ -188,15 +194,15 @@ export default Form.create({ name: 'document' })(({ form }) => {
               <Form.Item label='用户文档集'>
                 {getFieldDecorator('documentUrl', {
                   valuePropName: 'fileList',
-                  getValueFromEvent: e => {
+                  getValueFromEvent: (e) => {
                     return e && e.fileList;
                   },
                   rules: [
                     {
                       required: true,
-                      message: '请上传用户文档集!'
-                    }
-                  ]
+                      message: '请上传用户文档集!',
+                    },
+                  ],
                 })(
                   <Upload
                     showUploadList={false}
@@ -208,9 +214,23 @@ export default Form.create({ name: 'document' })(({ form }) => {
                         <Button
                           className='half-button'
                           size='large'
-                          onClick={e => {
+                          onClick={(e) => {
                             e.stopPropagation();
-                            window.open(previewUrl);
+                            const urlArr = previewUrl.split('?');
+                            var urlArrList = urlArr[0],
+                              appU = urlArrList.split('/');
+                            var fileName = appU[appU.length - 1];
+                            if (
+                              fileName.split('.')[1].toLowerCase() !== 'pdf'
+                            ) {
+                              window.open(
+                                `http://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+                                  previewUrl
+                                )}`
+                              );
+                            } else {
+                              window.open(previewUrl);
+                            }
                           }}
                         >
                           查看上传
