@@ -30,7 +30,6 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     [productDescriptionLoading, setProductDescriptionLoading] = useState(false),
     [isNeedUrlFresh, setIsNeedUrlFresh] = useState(false),
     [previewUrl, setPreviewUrl] = useState(''),
-    [fileType, setFileType] = useState(''),
     [getDataLoading, setGetDataLoading] = useState(true),
     [saveDataLoading, setSaveDataLoading] = useState(false),
     [templateUrl, setTemplateUrl] = useState(''),
@@ -82,12 +81,6 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     if (handleBeforeUpload(file)) {
       // loading
       setProductDescriptionLoading(true);
-
-      if (file && file.file.name.split('.')[1].toLowerCase() === 'pdf') {
-        setFileType('pdf');
-      } else {
-        setFileType('word');
-      }
 
       // 参数需要加上oss的文件夹位置
       const fileUrl = await proxyFileFetch(UPLOAD_WORD_FILE, {
@@ -232,7 +225,13 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
                           size='large'
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (fileType === 'word') {
+                            const urlArr = previewUrl.split('?');
+                            var urlArrList = urlArr[0],
+                              appU = urlArrList.split('/');
+                            var fileName = appU[appU.length - 1];
+                            if (
+                              fileName.split('.')[1].toLowerCase() !== 'pdf'
+                            ) {
                               window.open(
                                 `http://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
                                   previewUrl
