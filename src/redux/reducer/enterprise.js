@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 
-const statusToColor = status => {
+const statusToColor = (status) => {
   switch (status) {
     case 0:
       return 'gray';
@@ -17,7 +17,7 @@ const statusToColor = status => {
   }
 };
 
-const contractStatusToColor = status => {
+const contractStatusToColor = (status) => {
   switch (status) {
     case -1:
       return 'red';
@@ -40,7 +40,7 @@ const contractStatusToColor = status => {
   }
 };
 
-const paymentStatusToColor = status => {
+const paymentStatusToColor = (status) => {
   switch (status) {
     case -1:
       return 'red';
@@ -61,7 +61,7 @@ const paymentStatusToColor = status => {
   }
 };
 
-const testStatusToColor = status => {
+const testStatusToColor = (status) => {
   switch (status) {
     case -1:
       return 'red';
@@ -105,69 +105,123 @@ export default handleActions(
         ...state,
         uuid: result.uuid,
         phone: result.phone,
-        name: result.name
+        name: result.name,
       };
     },
     // 设置登录loading
     setLoginLoading(state, { payload: result }) {
       return {
         ...state,
-        loginLoading: result
+        loginLoading: result,
       };
     },
     setCreateEnterpriseRegistrationLoading(state, { payload: result }) {
       return {
         ...state,
-        createEnterpriseRegistrationLoading: result
+        createEnterpriseRegistrationLoading: result,
       };
     },
     setEnterpriseRegistrationUuid(state, { payload: result }) {
       return {
         ...state,
-        enterpriseRegistrationUuid: result
+        enterpriseRegistrationUuid: result,
       };
     },
     setSteps(state, { payload: result }) {
-      let stepWithColor = result.map(step => ({
+      let stepWithColor = result.map((step) => ({
         ...step,
-        color: proxyStatusColor(step.step, step.status)
+        color: proxyStatusColor(step.step, step.status),
       }));
 
       return {
         ...state,
-        steps: stepWithColor
+        steps: stepWithColor,
       };
     },
     setRegistration(state, { payload: result }) {
       return {
         ...state,
-        registration: result
+        registration: result,
       };
     },
     setRegistrationLoading(state, { payload: result }) {
       return {
         ...state,
-        registrationLoading: result
+        registrationLoading: result,
       };
     },
     setNeedPaymentStatus(state, { payload: result }) {
       return {
         ...state,
-        needPaymentStatus: result
+        needPaymentStatus: result,
       };
     },
     setSysRegistrationStep(state, { payload: result }) {
       return {
         ...state,
-        sysRegistrationStep: result
+        sysRegistrationStep: result,
       };
     },
     setSysRegistrationStepLoading(state, { payload: result }) {
       return {
         ...state,
-        sysRegistrationStepLoading: result
+        sysRegistrationStepLoading: result,
       };
-    }
+    },
+    // 委托测试
+    setCreateEnterpriseDelegationLoading(state, { payload: result }) {
+      return {
+        ...state,
+        createEnterpriseDelegationLoading: result,
+      };
+    },
+    setEnterpriseDelegationUuid(state, { payload: result }) {
+      return {
+        ...state,
+        enterpriseDelegationUuid: result,
+      };
+    },
+    setDelegationSteps(state, { payload: result }) {
+      let stepWithColor = result.map((step) => ({
+        ...step,
+        color: proxyStatusColor(step.step, step.status),
+      }));
+
+      return {
+        ...state,
+        delegationSteps: stepWithColor,
+      };
+    },
+    setDelegation(state, { payload: result }) {
+      return {
+        ...state,
+        delegation: result,
+      };
+    },
+    setDelegationLoading(state, { payload: result }) {
+      return {
+        ...state,
+        delegationLoading: result,
+      };
+    },
+    setDelegationNeedPaymentStatus(state, { payload: result }) {
+      return {
+        ...state,
+        delegationNeedPaymentStatus: result,
+      };
+    },
+    setSysDelegationStep(state, { payload: result }) {
+      return {
+        ...state,
+        sysDelegationStep: result,
+      };
+    },
+    setSysDelegationStepLoading(state, { payload: result }) {
+      return {
+        ...state,
+        sysDelegationStepLoading: result,
+      };
+    },
   },
   {
     // 企业基本信息
@@ -184,6 +238,16 @@ export default handleActions(
     // 登记测试第三步需要状态值控制获取状态值
     needPaymentStatus: true,
     sysRegistrationStep: [],
-    sysRegistrationStepLoading: true
+    sysRegistrationStepLoading: true,
+    // 委托测试
+    createEnterpriseDelegationLoading: false,
+    enterpriseDelegationUuid: '',
+    delegationSteps: [], // 步骤详细信息
+    delegation: null,
+    delegationLoading: true, // 查询登记测试的loading
+    // 登记测试第三步需要状态值控制获取状态值
+    delegationNeedPaymentStatus: true,
+    sysDelegationStep: [],
+    sysDelegationStepLoading: true,
   }
 );

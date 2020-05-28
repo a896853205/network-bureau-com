@@ -35,3 +35,30 @@ export const REGISTRATION_APPRAISAL = {
   path: '/home/registration/process/appraisal',
   name: '人员评价页'
 };
+
+// 委托测试
+export const HOME_DELEGATION_WELCOME = {
+  path: '/home/delegation/welcome',
+  name: '登记测试欢迎页'
+};
+export const HOME_DELEGATION_PROCESS = {
+  path: '/home/delegation/process',
+  name: '登记测试流程页'
+};
+export const HOME_DELEGATION_LIST = {
+  path: '/home/delegation/list',
+  name: '登记测试列表页'
+};
+// 三级路由
+export const DELEGATION_PROFILE = {
+  path: '/home/delegation/process/profile',
+  name: '登记测试概况页'
+};
+export const DELEGATION_DETAIL = {
+  path: '/home/delegation/process/detail',
+  name: '详细内容页'
+};
+export const DELEGATION_APPRAISAL = {
+  path: '/home/delegation/process/appraisal',
+  name: '人员评价页'
+};

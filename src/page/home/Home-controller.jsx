@@ -10,6 +10,9 @@ import HomeIndexController from '@/page/home/Home-index-controller.jsx';
 import RegistrationWelcomeController from '@/page/home/registration/Registration-welcome-controller.jsx';
 import RegistrationProcessController from '@/page/home/registration/Registration-process-controller.jsx';
 import RegistrationListController from '@/page/home/registration/Registration-list-controller.jsx';
+import DelegationWelcomeController from '@/page/home/delegation/Delegation-welcome-controller.jsx';
+import DelegationProcessController from '@/page/home/delegation/Delegation-process-controller.jsx';
+import DelegationListController from '@/page/home/delegation/Delegation-list-controller.jsx';
 
 // localStorage
 import { LOCAL_STORAGE } from '@/constants/app-constants';
@@ -20,9 +23,9 @@ import { Layout, Menu, Icon } from 'antd';
 const { Header, Content, Footer, Sider } = Layout,
   { SubMenu } = Menu;
 
-export default props => {
+export default (props) => {
   const token = window.localStorage.getItem(`${LOCAL_STORAGE}-token`),
-    { uuid } = useSelector(state => state.enterpriseStore),
+    { uuid } = useSelector((state) => state.enterpriseStore),
     history = useHistory(),
     dispatch = useDispatch();
 
@@ -43,18 +46,29 @@ export default props => {
 
   const homeIndex = useRouteMatch({
       path: ROUTES.HOME_INDEX.path,
-      exact: true
+      exact: true,
     }),
     registrationWelcome = useRouteMatch({
       path: ROUTES.HOME_REGISTRATION_WELCOME.path,
-      exact: true
+      exact: true,
     }),
     registrationProcess = useRouteMatch({
-      path: ROUTES.HOME_REGISTRATION_PROCESS.path
+      path: ROUTES.HOME_REGISTRATION_PROCESS.path,
     }),
     registrationList = useRouteMatch({
       path: ROUTES.HOME_REGISTRATION_LIST.path,
-      exact: true
+      exact: true,
+    }),
+    delegationWelcome = useRouteMatch({
+      path: ROUTES.HOME_DELEGATION_WELCOME.path,
+      exact: true,
+    }),
+    delegationProcess = useRouteMatch({
+      path: ROUTES.HOME_DELEGATION_PROCESS.path,
+    }),
+    delegationList = useRouteMatch({
+      path: ROUTES.HOME_DELEGATION_LIST.path,
+      exact: true,
     });
 
   let content = null;
@@ -68,6 +82,12 @@ export default props => {
     content = <RegistrationProcessController />;
   } else if (registrationList) {
     content = <RegistrationListController />;
+  } else if (delegationWelcome) {
+    content = <DelegationWelcomeController />;
+  } else if (delegationProcess) {
+    content = <DelegationProcessController />;
+  } else if (delegationList) {
+    content = <DelegationListController />;
   }
 
   return (
@@ -105,10 +125,14 @@ export default props => {
               </span>
             }
           >
-            <Menu.Item key='entrustDeal'>办理新测试</Menu.Item>
-            <Menu.Item key='entrustList'>查看进行的测试</Menu.Item>
+            <Menu.Item key='entrustDeal'>
+              <Link to={ROUTES.HOME_DELEGATION_WELCOME.path}>办理新测试</Link>
+            </Menu.Item>
+            <Menu.Item key='entrustList'>
+              <Link to={ROUTES.HOME_DELEGATION_LIST.path}>查看进行的测试</Link>
+            </Menu.Item>
           </SubMenu>
-          <SubMenu
+          {/* <SubMenu
             key='entrustContract'
             title={
               <span>
@@ -123,7 +147,7 @@ export default props => {
           <Menu.Item key='4'>
             <Icon type='setting' />
             <span className='nav-text'>企业情况设置</span>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </Sider>
       <Layout className='home-content'>
