@@ -22,7 +22,7 @@ export default props => {
         enterpriseAction.asyncCreateEnterpriseDelegation(delegationName)
       );
     } else {
-      message.error('请输入登记测试名称');
+      message.error('请输入委托测试名称');
     }
   };
 

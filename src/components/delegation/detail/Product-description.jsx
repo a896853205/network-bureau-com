@@ -122,7 +122,7 @@ export default Form.create({ name: 'productDescription' })(({ form }) => {
     (async () => {
       const templateUrl = await proxyFetch(
         GET_FILE_URL,
-        { fileUrl: 'sys/delegation/product-instruction-template.doc' },
+        { fileUrl: 'sys/registration/product-instruction-template.doc' },
         'GET'
       );
 

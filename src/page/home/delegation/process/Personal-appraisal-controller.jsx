@@ -37,7 +37,7 @@ export default props => {
           certifierManager
         } = await proxyFetch(
           GET_DELEGATION_MANAGER_INFO,
-          { DelegationUuid: enterpriseDelegationUuid },
+          { delegationUuid: enterpriseDelegationUuid },
           'GET'
         );
         setProjectManager(projectManager);

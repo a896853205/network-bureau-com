@@ -97,7 +97,7 @@ export default Form.create({ name: 'document' })(({ form }) => {
     (async () => {
       const templateUrl = await proxyFetch(
         GET_FILE_URL,
-        { fileUrl: 'sys/delegation/user-document-template.doc' },
+        { fileUrl: 'sys/registration/user-document-template.doc' },
         'GET'
       );
 
