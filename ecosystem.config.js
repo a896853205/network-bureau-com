@@ -18,7 +18,7 @@ module.exports = {
       host: '39.97.175.30',
       ref: 'origin/borong',
       repo: 'git@github.com:a896853205/network-bureau-com.git',
-      path: '/network-bureau/network-bureau-com',
+      path: '/network-bureau-registration/network-bureau-com',
       'post-deploy':
         'npm install && npm run build',
       'post-setup': 'npm install && npm run build'
